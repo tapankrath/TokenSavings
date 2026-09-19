@@ -1,0 +1,2041 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Token Savings Coach</title>
+<meta name="description" content="Cut your AI token and API costs. Find where your AI money goes and get a plan to trim it, for any AI tool.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F1F5EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1712" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Token Savings">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1F5EF; --card:#FFFFFF; --ink:#16241C; --muted:#56655B; --rule:#CBD6CD;
+  --moss:#0E6B45; --moss-soft:#DCEFE4; --cobalt:#2C3FE0; --on-cobalt:#FFFFFF; --alert:#A3261B;
+  --brand:#8C1D2C; --on-brand:#FFFFFF;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  box-sizing:border-box;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1712; --card:#18231C; --ink:#E7EFE9; --muted:#9BAAA0; --rule:#2C3B31;
+    --moss:#56D598; --moss-soft:#1B3A2A; --cobalt:#8C9BFF; --on-cobalt:#0F1712; --alert:#FF8A7D;
+    --brand:#6F1622;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1712; --card:#18231C; --ink:#E7EFE9; --muted:#9BAAA0; --rule:#2C3B31;
+  --moss:#56D598; --moss-soft:#1B3A2A; --cobalt:#8C9BFF; --on-cobalt:#0F1712; --alert:#FF8A7D;
+  --brand:#6F1622;
+}
+html{scroll-padding-top:calc(96px + env(safe-area-inset-top,0px))}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.5 var(--body);-webkit-text-size-adjust:100%}
+.wrap{max-width:640px;margin:0 auto;padding:20px 18px 104px}
+.top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule);padding-top:env(safe-area-inset-top,0px)}
+.top-in{max-width:640px;margin:0 auto;padding:10px 18px 12px}
+.home{display:inline-flex;align-items:center;gap:11px;color:var(--ink);text-decoration:none;border-radius:10px;-webkit-tap-highlight-color:transparent}
+.home:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
+.logo{width:38px;height:38px;flex:none}
+.logo .bg,.logo .mark{fill:var(--brand)}
+.logo .sheet{fill:#fff}
+.brand{font:700 1.4rem/1 var(--display);letter-spacing:-.02em}
+.hero{margin-top:10px}
+.hero h1{font:700 clamp(1.45rem,6.4vw,1.9rem)/1.08 var(--display);letter-spacing:-.02em;margin:0}
+.hero .lede{margin:6px 0 0;font-size:.92rem;line-height:1.4;color:var(--muted);max-height:5.6em;overflow:hidden;transition:max-height .2s ease,opacity .2s ease,margin .2s ease}
+.top.condensed .lede{max-height:0;opacity:0;margin-top:0}
+@media (prefers-reduced-motion: reduce){.hero .lede{transition:none}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
+
+.composer{background:var(--card);border:1.5px solid var(--rule);border-radius:16px;padding:12px}
+textarea{width:100%;min-height:140px;resize:vertical;border:0;background:transparent;padding:6px 4px;line-height:1.5;font-size:1.02rem}
+textarea:focus-visible{outline:none}
+.composer:focus-within{border-color:var(--cobalt)}
+.row{display:flex;align-items:center;gap:12px;margin-top:8px}
+.mic{flex:none;width:52px;height:52px;border-radius:50%;border:0;background:var(--cobalt);color:var(--on-cobalt);display:grid;place-items:center;cursor:pointer}
+.mic svg{width:24px;height:24px}
+.mic[aria-pressed="true"]{background:var(--alert);box-shadow:0 0 0 0 var(--alert);animation:ring 1.4s ease-out infinite}
+@keyframes ring{to{box-shadow:0 0 0 14px transparent}}
+@media (prefers-reduced-motion: reduce){.mic[aria-pressed="true"]{animation:none;outline:3px solid var(--alert);outline-offset:3px}}
+.hintline{margin:10px 4px 0;color:var(--muted);font-size:.9rem}
+.mic.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--rule)}
+.mic.ghost:hover{border-color:var(--cobalt)}
+.composer.drag{border-color:var(--moss);background:var(--moss-soft)}
+.attachchip{display:flex;align-items:center;gap:10px;margin:6px 2px 4px;padding:8px 10px;border:1.5px solid var(--rule);border-radius:12px;background:var(--paper)}
+.attachchip.err{border-color:var(--alert)}
+.ac-icon{width:22px;height:22px;flex:none;color:var(--muted)}
+.ac-main{flex:1;min-width:0}
+.ac-name{margin:0;font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-sub{margin:1px 0 0;font-size:.85rem;line-height:1.3;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.attachchip.err .ac-sub{color:var(--alert);-webkit-line-clamp:4}
+.ac-x{flex:none;width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:var(--muted);font-size:1.4rem;line-height:1;cursor:pointer}
+.ac-x:hover{background:var(--rule)}
+.alertbox{border:1.5px solid var(--alert);background:var(--card);border-radius:12px;padding:12px 14px;margin:0 0 18px}
+.findbox{background:var(--card);border-radius:12px;padding:16px 18px;margin-bottom:18px}
+.findbox ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:12px 0 10px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.tab{flex:none;border:1.5px solid var(--rule);background:transparent;border-radius:999px;padding:7px 13px;font-weight:500;font-size:.95rem;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chips.compact .chip{padding:7px 12px;font-size:.95rem}
+.selrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.selchip{display:inline-flex;align-items:center;border:1.5px solid var(--moss);border-radius:999px;background:var(--moss-soft);overflow:hidden}
+.selchip label{position:relative;display:inline-flex;align-items:center;gap:5px;padding:7px 2px 7px 12px;font-weight:600;font-size:.92rem;cursor:pointer}
+.selchip .caret{font-size:.7rem;color:var(--muted)}
+.selchip select{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:16px;cursor:pointer}
+.selchip .x{border:0;background:transparent;width:34px;height:36px;font-size:1.25rem;line-height:1;color:var(--muted);cursor:pointer}
+.gobar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;padding:14px 18px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--paper) 62%,transparent);pointer-events:none}
+.gobar .go{pointer-events:auto;width:100%;max-width:604px;min-height:52px;font-size:1.02rem;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.top .hero h1,.top .logo,.top .brand{transition:font-size .2s ease,width .2s ease,height .2s ease}
+.top.condensed .hero h1{font-size:1rem;line-height:1.2}
+.top.condensed .hero{margin-top:6px}
+.top.condensed .logo{width:30px;height:30px}
+.top.condensed .brand{font-size:1.2rem}
+.top.condensed .top-in{padding-top:7px;padding-bottom:9px}
+@media (prefers-reduced-motion: reduce){.top .hero h1,.top .logo,.top .brand{transition:none}}
+.adv-note{margin:0 0 6px;color:var(--muted);font-size:.9rem}
+.lbl{margin:10px 0 2px;font-weight:600;font-size:.92rem}
+.go{flex:none;min-height:48px;padding:0 20px;border-radius:12px;border:0;background:var(--ink);color:var(--paper);font-weight:600;cursor:pointer}
+.link{background:none;border:0;padding:6px 0;color:var(--cobalt);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.status{min-height:1.5em;margin:12px 2px 0;color:var(--muted);font-size:.95rem}
+.status.err{color:var(--alert)}
+.ask{margin:14px 0 0;padding:16px;border:1.5px solid var(--moss);border-radius:14px;background:var(--card)}
+.ask p{margin:0 0 10px;font-weight:600}
+.chips{display:flex;flex-direction:column;gap:8px}
+.chips.wrapped{flex-direction:row;flex-wrap:wrap}
+.tryhead{margin:26px 0 8px;font-weight:600}
+.chip{text-align:left;background:transparent;border:1.5px solid var(--rule);border-radius:12px;padding:10px 12px;cursor:pointer;line-height:1.4}
+.chips.wrapped .chip{padding:9px 14px;font-weight:500}
+.chip:hover{border-color:var(--cobalt)}
+
+.understood{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:6px}
+.understood p{margin:0;color:var(--muted)}
+.engine{margin:0 0 16px;font-size:.85rem;color:var(--muted)}
+.seg{display:inline-flex;border:1.5px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.seg button{border:0;background:transparent;padding:9px 16px;cursor:pointer;font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+.receipt{background:var(--card);padding:22px 20px 20px;border-radius:8px 8px 0 0}
+.rtitle{margin:0 0 4px;color:var(--muted);font-size:.95rem}
+.big{margin:0 0 14px;font:700 clamp(2.1rem,9.5vw,3rem)/1.02 var(--display);letter-spacing:-.03em;color:var(--moss)}
+.line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1.5px dashed var(--rule);font-variant-numeric:tabular-nums}
+.line.total{font-weight:700;font-size:1.15rem}
+.line.total span:last-child{color:var(--moss)}
+.note{margin:10px 0 0;color:var(--muted);font-size:.9rem}
+.edge{height:9px;margin-bottom:26px;background:
+  linear-gradient(135deg,var(--card) 50%,transparent 50%) 0 0/14px 9px repeat-x,
+  linear-gradient(225deg,var(--card) 50%,transparent 50%) 0 0/14px 9px repeat-x}
+.h2{font:700 1.35rem/1.2 var(--display);letter-spacing:-.01em;margin:0 0 6px}
+.tips{list-style:none;margin:0 0 30px;padding:0}
+.tip{padding:16px 0 16px 14px;border-top:1px solid var(--rule);border-left:4px solid transparent}
+.tip:last-child{border-bottom:1px solid var(--rule)}
+.tip.first{border-left-color:var(--moss)}
+.start{margin:0 0 2px;color:var(--moss);font-weight:600;font-size:.9rem}
+.tip h3{font:700 1.12rem/1.25 var(--display);margin:0 0 6px}
+.tip p{margin:0 0 10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:.92rem;color:var(--muted)}
+.save{background:var(--moss-soft);color:var(--moss);font-weight:600;border-radius:8px;padding:3px 10px}
+.save.soft{background:transparent;border:1.5px solid var(--rule);color:var(--muted);font-weight:500;padding:1.5px 9px}
+.empty{background:var(--card);border-radius:12px;padding:20px;margin-bottom:26px}
+.empty p{margin:0;color:var(--muted)}
+.conf{margin:12px 0 0;padding-top:10px;border-top:1.5px dashed var(--rule);font-size:.92rem;color:var(--muted)}
+.conf strong{color:var(--ink)}
+details.how{margin:22px 0 0;font-size:.9rem;color:var(--muted)}
+details.how summary{font:600 .95rem/1.3 var(--body);color:var(--ink)}
+details.how p{margin:8px 0 0}
+.ticks{display:grid;gap:6px;margin-top:14px}
+.tick{display:flex;gap:10px;align-items:flex-start;color:var(--ink);font-size:.98rem;min-height:36px;line-height:1.4}
+.tick input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--moss)}
+
+details.assume,details.opt{border-top:1.5px solid var(--rule);padding-top:14px;margin-bottom:24px}
+summary{cursor:pointer;font:700 1.05rem/1.3 var(--display);padding:4px 0}
+.alist{margin:10px 0 16px;padding-left:20px;color:var(--muted)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fields label,.aiform label{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--muted)}
+.fields input[type=number],.fields select,.aiform input,.aiform select{min-height:44px;border:1.5px solid var(--rule);border-radius:10px;background:var(--card);padding:0 10px;color:var(--ink);width:100%}
+.fields .check{grid-column:1 / -1;flex-direction:row;align-items:center;gap:10px;color:var(--ink);font-size:.95rem;min-height:36px}
+.fields .check input{width:20px;height:20px;accent-color:var(--moss)}
+body[data-aud="everyday"] .dev-only{display:none}
+.aiform{display:grid;gap:10px;margin:12px 0 8px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{min-height:46px;padding:0 18px;border-radius:12px;border:1.5px solid var(--ink);background:transparent;font-weight:600;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.small{color:var(--muted);font-size:.88rem;margin:8px 0 0}
+.fine{margin:22px 0 0;color:var(--muted);font-size:.85rem}
+.install{margin-top:28px}
+[hidden]{display:none !important}
+@media (max-width:380px){.fields{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-aud="everyday">
+<header class="top" id="top">
+  <div class="top-in">
+    <a class="home" id="home" href="./" aria-label="Token Savings Coach home">
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect class="bg" width="40" height="40" rx="9"/><path class="sheet" d="M10 6H30V31L26.7 34.3L23.3 31L20 34.3L16.7 31L13.3 34.3L10 31Z"/><rect class="mark" x="18.3" y="11" width="3.4" height="9"/><path class="mark" d="M13.5 18.5H26.5L20 25.5Z"/></svg>
+      <span class="brand">Token Savings Coach</span>
+    </a>
+    <div class="hero" id="hero">
+      <h1>Find where your AI money goes.</h1>
+      <p class="lede">Type it, say it, or attach a bill or usage file. Get a plan to cut your subscription, API and token costs, for any AI tool: ChatGPT, Claude, Gemini, Copilot, Cursor and more.</p>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+
+  <section id="compose">
+    <div class="composer">
+      <label for="desc" class="sr">What do you use AI for, and what do you pay?</label>
+      <textarea id="desc" placeholder="Example: I pay $20 a month for ChatGPT, and our OpenAI API bill is about $300 a month."></textarea>
+      <div id="fileCard" class="attachchip" hidden>
+        <svg class="ac-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+        <div class="ac-main"><p class="ac-name" id="fileName"></p><p class="ac-sub" id="fileSub"></p></div>
+        <button id="fileRemove" class="ac-x" type="button" aria-label="Remove file">&times;</button>
+      </div>
+      <div class="row">
+        <button id="mic" class="mic" type="button" aria-pressed="false" aria-label="Speak your description">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        </button>
+        <button id="attach" class="mic ghost" type="button" aria-label="Attach a bill or usage file">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l8.9-8.9a3.7 3.7 0 0 1 5.2 5.2l-8.9 8.9a1.8 1.8 0 0 1-2.6-2.6l8.1-8.1"/></svg>
+        </button>
+        <button id="go" class="go" type="button" style="margin-left:auto">Find savings</button>
+      </div>
+      <p id="micHint" class="hintline">Tap, then start talking</p>
+      <input id="file" type="file" accept=".csv,.tsv,.txt,.md,.pdf,.docx,.doc,.html,.htm,.js,.mjs,.jsx,.ts,.tsx,.py,text/csv,application/pdf" hidden>
+    </div>
+    <p class="small" style="margin:8px 4px 0">Attach an invoice, usage export (CSV), document (PDF or Word), or your app’s code (HTML, JavaScript or Python). Files are read on this device and never uploaded.</p>
+    <details class="opt" id="pickBox" style="margin-top:18px">
+      <summary>Add your platforms and models (optional)</summary>
+      <p class="small">Tap the ones you use, then tap a chosen platform to pick its model. This sharpens the advice.</p>
+      <div id="selRow" class="selrow" hidden></div>
+      <div id="platTabs" class="tabs" role="tablist" aria-label="Kinds of platform"></div>
+      <div id="platChips" class="chips wrapped compact"></div>
+    </details>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <div id="ask" class="ask" hidden>
+      <p id="askTitle">About how much do you spend on AI each month?</p>
+      <div id="askChips" class="chips wrapped"></div>
+    </div>
+
+    <p class="tryhead">Try an example</p>
+    <div id="chips" class="chips"></div>
+
+    <details class="opt" id="opt" style="margin-top:28px">
+      <summary>Smarter analysis with an AI provider (optional, experimental)</summary>
+      <p class="small">By default your description is analyzed on this device and never leaves it. To let an AI model read it instead, choose a provider and paste your own API key. The key is saved only in this browser and sent only to that provider. Use a key with a low spend limit.</p>
+      <div class="aiform">
+        <label>Provider
+          <select id="prov"><option value="anthropic">Anthropic (Claude)</option><option value="openai">OpenAI</option></select>
+        </label>
+        <label>Model name
+          <input id="model" type="text" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </label>
+        <label>API key
+          <input id="key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste key">
+        </label>
+        <div class="actions">
+          <button id="saveKey" class="btn" type="button">Save</button>
+          <button id="clearKey" class="link" type="button" hidden>Remove key</button>
+        </div>
+      </div>
+      <p id="keyMsg" class="small" role="status" aria-live="polite"></p>
+      <p class="small">Change the model name if the suggested one has been retired.</p>
+    </details>
+
+    <div class="install">
+      <button id="install" class="btn primary" type="button" hidden>Install on this device</button>
+      <p id="iosHint" class="small" hidden>To install on iPhone: tap Share, then Add to Home Screen.</p>
+    </div>
+  </section>
+
+  <section id="report" hidden>
+    <div class="understood">
+      <p id="summary"></p>
+      <button id="edit" class="link" type="button">Edit</button>
+    </div>
+    <p id="engine" class="engine"></p>
+    <div class="seg" role="group" aria-label="Explain for">
+      <button type="button" data-aud="everyday" aria-pressed="true">Everyday</button>
+      <button type="button" data-aud="developer" aria-pressed="false">Developer</button>
+    </div>
+    <div id="results"></div>
+    <details class="assume" open>
+      <summary>What I assumed</summary>
+      <div id="fbox" hidden><p class="lbl">From your file</p><ul id="flist" class="alist"></ul><p class="lbl">Guesses I made</p></div>
+      <ul id="alist" class="alist"></ul>
+      <p class="small" style="margin:0 0 12px">Change anything and the plan updates.</p>
+      <div class="fields" id="fields">
+        <label><span id="l-api">API bill per month</span><input id="f-api" type="number" min="0" step="any" inputmode="decimal"></label>
+        <label><span id="l-sub">Subscriptions per month</span><input id="f-sub" type="number" min="0" step="any" inputmode="decimal"></label>
+        <label id="lbl-calls" hidden><span>AI calls per month</span><input id="f-calls" type="number" min="0" step="any" inputmode="numeric"></label>
+        <label>Model size
+          <select id="f-tier"><option value="top">Top-tier</option><option value="mid">Mid-tier</option><option value="small">Small</option></select>
+        </label>
+        <label>Task difficulty
+          <select id="f-diff"><option value="simple">Simple</option><option value="moderate">Moderate</option><option value="hard">Hard</option></select>
+        </label>
+        <label class="dev-only">Repeated part of prompt (%)<input id="f-rep" type="number" min="0" max="100" inputmode="numeric"></label>
+        <label class="check dev-only"><input id="f-rt" type="checkbox"> Results are needed right away</label>
+        <label class="check"><input id="f-hist" type="checkbox"> Long chats or whole documents are resent</label>
+        <label class="check"><input id="f-verb" type="checkbox"> Answers are longer than needed</label>
+      </div>
+    </details>
+    <div class="actions">
+      <button id="copy" class="btn primary" type="button">Copy plan</button>
+      <button id="again" class="btn" type="button">Start over</button>
+    </div>
+    <p id="copyMsg" class="status" role="status" aria-live="polite"></p>
+    <details class="how">
+      <summary>How these estimates work</summary>
+      <p>I start from what you pay. Each change is estimated as a share of your bill using general assumptions, such as resending less context trimming part of what you pay to send, or shorter answers trimming part of what you pay to receive. I show a range because real results depend on your provider, your plan and your habits.</p>
+      <p>I can\u2019t see your real usage or invoices, so treat this as a starting point. Try one change at a time and check your next bill.</p>
+      <p id="catNote"></p>
+    </details>
+    <p class="fine">Directional estimates only. Savings are not guaranteed and depend on your provider, plan and how you use AI. Prices and features change, so check your provider's current pricing. This is general information, not financial advice.</p>
+  </section>
+</main>
+<div id="goBar" class="gobar" hidden><button id="goFloat" class="go" type="button">Find savings</button></div>
+
+<script src="catalog.js"></script>
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var STORE = "tcc_ai";
+  var PROVIDERS = {
+    anthropic:{ short:"Claude", model:"claude-haiku-4-5-20251001", prefix:"sk-ant-" },
+    openai:{ short:"OpenAI", model:"gpt-4o-mini", prefix:"sk-" }
+  };
+  var EXAMPLES = [
+    "I pay $20 a month for ChatGPT and $20 for Claude. I paste long PDFs into chats and keep hitting limits.",
+    "I pay $20 a month for ChatGPT Plus. Our OpenAI API bill is about $600 a month for a support bot with a long system prompt and wordy answers.",
+    "Our nightly job classifies product reviews on the most expensive model and costs us about $1,500 a month. Results are needed by morning."
+  ];
+  var ASK = [["Under $30",20],["$30 to $100",60],["$100 to $500",250],["$500 to $2,000",1000],["Over $2,000",4000]];
+  var ERR = {
+    bad_key:"The provider rejected the API key.",
+    rate_limited:"The provider is rate limiting requests.",
+    network:"Couldn't reach the provider.",
+    upstream_error:"The provider returned an error.",
+    invalid_json:"The provider's answer wasn't readable."
+  };
+
+/* ===== Engine v3: dollars in, dollars out. API bills + subscriptions. Runs fully on the device. ===== */
+var PRICES = { top:{i:15,o:75,label:"top-tier"}, mid:{i:3,o:15,label:"mid-tier"}, small:{i:0.8,o:4,label:"small"} };
+var RANK = { small:0, mid:1, top:2 };
+/* Rules of thumb that apply across providers. Edit these to tune the estimates. */
+var IN_SHARE = 0.55;      /* share of a typical bill that pays for what you send in */
+var TRIM_CUT = 0.30;      /* less context resent */
+var CAP_CUT = 0.35;       /* shorter answers */
+var CACHE_SAVE = 0.75;    /* discount on repeated prompt prefixes; varies by provider */
+var BATCH_CUT = 0.5;      /* batch pricing; several providers offer about half off */
+var MOVE_SHARE = { simple:0.8, moderate:0.35, hard:0 };  /* share of work a cheaper model can take */
+/* Low and high multipliers on each point estimate. Real results depend on provider, plan and habits. */
+var RANGE = { trim:[0.5,1.25], cap:[0.5,1.25], prompt:[0.4,1.2], size:[0.35,1.1], cache:[0.5,1.1], batch:[0.75,1.0] };
+
+function num(v, d, min, max){ v = Number(v); if (!isFinite(v)) v = d; return Math.min(max, Math.max(min, v)); }
+function fmtMoney(x, sym){
+  sym = sym || "$";
+  if (x < 0.005) return sym + "0";
+  if (x >= 1000) return sym + Math.round(x).toLocaleString("en-US");
+  if (x >= 10) return sym + Math.round(x);
+  return sym + (Math.abs(x - Math.round(x)) < 0.005 ? String(Math.round(x)) : x.toFixed(2));
+}
+function listJoin(a){ return a.length <= 1 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+function orNull(v){ if (v == null || v === "") return null; v = Number(v); return (isFinite(v) && v > 0) ? Math.min(v, 1e9) : null; }
+
+function detectTools(t){
+  var names = [], seen = {}, vendors = {};
+  cat().platforms.forEach(function(pl){
+    if (pl.match && pl.match.test(t)) {
+      pl.names.forEach(function(nm){ if (!seen[nm]) { seen[nm] = 1; names.push(nm); } });
+      vendors[pl.vendor] = 1;
+    }
+  });
+  if (seen["ChatGPT"]) names = names.filter(function(n){ return n !== "OpenAI"; });
+  if (seen["Claude"]) names = names.filter(function(n){ return n !== "Anthropic"; });
+  return { names:names, groups:Object.keys(vendors).length };
+}
+
+/* Maps a model name from a bill or export to a size tier. Returns null if unrecognized. */
+function tierOf(name){
+  var n = String(name || ""), fams = cat().families, i;
+  for (i = 0; i < fams.length; i++) {
+    var f = fams[i];
+    if (f.fam.test(n)) { if (f.small.test(n)) return "small"; if (f.mid.test(n)) return "mid"; if (f.top.test(n)) return "top"; return f.dflt; }
+  }
+  n = n.toLowerCase();
+  if (/haiku|nano|\bmini\b|-mini|flash|lite|small|gemma|\b(7|8)b\b/.test(n)) return "small";
+  if (/opus|fable|mythos|gpt-?5|gpt-?4(?!o)|\bo1\b|\bo3\b|ultra|405b|\b70b\b/.test(n)) return "top";
+  if (/sonnet|gpt-?4o|gemini|medium|mistral|llama|deepseek|grok|claude|gpt/.test(n)) return "mid";
+  return null;
+}
+
+/* ---------- money in plain text: split into API, subscription and unlabeled ---------- */
+var CLAUSE_BREAK = /[.;!?\n]|,\s|\s(?:and|plus|but)\s/;
+function clauseAround(t, start, end){
+  var left = t.slice(0, start), right = t.slice(end);
+  var re = new RegExp(CLAUSE_BREAK.source, "gi"), m, lm = 0;
+  while ((m = re.exec(left))) lm = m.index + m[0].length;
+  var rm = right.search(new RegExp(CLAUSE_BREAK.source, "i"));
+  return t.slice(lm, rm < 0 ? t.length : end + rm);
+}
+var API_CUE = /\b(api|per token|pay[- ]as[- ]you[- ]go|usage[- ]based|credits?|metered|bill|invoice|tokens?|inference)\b/i;
+var SUB_CUE = /\b(subscription|subscribe\w*|plus|pro|max|team|seats?|plan|premium|licen[cs]es?)\b/i;
+function classifyClause(c){
+  var a = API_CUE.test(c), s = SUB_CUE.test(c);
+  if (a && !s) return "api";
+  if (s && !a) return "sub";
+  if (a && s) return /\bapi\b/i.test(c) ? "api" : "sub";
+  return "unk";
+}
+function parseMoney(t){
+  var mult = { month:1, mo:1, monthly:1, day:30, daily:30, week:4.3, wk:4.3, weekly:4.3, year:1/12, yr:1/12, yearly:1/12, annually:1/12 };
+  var re1 = /([$\u00A3\u20AC])\s?(\d[\d,]*(?:\.\d+)?)\s*(k|m)?(?![a-z])(?:\s*(?:\/|per|a|an|each|every)?\s*(month|mo|day|week|wk|year|yr)\b|\s*(monthly|daily|weekly|yearly|annually)\b)?/gi;
+  var re2 = /(\d[\d,]*(?:\.\d+)?)\s*(k)?\s*(?:dollars|usd|bucks)\b(?:\s*(?:\/|per|a|an|each|every)?\s*(month|mo|day|week|wk|year|yr)\b|\s*(monthly|daily|weekly|yearly|annually)\b)?/gi;
+  var sums = { api:0, sub:0, unk:0 }, count = 0, noPeriod = false, sym = "$", m, seatNote = "";
+  var hc = /(\d+)\s*(?:engineers?|developers?|people|users?|seats?|employees?|team members|staff|of us)\b/i.exec(t);
+  var headcount = hc ? parseInt(hc[1], 10) : 0;
+  function add(numStr, suf, per, idx, len){
+    var n = parseFloat(String(numStr).replace(/,/g, ""));
+    if (!isFinite(n)) return;
+    suf = (suf || "").toLowerCase();
+    if (suf === "k") n *= 1e3; else if (suf === "m") n *= 1e6;
+    if (!per) noPeriod = true;
+    var monthly = n * (per ? mult[per.toLowerCase()] : 1);
+    var clause = clauseAround(t, idx, idx + len);
+    if (headcount > 1 && headcount < 5000 && /per\s+(seat|user|person|head|developer|engineer|member)|\/\s*(seat|user)/i.test(clause)) { monthly *= headcount; seatNote = "Multiplied the per-seat price by " + headcount + " seats."; }
+    sums[classifyClause(clause)] += monthly; count++;
+  }
+  while ((m = re1.exec(t))) { if (count === 0) sym = m[1]; add(m[2], m[3], m[4] || m[5], m.index, m[0].length); }
+  while ((m = re2.exec(t))) add(m[1], m[2], m[3] || m[4], m.index, m[0].length);
+  return { api:sums.api, sub:sums.sub, unk:sums.unk, count:count, noPeriod:noPeriod, sym:sym, seatNote:seatNote };
+}
+
+/* Reads a plain description and returns the same JSON shape the AI prompt asks for. */
+function localExtract(text){
+  var t = " " + text.replace(/\s+/g, " ") + " ";
+  var assumptions = [];
+  var tools = detectTools(t);
+  var money = parseMoney(t);
+
+  var aiHint = tools.names.length > 0 || /\b(ai|a\.i\.|llm|gpt|assistant|chatbot|bot|prompts?|model|models|tokens?|api|summar\w*|classif\w*|chats?|pdfs?|copilot)\b/i.test(t);
+
+  var coding = /\b(develop\w*|coding|code|programming|programmer|software|engineer\w*|debug\w*|vibe cod\w*|cursor|windsurf|copilot|replit|lovable|claude code|codex)\b/i.test(t);
+  var apiDev = /\b(api|sdk|backend|pipeline|nightly|cron|script|endpoint|support bot|chatbot|bot|production|deploy\w*|integrat\w*|system prompt|batch job|job|automation|workflow|agents?|our (?:app|product|service|customers|users|team|platform))\b/i.test(t);
+  var dev = coding || apiDev;
+
+  var subHint = /\b(subscription|subscribe\w*|subscribed|plus plan|pro plan|max plan|team plan|hit(?:ting)? (?:my |the )?limits?|usage limits?|rate limits?|out of messages|message cap)\b/i.test(t);
+  var useHint = /\b(api|per token|pay[- ]as[- ]you[- ]go|usage[- ]based|bill|invoice|credits?|metered|production|our (?:app|product)|support bot|nightly|pipeline)\b/i.test(t);
+  var billing = (useHint && !subHint) ? "usage" : ((subHint && !useHint) ? "subscription" : (apiDev ? "usage" : "subscription"));
+
+  var apiAmt = money.api || 0, subAmt = money.sub || 0;
+  if (money.unk > 0) {
+    if (billing === "usage") apiAmt += money.unk; else subAmt += money.unk;
+    if (!subHint && !useHint) assumptions.push("Didn't say how you pay, so I assumed " + (billing === "usage" ? "pay per use." : "a flat subscription."));
+  }
+  if (money.count > 1) assumptions.push("Added up the amounts you mentioned" + ((apiAmt && subAmt) ? " (API " + fmtMoney(apiAmt, money.sym) + ", subscriptions " + fmtMoney(subAmt, money.sym) + ")." : ": " + fmtMoney(apiAmt + subAmt, money.sym) + " a month."));
+  if (money.seatNote) assumptions.push(money.seatNote);
+  if (money.count > 0 && money.noPeriod) assumptions.push("Read amounts with no time period as per month.");
+
+  var calls = null, cm = /(\d[\d,\.]*)\s*(k|m|thousand|million)?\s*(?:ai\s+)?(?:calls?|requests?|chats?|queries|analy[sz]es|runs|generations?|sessions?|messages?)\s*(?:a|per|each|every|\/)\s*(day|week|month)/i.exec(t);
+  if (cm) {
+    var cv = parseFloat(cm[1].replace(/,/g, ""));
+    var csuf = (cm[2] || "").toLowerCase(); if (csuf === "k" || csuf === "thousand") cv *= 1e3; else if (csuf === "m" || csuf === "million") cv *= 1e6;
+    if (isFinite(cv) && cv > 0) calls = Math.round(cv * ({ day:30, week:4.3, month:1 })[cm[3].toLowerCase()]);
+  }
+  var hoursUse = null, hm = /(\d[\d,]*(?:\.\d+)?)\s*(?:\+|plus)?\s*(?:hrs?|hours?)\b(?:\s*(?:a|per|each|every)\s*(day|week|month))?/i.exec(t);
+  if (hm) {
+    var hv = parseFloat(hm[1].replace(/,/g, ""));
+    var hmult = hm[2] ? ({ day:22, week:4.3, month:1 })[hm[2].toLowerCase()] : 1;
+    if (isFinite(hv) && hv > 0) {
+      hoursUse = Math.round(hv * hmult);
+      if (!hm[2]) assumptions.push("Read your hours of use as per month.");
+    }
+  }
+  var docs = /\b(pdfs?|documents?|docs|contracts?|transcripts?|logs?|reports?|papers?|articles?|spreadsheets?)\b/i.test(t) && /\b(paste|pasting|upload\w*|attach\w*|whole|entire|long|full|send|feed|drop)\b/i.test(t);
+  var hist = docs || /\b(long chats?|same chat|all week|all day|conversation history|chat history|long conversations?|one (?:long )?(?:chat|thread))\b/i.test(t);
+  if (hoursUse && coding && !hist) { hist = true; assumptions.push("Long coding sessions resend a lot of code and history, so I assumed context builds up."); }
+  var verbose = /\b(long answers?|long responses?|wordy|verbose|lengthy|too long|long replies|long outputs?|essays?)\b/i.test(t);
+  var realtimeFalse = /\b(nightly|overnight|by morning|batch|bulk|backlog|weekly report|scheduled|offline|can wait|not urgent|end of (?:the )?day|once a (?:day|week))\b/i.test(t);
+
+  var hard = /\b(reasoning|research|complex|difficult|debug\w*|architecture|legal analysis|proofs?|math|hard problems?|code review|refactor\w*)\b/i.test(t);
+  var simple = /\b(classif\w*|categori[sz]\w*|extract\w*|tag(?:ging)?|label\w*|sentiment|rewrite\w*|faq|short answers?|translate|translation|spell|proofread|lookup|routing|sort\w*)\b/i.test(t);
+  var diff = hard ? "hard" : (simple ? "simple" : "moderate");
+  if (!hard && !simple) assumptions.push("Couldn't tell how hard the tasks are, so I assumed moderate.");
+
+  var tier = "unknown";
+  if (/\b(largest|biggest|most expensive|top[- ]tier|flagship|most (?:powerful|capable)|opus|fable|mythos|gpt-?4(?!o)|gpt-?5|o1|o3|gemini ultra|premium model)\b/i.test(t)) tier = "top";
+  else if (/\b(haiku|nano|flash|lite|smallest|cheapest model|gpt-?\d\S* ?mini)\b/i.test(t) || /\bmini\b/i.test(t) && /\bmodel/i.test(t)) tier = "small";
+  else if (/\b(sonnet|mid[- ]tier|mid[- ]size\w*|balanced|gpt-?4o|gemini pro)\b/i.test(t)) tier = "mid";
+
+  var rep = 0;
+  if (/\b(system prompt|same (?:prompt|instructions|document|context)|template|knowledge base|few-shot|fixed instructions|same rules)\b/i.test(t) || (dev && diff === "simple")) {
+    rep = 0.5; assumptions.push("Assumed about half of each request repeats (the same instructions every time).");
+  }
+
+  return {
+    relevant: aiHint,
+    audience: (dev || apiAmt > 0) ? "developer" : "everyday",
+    summary: "",
+    monthly_api_spend: apiAmt > 0 ? Math.round(apiAmt * 100) / 100 : null,
+    monthly_subscription_spend: subAmt > 0 ? Math.round(subAmt * 100) / 100 : null,
+    hours_per_month: hoursUse,
+    calls_per_month: calls,
+    agentic: /\bagents?\b|agentic|tool[- ]use|multi[- ]step|\bmcp\b/i.test(t),
+    repeats: /\b(support|faq|customer|help ?desk|chatbot|same questions?|classif\w*|templates?)\b/i.test(t),
+    billing_default: billing,
+    currency: money.sym,
+    tools: tools.names,
+    tool_vendors: tools.groups,
+    current_tier: tier,
+    task_difficulty: diff,
+    realtime_needed: !realtimeFalse,
+    repeated_prefix_share: rep,
+    long_history: hist && !docs,
+    sends_whole_documents: docs,
+    verbose_outputs: verbose,
+    assumptions: assumptions.slice(0, 6)
+  };
+}
+
+function normalize(p){
+  var tiers = ["top","mid","small"];
+  var api = orNull(p.monthly_api_spend), sub = orNull(p.monthly_subscription_spend);
+  if (api == null && sub == null && orNull(p.monthly_spend) != null) {   /* older shape */
+    if (p.billing === "usage") api = orNull(p.monthly_spend); else sub = orNull(p.monthly_spend);
+  }
+  var tools = Array.isArray(p.tools) ? p.tools.map(String).slice(0, 8) : [];
+  var vendors = num(p.tool_vendors, NaN, 0, 50);
+  if (!isFinite(vendors)) { var d = detectTools(tools.join(" ; ")); vendors = d.groups || tools.length; }
+  var o = {
+    relevant: p.relevant !== false,
+    audience: (p.audience === "developer" || api) ? "developer" : "everyday",
+    summary: String(p.summary || "").slice(0, 240),
+    apiSpend: api, subSpend: sub,
+    hours: orNull(p.hours_per_month) ? Math.round(Number(p.hours_per_month)) : null,
+    callsPerMonth: orNull(p.calls_per_month) ? Math.round(Number(p.calls_per_month)) : null,
+    agentic: !!p.agentic, repeats: !!p.repeats, docs: !!p.sends_whole_documents, browserDirect: false, picks: [],
+    sym: ["$","\u00A3","\u20AC"].indexOf(p.currency) >= 0 ? p.currency : "$",
+    tools: tools, vendors: vendors,
+    tier: tiers.indexOf(p.current_tier) >= 0 ? p.current_tier : "unknown",
+    diff: ["simple","moderate","hard"].indexOf(p.task_difficulty) >= 0 ? p.task_difficulty : "moderate",
+    realtime: p.realtime_needed !== false,
+    rep: num(p.repeated_prefix_share, 0, 0, 1),
+    hist: !!(p.long_history || p.sends_whole_documents),
+    verb: !!p.verbose_outputs,
+    assumptions: Array.isArray(p.assumptions) ? p.assumptions.map(String).slice(0, 6) : [],
+    billingDefault: ((p.billing_default || p.billing) === "usage" || (!(p.billing_default || p.billing) && (p.audience === "developer"))) ? "usage" : "subscription",
+    inShare: null, tierShare: null, alreadyCached: 0, found: [], fromFile: false,
+    appMode: false, billTyped: false, appCost: null, promptTokens: 0, promptShare: 0, extraTips: [], keyExposed: false, needCalls: false
+  };
+  if (o.tier === "unknown") { o.tier = "mid"; o.assumptions.push("Model not stated, so I assumed a mid-tier model."); }
+  return o;
+}
+
+function hasSpend(p){ return !!(p.apiSpend || p.subSpend); }
+function totalSpend(p){ return (p.apiSpend || 0) + (p.subSpend || 0); }
+
+function makeSummary(p){
+  var on = p.tools.length ? " (" + listJoin(p.tools) + ")" : "";
+  var parts = [];
+  if (p.apiSpend) parts.push(fmtMoney(p.apiSpend, p.sym) + " a month on API usage");
+  if (p.subSpend) parts.push(fmtMoney(p.subSpend, p.sym) + " a month on subscriptions");
+  var s;
+  if (parts.length) s = "You spend about " + parts.join(" and ") + on;
+  else s = "You use " + (p.tools.length ? listJoin(p.tools) : "AI tools");
+  if (p.hours) s += (parts.length ? ", and use AI about " : " about ") + p.hours + " hours a month";
+  return s + ".";
+}
+
+/* ---------- the plan: each lever applied in turn to a portion of the bill ---------- */
+function levers(p, S, isSub){
+  var f = p.inShare || IN_SHARE;
+  var inC = S * f, outC = S * (1 - f), tips = [];
+  function total(){ return inC + outC; }
+  function log(id, extra, before){ tips.push({ id:id, saving:before - total(), extra:extra || {} }); }
+  var b;
+  if (p.hist) { b = total(); inC -= inC * TRIM_CUT; log("trim", null, b); }
+  if (p.verb) { b = total(); outC -= outC * CAP_CUT; log("cap", null, b); }
+
+  if (!isSub && p.promptTokens >= 1500 && p.promptShare > 0.2) { b = total(); inC -= inC * Math.min(0.9, p.promptShare) * 0.25; log("prompt", { words:Math.round(p.promptTokens * 0.75 / 100) * 100 }, b); }
+  var target = p.diff === "simple" ? "small" : (p.diff === "moderate" ? "mid" : null);
+  if (target) {
+    var shares = p.tierShare || (function(){ var o = {}; o[p.tier] = 1; return o; })();
+    var cut = 0, fromTier = null, best = 0;
+    ["top","mid"].forEach(function(tr){
+      var sh = shares[tr] || 0;
+      if (sh > 0 && RANK[target] < RANK[tr]) {
+        var ratio = (PRICES[target].i + PRICES[target].o) / (PRICES[tr].i + PRICES[tr].o);
+        cut += sh * MOVE_SHARE[p.diff] * (1 - ratio);
+        if (sh > best) { best = sh; fromTier = tr; }
+      }
+    });
+    if (cut > 0) { b = total(); inC -= inC * cut; outC -= outC * cut; log("size", { from:fromTier, to:target }, b); }
+  }
+  var rep = Math.max(0, p.rep - (p.alreadyCached || 0));
+  if (!isSub && rep >= 0.3) { b = total(); inC -= inC * Math.min(0.9, rep) * CACHE_SAVE; log("cache", { pct:Math.round(rep * 100) }, b); }
+  if (!isSub && !p.realtime) { b = total(); inC -= inC * BATCH_CUT; outC -= outC * BATCH_CUT; log("batch", null, b); }
+
+  tips = tips.filter(function(t){ return t.saving > S * 0.005; });
+  var low = 0, high = 0;
+  tips.forEach(function(t){ var g = RANGE[t.id]; t.low = t.saving * g[0]; t.high = t.saving * g[1]; low += t.low; high += t.high; });
+  high = Math.min(high, S * 0.95); low = Math.min(low, high);
+  return { tips:tips, after:total(), low:low, high:high };
+}
+
+function plan(p){
+  var api = p.apiSpend || 0, sub = p.subSpend || 0;
+  var A = api ? levers(p, api, false) : null;
+  var B = sub ? levers(p, sub, true) : null;
+  var map = {}, list = [];
+  function add(res, key){
+    res.tips.forEach(function(t){
+      var m = map[t.id];
+      if (!m) { m = map[t.id] = { id:t.id, extra:t.extra, api:null, sub:null, eq:0 }; list.push(m); }
+      m[key] = { saving:t.saving, low:t.low, high:t.high };
+      m.eq += t.saving;
+    });
+  }
+  if (A) add(A, "api");
+  if (B) add(B, "sub");
+  list.sort(function(a, c){ return c.eq - a.eq; });
+  var hasNumeric = list.length > 0;
+  if (p.vendors >= 2) list.push({ id:"overlap", api:null, sub:null, extra:{ n:p.vendors } });
+  (p.extraTips || []).forEach(function(id){ list.push({ id:id, api:null, sub:null, extra:{} }); });
+  if (sub >= 50) list.push({ id:"plan", api:null, sub:null, extra:{} });
+  return {
+    api: A ? { base:api, after:A.after, low:A.low, high:A.high } : null,
+    sub: B ? { base:sub, after:B.after, low:B.low, high:B.high } : null,
+    base: api + sub, tips: list, hasNumeric: hasNumeric
+  };
+}
+
+/* ---------- wording helpers: ranges, never false precision ---------- */
+function niceNum(x){
+  if (x >= 1000) return Math.round(x / 100) * 100;
+  if (x >= 100) return Math.round(x / 10) * 10;
+  if (x >= 20) return Math.round(x / 5) * 5;
+  return Math.round(x);
+}
+function moneySpan(lo, hi, sym){
+  lo = niceNum(lo); hi = niceNum(hi);
+  if (lo >= hi) return "about " + fmtMoney(hi, sym);
+  if (lo <= 0) return "up to " + fmtMoney(hi, sym);
+  return fmtMoney(lo, sym) + "\u2013" + fmtMoney(hi, sym);
+}
+function pctSpan(lo, hi){
+  lo = Math.max(0, Math.round(lo / 5) * 5); hi = Math.max(5, Math.round(hi / 5) * 5);
+  if (lo >= hi) return "about " + hi + "%";
+  if (lo === 0) return "up to " + hi + "%";
+  return lo + "\u2013" + hi + "%";
+}
+function confidence(p){
+  if (p.appMode) return p.billTyped
+    ? { level:"Medium", text:"Your bill is from what you told me, but request sizes are estimated from your code. Edit them below to sharpen this." }
+    : { level:"Lower", text:"I estimated request sizes from your code and used a rough call volume. Edit the numbers below to sharpen this." };
+  var n = Math.max(0, p.assumptions.length - (p.fromFile ? 2 : 0));
+  if (n <= 1) return { level:"Higher", text: p.fromFile ? "Most numbers came from your file and what you told me." : "Most numbers came from what you told me." };
+  return { level:(n <= 3 ? "Medium" : "Lower"), text:"I filled " + n + " gaps with guesses (listed below). Edit them to sharpen this." };
+}
+
+/* ===================== Files: bills, usage exports, documents ===================== */
+function toN(s){
+  if (s == null) return 0;
+  var v = parseFloat(String(s).replace(/[^0-9.\-eE]/g, ""));
+  return isFinite(v) ? v : 0;
+}
+function parseCsv(text){
+  text = String(text).replace(/^\uFEFF/, "");
+  var first = text.split(/\r?\n/, 1)[0] || "";
+  var c = { ",":first.split(",").length, ";":first.split(";").length, "\t":first.split("\t").length };
+  var delim = ",";
+  if (c[";"] > c[","] && c[";"] >= c["\t"]) delim = ";"; else if (c["\t"] > c[","]) delim = "\t";
+  var rows = [], row = [], cur = "", q = false, i, ch;
+  for (i = 0; i < text.length && rows.length < 300000; i++) {
+    ch = text[i];
+    if (q) { if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
+    else if (ch === '"') q = true;
+    else if (ch === delim) { row.push(cur); cur = ""; }
+    else if (ch === "\n" || ch === "\r") {
+      if (ch === "\r" && text[i + 1] === "\n") i++;
+      row.push(cur); cur = "";
+      if (row.length > 1 || row[0] !== "") rows.push(row);
+      row = [];
+    } else cur += ch;
+  }
+  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+  return rows;
+}
+
+function tierShareFrom(costByTier){
+  var t = (costByTier.top || 0) + (costByTier.mid || 0) + (costByTier.small || 0);
+  if (t <= 0) return null;
+  return { top:(costByTier.top || 0) / t, mid:(costByTier.mid || 0) / t, small:(costByTier.small || 0) / t };
+}
+function dominantTier(sh){
+  var best = "mid", v = -1;
+  ["top","mid","small"].forEach(function(k){ if ((sh[k] || 0) > v) { v = sh[k] || 0; best = k; } });
+  return best;
+}
+function pctWord(x){ return Math.round(x * 100) + "%"; }
+
+/* Usage or cost export (CSV). Finds columns by name, so it copes with different providers. */
+function analyzeUsageCsv(text){
+  var rows = parseCsv(text);
+  if (rows.length < 2) return { ok:false, reason:"The file has no data rows." };
+  var head = rows[0].map(function(h){ return String(h).trim().toLowerCase(); });
+  function find(re, not){ for (var i = 0; i < head.length; i++) if (re.test(head[i]) && !(not && not.test(head[i]))) return i; return -1; }
+  var iDate = find(/(^|[^a-z])(date|day|time|period|start)/);
+  var iModel = find(/^(model|model[_ .\-]?(name|id)|snapshot|engine)$/);
+  if (iModel < 0) iModel = find(/(model|line[_ .\-]?item|description|sku|product)/);
+  var iIn = find(/(input|prompt|context).*token|tokens?[_ .\-]?in\b|n_context/, /cach/);
+  var iOut = find(/(output|completion|generated).*token|tokens?[_ .\-]?out\b|n_generated/);
+  var iCacheR = find(/cach\w*.*(read|hit)|cached.*token/);
+  var iCacheW = find(/cach\w*.*(creat|writ)/);
+  var iReq = find(/^(n[_ .\-]?)?requests?$|num.*request|request.*count|^calls?$/);
+  var costIdx = [];
+  head.forEach(function(h, i){
+    if (/(cost|amount|spend|charge|usd|total[_ .\-]?price)/.test(h) && !/(token|per[_ .\-]|rate|unit|cach|currency|percent|%|cumulative|running)/.test(h)) costIdx.push(i);
+  });
+  var totalCol = costIdx.filter(function(i){ return /total/.test(head[i]); });
+  if (totalCol.length) costIdx = [totalCol[0]];
+  else if (costIdx.length > 1) {
+    var one = costIdx.filter(function(i){ return /^(cost|amount|spend|amount[_ .\-]?(value|usd)|cost[_ .\-]?usd|usd)$/.test(head[i]); });
+    if (one.length) costIdx = [one[0]];
+  }
+  var haveCost = costIdx.length > 0, haveTokens = iIn >= 0 || iOut >= 0;
+  if (!haveCost && !haveTokens) return { ok:false, reason:"I couldn't find cost or usage columns. Look for columns like model, input tokens, output tokens or cost." };
+
+  var sym = "$", est = !haveCost;
+  var byModel = {}, tot = { cost:0, inT:0, outT:0, cR:0, cW:0, req:0, inEst:0, outEst:0 };
+  var minT = Infinity, maxT = -Infinity, used = 0, r;
+  for (r = 1; r < rows.length; r++) {
+    var row = rows[r]; if (!row || row.length < 2) continue;
+    var m = iModel >= 0 ? String(row[iModel] || "").trim() : "";
+    if (/^(grand\s*)?total/i.test(m) || (iDate >= 0 && /^(grand\s*)?total/i.test(String(row[iDate] || "").trim()))) continue;
+    var inT = iIn >= 0 ? toN(row[iIn]) : 0, outT = iOut >= 0 ? toN(row[iOut]) : 0;
+    var cR = iCacheR >= 0 ? toN(row[iCacheR]) : 0, cW = iCacheW >= 0 ? toN(row[iCacheW]) : 0;
+    var rq = iReq >= 0 ? toN(row[iReq]) : 0;
+    var tier = tierOf(m) || "mid", pr = PRICES[tier];
+    var inCostEst = ((inT + cW) * pr.i + cR * pr.i * 0.1) / 1e6, outCostEst = outT * pr.o / 1e6;
+    var c = 0;
+    if (haveCost) {
+      costIdx.forEach(function(ci){
+        var cell = String(row[ci] || "");
+        var sm = /[$\u00A3\u20AC]/.exec(cell); if (sm && used === 0) sym = sm[0];
+        c += toN(cell);
+      });
+    } else c = inCostEst + outCostEst;
+    if (c <= 0 && inT === 0 && outT === 0) continue;
+    used++;
+    tot.cost += c; tot.inT += inT; tot.outT += outT; tot.cR += cR; tot.cW += cW; tot.req += rq;
+    tot.inEst += inCostEst; tot.outEst += outCostEst;
+    var key = m || "(all usage)";
+    var bm = byModel[key] || (byModel[key] = { name:key, tier:tier, cost:0 });
+    bm.cost += c;
+    if (iDate >= 0) { var ts = Date.parse(String(row[iDate] || "").trim()); if (isFinite(ts)) { if (ts < minT) minT = ts; if (ts > maxT) maxT = ts; } }
+  }
+  if (used === 0 || tot.cost <= 0) return { ok:false, reason:"I found the columns but no spending in them." };
+
+  var notes = [], span = null, factor = 1;
+  if (isFinite(minT) && isFinite(maxT)) {
+    span = Math.round((maxT - minT) / 86400000) + 1;
+    if (span >= 27 && span <= 32) factor = 1; else factor = 30.4 / Math.max(1, span);
+    if (span < 7) notes.push("Your file covers only " + span + " day" + (span === 1 ? "" : "s") + ", so the monthly figure is a rough projection.");
+  } else notes.push("No dates found in the file, so I treated it as one month.");
+  var monthly = tot.cost * factor;
+
+  var costByTier = {}, modelsArr = [];
+  Object.keys(byModel).forEach(function(k){ var bm = byModel[k]; costByTier[bm.tier] = (costByTier[bm.tier] || 0) + bm.cost; modelsArr.push({ name:bm.name, tier:bm.tier, share:bm.cost / tot.cost }); });
+  modelsArr.sort(function(a, b){ return b.share - a.share; });
+  var tierShare = tierShareFrom(costByTier);
+
+  var inShare = (haveTokens && (tot.inEst + tot.outEst) > 0) ? Math.min(0.9, Math.max(0.1, tot.inEst / (tot.inEst + tot.outEst))) : null;
+  var inAll = tot.inT + tot.cR + tot.cW;
+  var avgIn = (tot.req > 0 && iIn >= 0) ? inAll / tot.req : null;
+  var avgOut = (tot.req > 0 && iOut >= 0) ? tot.outT / tot.req : null;
+  var cacheShare = (iCacheR >= 0 && inAll > 0) ? Math.min(1, tot.cR / inAll) : null;
+
+  var found = [];
+  found.push("Usage file: " + modelsArr.length + " model" + (modelsArr.length === 1 ? "" : "s") + (span ? " over " + span + " days" : "") + ". About " + fmtMoney(monthly, sym) + " a month" + (est ? " (estimated from usage at typical prices, so check it against your real bill)" : "") + ".");
+  if (tierShare && tierShare.top >= 0.5) found.push("Most of the spend (" + pctWord(tierShare.top) + ") is on top-tier models.");
+  else if (modelsArr.length) found.push("Biggest spend: " + modelsArr[0].name + " (" + pctWord(modelsArr[0].share) + ").");
+  if (avgIn != null && avgIn >= 4000) found.push("Your requests average about " + Math.round(avgIn).toLocaleString("en-US") + " input tokens, which suggests context is being resent.");
+  if (avgOut != null && avgOut >= 700) found.push("Answers average about " + Math.round(avgOut).toLocaleString("en-US") + " output tokens, which is long.");
+  if (cacheShare != null) found.push(cacheShare >= 0.4 ? "You already reuse cached prompts for about " + pctWord(cacheShare) + " of input." : "Little of your input is reused from cache (about " + pctWord(cacheShare) + ").");
+  notes.forEach(function(n){ found.push(n); });
+
+  return { ok:true, kind:"usage", bucket:"api", monthly:monthly, sym:sym, costEstimated:est, span:span,
+    models:modelsArr.slice(0, 5), tierShare:tierShare, inShare:inShare, avgIn:avgIn, avgOut:avgOut, cacheShare:cacheShare,
+    tools:[], found:found };
+}
+
+/* Invoice, receipt or any document: looks for totals, model line items and token counts. */
+var MODEL_LINE = /\b(claude[\w.\- ]*|haiku|sonnet|opus|fable|mythos|gpt-?[\w.\-]*|\bo1\b|\bo3\b|gemini[\w.\- ]*|mistral[\w.\-]*|llama[\w.\-]*|deepseek[\w.\-]*|grok[\w.\-]*)/i;
+function scaleTokens(n, suf){
+  n = parseFloat(String(n).replace(/,/g, "")); if (!isFinite(n)) return null;
+  suf = (suf || "").toLowerCase();
+  if (suf === "m" || suf === "million") n *= 1e6; else if (suf === "k" || suf === "thousand") n *= 1e3;
+  return n;
+}
+/* Adds up "12,500,000 input tokens" style figures. Ignores digits that belong to a model name. */
+function sumTokens(t, kind){
+  var total = 0, found = false, m, i;
+  var res = [
+    new RegExp("(\\d[\\d,]*(?:\\.\\d+)?)\\s*(m|k|million|thousand)?\\s*(?:" + kind + ")\\s*tokens", "gi"),
+    new RegExp("(?:" + kind + ")\\s*tokens\\D{0,20}(\\d[\\d,]*(?:\\.\\d+)?)\\s*(m|k|million|thousand)?", "gi")
+  ];
+  for (i = 0; i < res.length && !found; i++) {
+    while ((m = res[i].exec(t))) {
+      var before = m.index > 0 ? t.charAt(m.index - 1) : " ";
+      if (/[A-Za-z0-9\-_.]/.test(before) && i === 0) continue;
+      var v = scaleTokens(m[1], m[2]);
+      if (v == null || (!m[2] && v < 100)) continue;
+      total += v; found = true;
+    }
+  }
+  return found ? total : null;
+}
+function analyzeDocText(text){
+  var t = String(text).replace(/[ \t]+/g, " ");
+  var lines = t.split(/\n/).map(function(l){ return l.trim(); }).filter(Boolean);
+  var tools = detectTools(t), m;
+  var sym = "$", totals = [];
+  var totRe = /(?:^|[^a-z])(?:invoice\s+total|grand\s+total|total\s+(?:due|amount|charges?)|amount\s+due|balance\s+due|total)\s*[:\-]?\s*(?:usd|us)?\s*([$\u00A3\u20AC])\s?(\d[\d,]*(?:\.\d{1,2})?)/gi;
+  while ((m = totRe.exec(t))) { sym = m[1]; totals.push(parseFloat(m[2].replace(/,/g, ""))); }
+  var allAmts = [], amtRe = /([$\u00A3\u20AC])\s?(\d[\d,]*(?:\.\d{1,2})?)/g;
+  while ((m = amtRe.exec(t))) allAmts.push(parseFloat(m[2].replace(/,/g, "")));
+  var found = [], total = null;
+  if (totals.length) total = Math.max.apply(null, totals);
+
+  var models = {}, modelCost = 0, modelLines = 0;
+  lines.forEach(function(l){
+    if (/^(sub\s*)?total|^tax|^vat|amount due|balance/i.test(l)) return;
+    var mm = MODEL_LINE.exec(l); if (!mm) return;
+    var amts = []; var re = /([$\u00A3\u20AC])\s?(\d[\d,]*(?:\.\d{1,2})?)/g, x;
+    while ((x = re.exec(l))) amts.push(parseFloat(x[2].replace(/,/g, "")));
+    if (!amts.length) return;
+    var name = mm[1].replace(/\s+(input|output|prompt|completion|cached?|tokens?|usage|requests?).*$/i, "").trim().slice(0, 30), c = amts[amts.length - 1];
+    var e = models[name] || (models[name] = { name:name, tier:tierOf(name) || "mid", cost:0 });
+    e.cost += c; modelCost += c; modelLines++;
+  });
+  var inTok = sumTokens(t, "input|prompt"), outTok = sumTokens(t, "output|completion");
+
+  var apiWords = /\b(api|tokens?|pay[- ]as[- ]you[- ]go|credits?|inference|usage)\b/i.test(t);
+  var subWords = /\b(subscription|plus|pro plan|max plan|team plan|seats?|per user|monthly plan)\b/i.test(t);
+  var apiEvidence = modelLines > 0 || inTok != null || outTok != null || apiWords;
+  if (total == null && !modelLines && inTok == null && outTok == null) return { ok:false, asDescription:true };
+  if (total == null && allAmts.length) { total = Math.max.apply(null, allAmts); found.push("No \u201CTotal\u201D line found, so I used the largest amount in the file."); }
+
+  var months = "jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec";
+  var rangeRe = new RegExp("((?:" + months + ")[a-z]*\\.?\\s+\\d{1,2},?\\s+\\d{4})\\s*(?:-|\\u2013|\\u2014|to|through|thru)\\s*((?:" + months + ")[a-z]*\\.?\\s+\\d{1,2},?\\s+\\d{4})", "i");
+  var factor = 1, span = null, rm = rangeRe.exec(t);
+  if (rm) {
+    var d1 = Date.parse(rm[1]), d2 = Date.parse(rm[2]);
+    if (isFinite(d1) && isFinite(d2) && d2 >= d1) { span = Math.round((d2 - d1) / 86400000) + 1; factor = (span >= 27 && span <= 32) ? 1 : 30.4 / span; }
+  } else if (/(annual|yearly|per year|12[- ]month)/i.test(t)) { factor = 1 / 12; found.push("This looks like a yearly total, so I divided it by 12."); }
+  else found.push("No billing period found, so I treated the amount as one month.");
+
+  var spendBase = total != null ? total : modelCost;
+  var monthly = spendBase * factor;
+  var bucket = (apiEvidence && !(subWords && !modelLines && inTok == null && outTok == null)) ? "api" : "sub";
+  var tierShare = null, modelsArr = Object.keys(models).map(function(k){ return models[k]; }).sort(function(a, b){ return b.cost - a.cost; });
+  if (modelsArr.length) { var cbt = {}; modelsArr.forEach(function(e){ cbt[e.tier] = (cbt[e.tier] || 0) + e.cost; }); tierShare = tierShareFrom(cbt); }
+  var inShare = null;
+  if (inTok != null && outTok != null && (inTok + outTok) > 0) {
+    var tr = tierShare ? dominantTier(tierShare) : "mid", pr = PRICES[tr];
+    var ic = inTok * pr.i, oc = outTok * pr.o; inShare = Math.min(0.9, Math.max(0.1, ic / (ic + oc)));
+  }
+  found.unshift("Bill or document: about " + fmtMoney(monthly, sym) + " a month" + (bucket === "api" ? " on API usage" : " on subscriptions") + (span ? " (billing period of " + span + " days)" : "") + ".");
+  if (modelsArr.length) found.push("Line items mention " + listJoin(modelsArr.slice(0, 3).map(function(e){ return e.name; })) + ".");
+  if (tierShare && tierShare.top >= 0.5) found.push("Most of the spend (" + pctWord(tierShare.top) + ") looks like top-tier models.");
+
+  return { ok:true, kind:"invoice", bucket:bucket, monthly:monthly, sym:sym, tools:tools.names,
+    models:modelsArr.slice(0, 5), tierShare:tierShare, inShare:inShare, avgIn:null, avgOut:null, cacheShare:null, found:found };
+}
+
+/* Folds what a file showed into the profile. The file wins over guesses from typed text. */
+function setAppVolume(n, calls){
+  n.callsPerMonth = calls; n.needCalls = false;
+  n.apiSpend = n.appCost.mid * calls;
+  n.assumptions.unshift("Your call volume is a guess: about " + Math.round(calls).toLocaleString("en-US") + " calls a month.");
+  n.found.push("At about " + Math.round(calls).toLocaleString("en-US") + " calls a month, that is roughly " + fmtMoney(n.apiSpend, n.sym) + " a month. Very rough: it depends on your real volume and prompts.");
+  return n;
+}
+function applyFacts(n, f){
+  if (!f || !f.ok) return n;
+  if (f.kind === "app") {
+    n.fromFile = true; n.relevant = true; n.appMode = true; n.audience = "developer"; n.found = f.found.slice();
+    n.appCost = f.costPerCall; n.promptTokens = f.promptTokens; n.promptShare = f.promptShare;
+    n.tierShare = f.tierShare; n.tier = dominantTier(f.tierShare); n.inShare = f.inShare;
+    n.rep = f.rep; n.alreadyCached = f.alreadyCached; n.hist = n.hist || f.hist; n.realtime = n.realtime && f.realtime;
+    n.extraTips = f.extraTips.slice(); n.keyExposed = !!f.keyExposed;
+    n.agentic = n.agentic || !!f.usesTools; n.browserDirect = !!f.browserDirect;
+    (f.tools || []).forEach(function(tl){ if (n.tools.indexOf(tl) < 0) n.tools.push(tl); });
+    n.vendors = f.vendors;
+    n.assumptions = n.assumptions.filter(function(a){ return !/Model not stated|repeats \(the same|Long coding sessions/.test(a); });
+    n.assumptions = n.assumptions.concat(f.assumptions || []).slice(0, 6);
+    if (n.apiSpend) {
+      n.billTyped = true;
+      n.found.push("You said your API bill is about " + fmtMoney(n.apiSpend, n.sym) + " a month, which is roughly " + Math.round(n.apiSpend / f.costPerCall.mid).toLocaleString("en-US") + " calls at the estimated cost per call.");
+    } else if (n.callsPerMonth) setAppVolume(n, n.callsPerMonth);
+    else n.needCalls = true;
+    return n;
+  }
+  n.fromFile = true; n.relevant = true; n.found = (f.found || []).slice();
+  if (f.sym) n.sym = f.sym;
+  if (f.monthly > 0) {
+    var prev = f.bucket === "sub" ? n.subSpend : n.apiSpend;
+    if (prev && Math.abs(prev - f.monthly) / f.monthly > 0.1) n.found.push("You typed " + fmtMoney(prev, n.sym) + " but your file shows about " + fmtMoney(f.monthly, n.sym) + ". I used the file.");
+    if (f.bucket === "sub") n.subSpend = f.monthly; else { n.apiSpend = f.monthly; n.audience = "developer"; }
+  }
+  (f.tools || []).forEach(function(tl){ if (n.tools.indexOf(tl) < 0) n.tools.push(tl); });
+  n.vendors = detectTools(n.tools.join(" ; ")).groups || n.tools.length;
+  if (f.tierShare) {
+    n.tierShare = f.tierShare; n.tier = dominantTier(f.tierShare);
+    n.assumptions = n.assumptions.filter(function(a){ return !/Model not stated/.test(a); });
+  }
+  if (f.inShare) n.inShare = f.inShare;
+  if (f.avgIn != null && f.avgIn >= 4000) n.hist = true;
+  if (f.avgOut != null && f.avgOut >= 700) n.verb = true;
+  if (f.cacheShare != null) {
+    n.alreadyCached = f.cacheShare;
+    if (f.cacheShare < 0.2 && f.avgIn != null && f.avgIn >= 1500 && n.rep < 0.4) { n.rep = 0.4; n.assumptions.push("Assumed about 40% of each request repeats, since your requests are large."); }
+  }
+  return n;
+}
+
+/* ---------- Word (.docx) and PDF text helpers ---------- */
+function docxXmlToText(xml){
+  xml = xml.replace(/<w:tr[ >][\s\S]*?<\/w:tr>/g, function(row){ return row.replace(/<\/w:p>/g, " ").replace(/<\/w:tc>/g, " | ") + "\n"; });
+  xml = xml.replace(/<w:tab\/>/g, " ").replace(/<w:br[^>]*\/>/g, "\n").replace(/<\/w:tc>/g, " \t ").replace(/<\/w:p>/g, "\n");
+  var out = xml.replace(/<[^>]+>/g, "");
+  out = out.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&#(\d+);/g, function(_, d){ return String.fromCharCode(+d); }).replace(/&amp;/g, "&");
+  return out.slice(0, 250000);
+}
+/* inflate(u8) must return a Promise of the decompressed bytes (raw deflate). */
+async function extractDocxText(buf, inflate){
+  var u8 = new Uint8Array(buf), dv = new DataView(buf), i, eocd = -1;
+  for (i = u8.length - 22; i >= Math.max(0, u8.length - 65557); i--) { if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; } }
+  if (eocd < 0) throw new Error("not-a-zip");
+  var cdCount = dv.getUint16(eocd + 10, true), p = dv.getUint32(eocd + 16, true), target = null, k;
+  for (k = 0; k < cdCount; k++) {
+    if (dv.getUint32(p, true) !== 0x02014b50) break;
+    var method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true);
+    var nlen = dv.getUint16(p + 28, true), elen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true), loff = dv.getUint32(p + 42, true);
+    var name = new TextDecoder().decode(u8.subarray(p + 46, p + 46 + nlen));
+    if (name === "word/document.xml") target = { method:method, csize:csize, loff:loff };
+    p += 46 + nlen + elen + clen;
+  }
+  if (!target) throw new Error("no-document");
+  var start = target.loff + 30 + dv.getUint16(target.loff + 26, true) + dv.getUint16(target.loff + 28, true);
+  var data = u8.subarray(start, start + target.csize);
+  var raw = target.method === 0 ? data : await inflate(data);
+  return docxXmlToText(new TextDecoder("utf-8").decode(raw));
+}
+/* Turns pdf.js text items into lines, top to bottom, left to right. */
+function pdfItemsToLines(items){
+  var rows = [];
+  items.forEach(function(it){
+    if (!it.str || !it.str.trim()) return;
+    var y = it.transform[5], x = it.transform[4], row = null, i;
+    for (i = 0; i < rows.length; i++) if (Math.abs(rows[i].y - y) <= 2.5) { row = rows[i]; break; }
+    if (!row) { row = { y:y, cells:[] }; rows.push(row); }
+    row.cells.push([x, it.str]);
+  });
+  rows.sort(function(a, b){ return b.y - a.y; });
+  return rows.map(function(r){ return r.cells.sort(function(a, b){ return a[0] - b[0]; }).map(function(c){ return c[1]; }).join(" "); });
+}
+async function extractPdfText(lib, buf){
+  var pdf = await lib.getDocument({ data:buf }).promise, out = [], n = Math.min(pdf.numPages, 30), pg;
+  for (pg = 1; pg <= n; pg++) {
+    var page = await pdf.getPage(pg), tc = await page.getTextContent();
+    out.push(pdfItemsToLines(tc.items).join("\n"));
+  }
+  return out.join("\n").slice(0, 250000);
+}
+
+/* ===================== App code: find the AI calls and price them ===================== */
+var CODE_EXT = /^(html?|js|mjs|cjs|jsx|ts|tsx|py)$/i;
+function looksLikeCode(text){
+  var t = String(text).slice(0, 60000), score = 0;
+  if (/<\/?(html|head|body|script|style|div)\b/i.test(t)) score++;
+  if (/\b(function|const|let|var)\s+[\w$]+\s*[=(]/.test(t)) score++;
+  if (/=>|\basync\s+function|\bawait\s+\w/.test(t)) score++;
+  if (/^\s*(import\s+[\w{*]|from\s+[\w.]+\s+import|def\s+\w+\(|class\s+\w+)/m.test(t)) score++;
+  if (/\bfetch\(|\brequire\(|\bconsole\.log\(/.test(t)) score++;
+  return score >= 2;
+}
+function codeLiterals(code){
+  var out = [], m, i, res = [
+    /`((?:[^`\\]|\\[\s\S]){150,20000}?)`/g,
+    /"""([\s\S]{150,20000}?)"""/g, /'''([\s\S]{150,20000}?)'''/g,
+    /"((?:[^"\\\n]|\\.){150,20000})"/g, /'((?:[^'\\\n]|\\.){150,20000})'/g
+  ];
+  for (i = 0; i < res.length; i++) while ((m = res[i].exec(code)) && out.length < 400) out.push(m[1]);
+  return out;
+}
+var PROMPT_WORDS = /\b(you are|your task|respond|response|return|output|analy[sz]e|instructions?|json|format|assistant|do not|must|should|rules?)\b/i;
+function analyzeAppCode(text){
+  var src = String(text).slice(0, 600000), code = src, m;
+  if (/<script[\s>]/i.test(src)) {
+    var parts = [], sre = /<script\b[^>]*>([\s\S]*?)<\/script>/gi;
+    while ((m = sre.exec(src))) parts.push(m[1]);
+    if (parts.join("").trim()) code = parts.join("\n");
+  }
+  var provDefs = [
+    ["Anthropic", "Claude", /api\.anthropic\.com|from anthropic import|import anthropic|new Anthropic\(|@anthropic-ai\/sdk|claude\.complete|window\.claude/i],
+    ["OpenAI", "OpenAI", /api\.openai\.com|from openai import|import openai|new OpenAI\(|chat\.completions|responses\.create/i],
+    ["Google", "Gemini", /generativelanguage\.googleapis\.com|@google\/generative-ai|google\.generativeai|google\.genai|generateContent|generate_content/i],
+    ["Mistral", "Mistral", /api\.mistral\.ai|mistralai/i], ["Groq", "Groq", /api\.groq\.com/i],
+    ["OpenRouter", "OpenRouter", /openrouter\.ai/i], ["DeepSeek", "DeepSeek", /api\.deepseek\.com/i]
+  ];
+  var provs = provDefs.filter(function(d){ return d[2].test(code); });
+  var models = {}, mre = /["'`]((?:claude|gpt|o1|o3|o4|gemini|mistral|llama|deepseek|grok)[\w.\-:@\/]*)["'`]/gi;
+  while ((m = mre.exec(code))) {
+    var nm = m[1]; if (nm.length < 3 || nm.length > 60 || /\s/.test(nm)) continue;
+    if (!tierOf(nm) && !/^(claude|gpt|gemini)/i.test(nm)) continue;
+    models[nm] = tierOf(nm) || "mid";
+  }
+  var modelNames = Object.keys(models).slice(0, 6);
+  var callRe = /api\.anthropic\.com\/v1\/messages|api\.openai\.com\/v1\/(?:chat\/completions|responses)|generativelanguage\.googleapis\.com[^"'`\s]*generateContent|\.messages\.create\(|chat\.completions\.create\(|\.responses\.create\(|generateContent\(|generate_content\(|claude\.complete\(/g;
+  var callSites = (code.match(callRe) || []).length;
+  if (!provs.length && !callSites) return { ok:false, reason:"This looks like code, but I couldn't find any calls to an AI provider (Anthropic, OpenAI, Google and others) in it." };
+
+  var maxTok = 0, mtre = /(?:max_tokens|max_output_tokens|maxOutputTokens|max_completion_tokens|maxTokens)["']?\s*[:=]\s*(\d{2,6})/gi;
+  while ((m = mtre.exec(code))) maxTok = Math.max(maxTok, parseInt(m[1], 10));
+  var history = /messages\s*[:=]\s*\[?\s*\.\.\.\s*\w+|\b(history|conversation|chatHistory|chat_history|messages)\s*\.\s*(push|append)\s*\(|\+\s*history\b|history\s*\+/i.test(code);
+  var caching = /cache_control|cachedContent|cached_content|prompt_cache/i.test(code);
+  var batch = /messages\/batches|batches\.create|\/v1\/batches|batch\.create/i.test(code);
+  var webSearch = /web_search|google_search|googleSearch|search_grounding/i.test(code);
+  var images = /["']?type["']?\s*[:=]\s*["'](?:image|document)["']|image_url|inline_data|media_type/i.test(code);
+  var keyExposed = /sk-ant-[A-Za-z0-9_\-]{20,}|sk-(?:proj-)?[A-Za-z0-9_\-]{30,}|AIza[0-9A-Za-z_\-]{30,}/.test(src);
+  var typing = /addEventListener\(\s*["'](?:input|keyup|keydown)["']|\boninput\s*=|\bonkeyup\s*=|@input=|onChange=\{/.test(src);
+  var debounced = /debounce|throttle|setTimeout\s*\(/i.test(code);
+  var retries = /\bretr(?:y|ies)\b|maxRetries|attempts?\s*[<=]/i.test(code);
+
+  /* fixed instructions: long, instruction-like strings that are not page markup */
+  var lits = codeLiterals(code).filter(function(l){
+    return PROMPT_WORDS.test(l) && (l.match(/<\/?[a-z][^>]*>/gi) || []).length < 4 && (l.match(/[{;]\s*[a-z-]+\s*:/g) || []).length < 4;
+  }).map(function(l){ var st = l.replace(/\$\{[^}]*\}/g, ""); return { staticLen:st.length, dyn:(l.match(/\$\{/g) || []).length }; })
+    .sort(function(a, b){ return b.staticLen - a.staticLen; }).slice(0, 3);
+  var staticTok = Math.ceil(lits.reduce(function(a, l){ return a + l.staticLen; }, 0) / 4);
+  var dyn = lits.reduce(function(a, l){ return a + l.dyn; }, 0) + Math.min(3, (code.match(/JSON\.stringify\(/g) || []).length);
+  var userTok = Math.min(4000, 300 + dyn * 250) + (history ? 2000 : 0) + (images ? 1500 : 0) + (webSearch ? 2000 : 0);
+  var inTok = staticTok + userTok;
+  var outTok = maxTok ? (maxTok < 200 ? Math.round(maxTok * 0.7) : Math.min(1500, Math.round(maxTok * 0.5))) : 500;
+  var tier = "mid", best = -1;
+  modelNames.forEach(function(nm){ if (RANK[models[nm]] > best) { best = RANK[models[nm]]; tier = models[nm]; } });
+  var pr = PRICES[tier], cachedTok = caching ? staticTok : 0;
+  var inC = ((inTok - cachedTok) * pr.i + cachedTok * pr.i * 0.1), outC = outTok * pr.o;
+  var cost = (inC + outC) / 1e6;
+  var costPerCall = { low:cost * 0.5, mid:cost, high:cost * 2 };
+
+  var tips = [];
+  if (!maxTok || maxTok >= 4000) tips.push("maxtok");
+  if (typing && !debounced) tips.push("debounce");
+  if (callSites >= 3) tips.push("calls");
+  if (webSearch) tips.push("websearch");
+  if (images) tips.push("images");
+  if (retries) tips.push("retry");
+
+  var words = Math.round(staticTok * 0.75 / 50) * 50;
+  var found = [];
+  found.push("This looks like an app that calls " + listJoin(provs.map(function(d){ return d[0]; })) + (modelNames.length ? ". Models found: " + modelNames.map(function(nm){ return nm + " (" + PRICES[models[nm]].label + ")"; }).join(", ") : ". No model name found") + ".");
+  if (staticTok >= 200) found.push("Fixed instructions of about " + Math.max(50, words).toLocaleString("en-US") + " words are sent with every call.");
+  found.push(maxTok ? "Answers are capped at " + maxTok.toLocaleString("en-US") + " tokens." : "No limit on answer length was found.");
+  if (history) found.push("The conversation history is resent with each call.");
+  found.push(caching ? "Prompt caching is already used." : "Prompt caching is not used.");
+  if (batch) found.push("Batch processing is already used.");
+  if (webSearch) found.push("A web search tool is enabled, which adds search results to each call that uses it.");
+  if (callSites >= 2) found.push("Found " + callSites + " places that call an AI provider.");
+  found.push("Estimated cost per call: about " + fmtMoney(costPerCall.low, "$") + " to " + fmtMoney(costPerCall.high, "$") + " on a " + PRICES[tier].label + " model, using illustrative prices. Treat this as a rough guide.");
+
+  return { ok:true, kind:"app", bucket:"api", sym:"$", costPerCall:costPerCall,
+    tools:provs.map(function(d){ return d[1]; }), vendors:provs.length,
+    tierShare:(function(){ var o = { top:0, mid:0, small:0 }; o[tier] = 1; return o; })(),
+    inShare:Math.min(0.9, Math.max(0.1, inC / Math.max(1e-9, inC + outC))),
+    rep:(!caching && inTok > 0) ? Math.min(0.9, staticTok / inTok) : 0, alreadyCached: caching ? 0.9 : 0,
+    promptTokens:staticTok, promptShare: inTok > 0 ? staticTok / inTok : 0,
+    hist:history, realtime:!batch, extraTips:tips, keyExposed:keyExposed, found:found,
+    usesTools:/tools\s*[:=]\s*\[|tool_use|function_call|\btools\s*=/.test(code) || webSearch,
+    browserDirect:/<script/i.test(src) && /fetch\(/.test(code) && provs.length > 0,
+    assumptions:["I estimated your typical request and answer sizes from the code. Edit them if you know better."] };
+}
+
+/* ===================== Platforms, and advice beyond settings ===================== */
+function cat(){
+  return {
+    platforms: (typeof PLATFORMS !== "undefined") ? PLATFORMS : [],
+    families: (typeof FAMILIES !== "undefined") ? FAMILIES : []
+  };
+}
+function platformById(id){ var a = cat().platforms; for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i]; return null; }
+function vendorOfName(name){
+  var a = cat().platforms;
+  for (var i = 0; i < a.length; i++) if (a[i].names.indexOf(name) >= 0) return a[i].vendor;
+  return null;
+}
+function vendorCount(p){
+  var seen = {}, n = 0;
+  (p.tools || []).forEach(function(t){ var v = vendorOfName(t); if (v && !seen[v]) { seen[v] = 1; n++; } });
+  (p.picks || []).forEach(function(pk){ var pl = platformById(pk.id); if (pl && !seen[pl.vendor]) { seen[pl.vendor] = 1; n++; } });
+  return n;
+}
+
+/* Which platforms does this person use? Explicit picks first, then what the text or code mentioned. */
+function inferPlatforms(p){
+  var out = [], seen = {}, vend = {};
+  (p.picks || []).forEach(function(pk){
+    var pl = platformById(pk.id);
+    if (pl && !seen[pl.id]) { seen[pl.id] = 1; vend[pl.vendor + ":" + pl.kinds[0]] = 1; out.push(pl); }
+  });
+  var wantApi = !!p.apiSpend;
+  (p.tools || []).forEach(function(tn){
+    var cands = cat().platforms.filter(function(pl){ return pl.names.indexOf(tn) >= 0; });
+    if (!cands.length) return;
+    var pick = null, i;
+    for (i = 0; i < cands.length; i++) {
+      var isApi = cands[i].kinds.indexOf("api") >= 0 || cands[i].kinds.indexOf("cloud") >= 0;
+      if (wantApi ? isApi : !isApi) { pick = cands[i]; break; }
+    }
+    pick = pick || cands[0];
+    if (!seen[pick.id]) { seen[pick.id] = 1; out.push(pick); }
+  });
+  return out;
+}
+/* Folds the platforms someone chose in the picker into the profile. */
+function applyPicks(n, picks){
+  if (!picks || !picks.length) { n.vendors = Math.max(n.vendors || 0, vendorCount(n)); return n; }
+  n.picks = picks.slice();
+  var best = -1, bestTier = null, api = false, app = false;
+  picks.forEach(function(pk){
+    var pl = platformById(pk.id); if (!pl) return;
+    if (n.tools.indexOf(pl.names[0]) < 0 && !n.tools.some(function(tn){ return pl.names.indexOf(tn) >= 0; })) n.tools.push(pl.names[0]);
+    if (pl.kinds.indexOf("coding") >= 0 && n.audience === "everyday") n.audience = "developer";
+    var isApi = pl.kinds.some(function(k){ return k === "api" || k === "cloud" || k === "host" || k === "router" || k === "open"; });
+    if (isApi) api = true; else app = true;
+    if (pk.model) {
+      var m = (pl.menu || []).filter(function(x){ return x.n === pk.model; })[0];
+      if (m && RANK[m.tier] > best) { best = RANK[m.tier]; bestTier = m.tier; }
+    }
+  });
+  if (bestTier && !n.tierShare) {
+    n.tier = bestTier;
+    n.assumptions = n.assumptions.filter(function(a){ return !/Model not stated/.test(a); });
+  }
+  if (api && !app) { n.billingDefault = "usage"; if (n.audience === "everyday") n.audience = "developer"; }
+  else if (app && !api) n.billingDefault = "subscription";
+  n.vendors = Math.max(n.vendors || 0, vendorCount(n));
+  return n;
+}
+
+/* ---------- advice: architecture and workflow changes, not just settings ---------- */
+function apiPlatforms(list){ return list.filter(function(pl){ return pl.kinds.indexOf("api") >= 0 || pl.kinds.indexOf("cloud") >= 0; }); }
+function ladderText(list){
+  var pl = list.filter(function(x){ return x.ladder; })[0];
+  if (!pl) return "";
+  var l = pl.ladder;
+  return " On " + pl.name + " that could mean " + l.small + " for easy requests, " + l.mid + " for most, and " + l.top + " only for the hardest. Model names change, so check the provider's current list.";
+}
+var ADVICE = [
+  { id:"router", who:"dev", effort:"Medium", impact:"High",
+    score:function(p){ return (p.apiSpend > 0 && p.diff !== "hard" && p.tier !== "small") ? 80 + (p.apiSpend >= 500 ? 10 : 0) + (p.tier === "top" ? 10 : 0) : 0; },
+    title:"Route each request to the cheapest model that can do it",
+    why:function(p, pls){ return "Start every request on a small model and move up to a larger one only when a quick check fails, such as low confidence, an invalid answer or a hard-looking input. Build a test set of about 50 real examples to set the threshold before you switch." + ladderText(apiPlatforms(pls)); } },
+  { id:"rag", who:"dev", effort:"High", impact:"High",
+    score:function(p){ return (p.apiSpend > 0 && (p.hist || p.promptTokens >= 3000)) ? 75 : 0; },
+    title:"Retrieve the relevant parts instead of sending everything",
+    why:function(){ return "Split your documents once, index them, and send only the few most relevant pieces with each question. For chat, send a short running summary instead of the whole history."; } },
+  { id:"async", who:"dev", effort:"Medium", impact:"High",
+    score:function(p){ return (p.apiSpend > 0 && !p.realtime) ? 78 : ((p.apiSpend >= 300 && p.diff === "simple") ? 55 : 0); },
+    title:"Move non-urgent work into a batch pipeline",
+    why:function(p, pls){
+      var withBatch = apiPlatforms(pls).filter(function(x){ return x.batch === true; })[0];
+      return (withBatch ? withBatch.name + " has a batch option that is billed at a discount, often about half. " : "Several major providers offer batch pricing at roughly half the normal rate, so check yours. ") +
+        "Queue the work, run it in bulk, and collect results later instead of calling live."; } },
+  { id:"cachehow", who:"dev", effort:"Low", impact:"High",
+    score:function(p, pls){
+      var pl = apiPlatforms(pls).filter(function(x){ return x.cache; })[0];
+      return (p.apiSpend > 0 && pl && (p.alreadyCached || 0) < 0.4 && (p.rep >= 0.2 || p.promptTokens >= 1000)) ? 68 : 0; },
+    title:function(p, pls){ var pl = apiPlatforms(pls).filter(function(x){ return x.cache; })[0]; return "Make prompt caching work on " + pl.name; },
+    why:function(p, pls){
+      var pl = apiPlatforms(pls).filter(function(x){ return x.cache; })[0];
+      if (pl.cache === "explicit") return "Mark your fixed instructions and reference documents for caching. Cached reads are billed at a small fraction of normal input. Keep the cached part at the very start of the prompt and unchanged between calls.";
+      if (pl.cache === "automatic") return pl.name + " caches repeated prompt beginnings automatically. Put your fixed instructions first and keep them identical on every call so the cache can hit.";
+      return pl.name + " supports context caching. Use it for large fixed instructions or documents you send again and again."; } },
+  { id:"agent", who:"dev", effort:"Medium", impact:"High",
+    score:function(p){ return (p.apiSpend > 0 && p.agentic) ? 72 : 0; },
+    title:"Keep agent loops cheap",
+    why:function(){ return "Cap the number of steps and retries. Give each sub-agent only the context it needs instead of the whole conversation, and have tools return short summaries rather than raw dumps."; } },
+  { id:"respcache", who:"dev", effort:"Medium", impact:"High",
+    score:function(p){ return (p.apiSpend > 0 && (p.repeats || p.rep >= 0.3 || (p.callsPerMonth || 0) >= 5000)) ? 70 : 0; },
+    title:"Save answers you have already paid for",
+    why:function(){ return "Store each answer under a normalized version of the request. When the same or a near-identical question arrives, return the saved answer instead of calling the model. It works best for support bots, lookups and classification, where many requests repeat."; } },
+  { id:"thinkoff", who:"dev", effort:"Low", impact:"Medium",
+    score:function(p, pls){ return (p.apiSpend > 0 && p.diff !== "hard" && apiPlatforms(pls).some(function(x){ return x.reasoning; })) ? 65 : 0; },
+    title:"Turn reasoning down for easy requests",
+    why:function(p, pls){
+      var ds = pls.filter(function(x){ return x.id === "deepseek-api"; })[0];
+      return "Reasoning (thinking) text is billed like output. Use the non-thinking mode or a low reasoning setting for routine requests and save deep reasoning for the ones that need it." + (ds ? " " + ds.habit : ""); } },
+  { id:"proxy", who:"dev", effort:"Medium", impact:"Medium",
+    score:function(p){ return p.keyExposed ? 85 : (p.browserDirect ? 50 : 0); },
+    title:"Call the AI from a server, not the browser",
+    why:function(){ return "A small server or edge function keeps your key private, and lets you add caching, rate limits and model switching without changing the page."; } },
+  { id:"deterministic", who:"dev", effort:"Medium", impact:"Medium",
+    score:function(p){ return (p.apiSpend > 0 && (p.diff === "simple" || p.hist)) ? 60 : 0; },
+    title:"Do the predictable parts without the model",
+    why:function(){ return "Use ordinary code, regular expressions, SQL or a rules engine for parsing, filtering, math and formatting, and strip boilerplate, markup and logs from inputs before sending. Call the model only where language or judgment is needed."; } },
+  { id:"budget", who:"dev", effort:"Low", impact:"Medium",
+    score:function(p){ return p.apiSpend >= 50 ? (p.apiSpend >= 1000 ? 66 : 58) : 0; },
+    title:"Track cost per feature and set spend limits",
+    why:function(){ return "Tag each request with the feature and user behind it, log the cost, set a monthly spend limit and an alert with your provider, and cap usage per user. You can't cut what you can't see."; } },
+  { id:"distill", who:"dev", effort:"High", impact:"High",
+    score:function(p){ return (p.promptTokens >= 2000 && p.apiSpend >= 1000) ? 50 : 0; },
+    title:"Replace long examples with a tuned smaller model",
+    why:function(){ return "If most of your prompt is instructions and examples, fine-tuning or distilling into a smaller model can replace them and shrink every request. It only pays off at steady, high volume, so test quality first."; } },
+  { id:"selfhost", who:"dev", effort:"High", impact:"High",
+    score:function(p){ return (p.apiSpend >= 2000 && p.diff !== "hard") ? 45 : 0; },
+    title:"Evaluate open-weight models for high-volume simple work",
+    why:function(){ return "Open-weight models (Llama, Qwen, DeepSeek, Kimi, GLM and others) served by hosts like Together, Fireworks or Groq are often much cheaper for simple, high-volume tasks. Run your test set on them before deciding."; } },
+  { id:"hosts", who:"dev", effort:"Low", impact:"Medium",
+    score:function(p, pls){ return pls.some(function(x){ return x.kinds.some(function(k){ return k === "host" || k === "router" || k === "open"; }); }) ? 40 : 0; },
+    title:"Compare the same open model across hosts",
+    why:function(){ return "Different hosts charge different prices for the same open model, and their speed varies too. Compare a few before you commit."; } },
+
+  /* ---- habits for everyone ---- */
+  { id:"coding", who:"both", effort:"Low", impact:"High",
+    score:function(p, pls){ return pls.some(function(x){ return x.kinds.indexOf("coding") >= 0; }) ? 78 : 0; },
+    title:"Keep AI coding sessions small and focused",
+    why:function(){ return "Start a fresh session for each task, point the assistant at specific files instead of the whole project, and use the automatic or cheaper model for routine edits. Keep premium and MAX models for hard problems, because they draw down your credits much faster."; } },
+  { id:"picker", who:"both", effort:"Low", impact:"High",
+    score:function(p, pls){ return pls.some(function(x){ return x.kinds.indexOf("app") >= 0; }) || (p.subSpend > 0 && !pls.length) ? 80 : 0; },
+    title:"Match the model to the job",
+    why:function(p, pls){
+      var withHabit = pls.filter(function(x){ return x.habit && x.kinds.indexOf("app") >= 0; })[0];
+      return withHabit ? withHabit.habit + " Advanced modes use much more of your allowance."
+        : "Use your tool's fast or default option for everyday questions and drafts. Switch to the advanced, thinking or pro option only for hard problems. Those modes use much more of your allowance."; } },
+  { id:"newchat", who:"everyday", effort:"Low", impact:"Medium",
+    score:function(p){ return (p.subSpend > 0 && !p.hist) ? 45 : 0; },
+    title:"Start a new chat for each task",
+    why:function(){ return "Every message makes the AI re-read the whole conversation. When a chat gets long, ask for a ten-line summary and continue in a fresh chat with it."; } },
+  { id:"attach", who:"everyday", effort:"Low", impact:"Medium",
+    score:function(p){ return (p.docs && p.subSpend > 0) ? 62 : 0; },
+    title:"Attach only what you need",
+    why:function(){ return "Paste the relevant pages instead of whole PDFs, and convert scans to text first. Attached documents are re-read on every message in the chat."; } },
+  { id:"extras", who:"everyday", effort:"Low", impact:"Medium",
+    score:function(p, pls){ return (p.subSpend > 0 && pls.some(function(x){ return x.kinds.indexOf("app") >= 0; })) ? 55 : 0; },
+    title:"Switch off extras you don't need",
+    why:function(){ return "Web search, deep research, image generation and agent modes each use extra allowance. Turn them on only when a question needs them."; } },
+  { id:"saved", who:"everyday", effort:"Low", impact:"Low",
+    score:function(p){ return p.subSpend > 0 ? 44 : 0; },
+    title:"Save your standing instructions",
+    why:function(){ return "Put your usual background and preferences in the tool's custom instructions or a saved project instead of retyping long context in every chat."; } },
+  { id:"onemsg", who:"everyday", effort:"Low", impact:"Low",
+    score:function(p){ return p.subSpend > 0 ? 40 : 0; },
+    title:"Ask for several things in one message",
+    why:function(){ return "One clear request with all the details usually uses less than a back-and-forth of five, because the whole conversation isn't re-read each time."; } },
+  { id:"freeok", who:"everyday", effort:"Low", impact:"Medium",
+    score:function(p){ return ((p.subSpend || 0) >= 40 || p.vendors >= 2) ? 42 : 0; },
+    title:"Use a free version for light tasks",
+    why:function(){ return "Quick questions and short drafts are often fine on a free version of an assistant. That lets you keep a paid plan for the heavier work."; } },
+  { id:"usage", who:"both", effort:"Low", impact:"Low",
+    score:function(p){ return (p.apiSpend > 0 || p.subSpend > 0) ? 35 : 0; },
+    title:"Check your usage page every week",
+    why:function(){ return "Most tools and providers show usage or limits in settings. A quick weekly look shows what actually uses your allowance and what does not."; } }
+];
+/* Returns the most relevant items for the audience, best first. */
+function advise(p, dev, limit){
+  var pls = inferPlatforms(p), out = [];
+  ADVICE.forEach(function(a){
+    if (a.who === "dev" && !dev) return;
+    if (a.who === "everyday" && dev) return;
+    var s = a.score(p, pls);
+    if (s > 0) out.push({ id:a.id, score:s, effort:a.effort, impact:a.impact,
+      title:typeof a.title === "function" ? a.title(p, pls) : a.title, why:a.why(p, pls) });
+  });
+  out.sort(function(x, y){ return y.score - x.score; });
+  return out.slice(0, limit || 5);
+}
+
+
+  var ctl = null, profile = null, busy = false, engineUsed = "local", fallbackNote = "", pending = null;
+  var ta = $("desc"), statusEl = $("status"), goBtn = $("go");
+  function setGoLabel(x){ goBtn.textContent = x; $("goFloat").textContent = x; }
+  var ua = navigator.userAgent || "";
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
+
+  function esc(s){ var d = document.createElement("div"); d.textContent = String(s); return d.innerHTML; }
+  function money(x){ return fmtMoney(x, profile ? profile.sym : "$"); }
+  function setStatus(msg, isErr){ statusEl.textContent = msg || ""; statusEl.className = "status" + (isErr ? " err" : ""); }
+
+  /* ---------- optional AI settings (kept only in this browser) ---------- */
+  function getAI(){ try { var v = JSON.parse(localStorage.getItem(STORE) || "null"); return (v && v.key && PROVIDERS[v.provider]) ? v : null; } catch(e){ return null; } }
+  function putAI(v){ try { if (v) localStorage.setItem(STORE, JSON.stringify(v)); else localStorage.removeItem(STORE); return true; } catch(e){ return false; } }
+  function refreshAIUI(){
+    var cfg = getAI();
+    $("prov").value = cfg ? cfg.provider : $("prov").value || "anthropic";
+    $("model").value = cfg ? cfg.model : PROVIDERS[$("prov").value].model;
+    $("clearKey").hidden = !cfg;
+    $("key").value = "";
+    $("key").placeholder = cfg ? "Key saved. Paste a new one to replace it." : "Paste key";
+    $("keyMsg").textContent = cfg ? PROVIDERS[cfg.provider].short + " analysis is on. If it fails, the built-in analysis takes over." : "AI-provider analysis is off. Using the built-in analysis.";
+  }
+  $("prov").addEventListener("change", function(){ $("model").value = PROVIDERS[$("prov").value].model; });
+  $("saveKey").addEventListener("click", function(){
+    var prov = $("prov").value, v = $("key").value.trim(), model = $("model").value.trim() || PROVIDERS[prov].model;
+    var existing = getAI();
+    if (!v && existing && existing.provider === prov) v = existing.key;
+    if (!v) { $("keyMsg").textContent = "Paste a key first."; return; }
+    if (v.indexOf(PROVIDERS[prov].prefix) !== 0) { $("keyMsg").textContent = "That doesn't look like a key for this provider. It should start with " + PROVIDERS[prov].prefix; return; }
+    if (!putAI({ provider:prov, key:v, model:model })) { $("keyMsg").textContent = "This browser blocked saving. The built-in analysis stays on."; return; }
+    refreshAIUI();
+  });
+  $("clearKey").addEventListener("click", function(){ putAI(null); refreshAIUI(); });
+  refreshAIUI();
+
+  /* ---------- platforms and models ---------- */
+  var picks = [], activeTab = "apps";
+  var TIER_HINT = { small:"lightweight", mid:"everyday", top:"most capable" };
+  var TABS = [
+    ["apps", "Chat apps", function(pl){ return pl.kinds.indexOf("app") >= 0; }],
+    ["apis", "Model APIs", function(pl){ return pl.kinds.indexOf("api") >= 0; }],
+    ["code", "Coding", function(pl){ return pl.kinds.indexOf("coding") >= 0; }],
+    ["host", "Cloud and hosts", function(pl){ return pl.kinds.some(function(k){ return k === "cloud" || k === "host" || k === "router" || k === "open"; }); }]
+  ];
+  function pickIndex(id){ for (var i = 0; i < picks.length; i++) if (picks[i].id === id) return i; return -1; }
+  function platById(id){ var a = (typeof PLATFORMS !== "undefined") ? PLATFORMS : []; for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i]; return null; }
+  function renderPicks(){
+    var plats = (typeof PLATFORMS !== "undefined") ? PLATFORMS : [];
+    var tabsEl = $("platTabs"), chips = $("platChips"), selRow = $("selRow");
+    tabsEl.innerHTML = ""; chips.innerHTML = ""; selRow.innerHTML = "";
+    TABS.forEach(function(tb){
+      var count = picks.filter(function(pk){ var pl = platById(pk.id); return pl && tb[2](pl); }).length;
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "tab"; b.setAttribute("role", "tab");
+      b.textContent = tb[1] + (count ? " (" + count + ")" : "");
+      b.setAttribute("aria-selected", tb[0] === activeTab ? "true" : "false");
+      b.addEventListener("click", function(){ activeTab = tb[0]; renderPicks(); });
+      tabsEl.appendChild(b);
+    });
+    var active = TABS.filter(function(tb){ return tb[0] === activeTab; })[0];
+    plats.filter(active[2]).forEach(function(pl){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = pl.short || pl.name;
+      b.setAttribute("aria-pressed", pickIndex(pl.id) >= 0 ? "true" : "false");
+      b.addEventListener("click", function(){
+        var i = pickIndex(pl.id);
+        if (i >= 0) picks.splice(i, 1); else picks.push({ id:pl.id, model:"" });
+        renderPicks();
+      });
+      chips.appendChild(b);
+    });
+    selRow.hidden = !picks.length;
+    picks.forEach(function(pk){
+      var pl = platById(pk.id); if (!pl) return;
+      var chip = document.createElement("span"); chip.className = "selchip";
+      var label = document.createElement("label");
+      var txt = document.createElement("span"); txt.textContent = (pl.short || pl.name) + (pk.model ? " \u00B7 " + pk.model : "");
+      label.appendChild(txt);
+      if (pl.menu && pl.menu.length) {
+        var caret = document.createElement("span"); caret.className = "caret"; caret.textContent = "\u25BE"; label.appendChild(caret);
+        var sel = document.createElement("select"); sel.setAttribute("aria-label", (pl.short || pl.name) + " model");
+        var o0 = document.createElement("option"); o0.value = ""; o0.textContent = "Not sure which model"; sel.appendChild(o0);
+        pl.menu.forEach(function(m){ var o = document.createElement("option"); o.value = m.n; o.textContent = m.n + " (" + TIER_HINT[m.tier] + ")"; sel.appendChild(o); });
+        sel.value = pk.model || "";
+        sel.addEventListener("change", function(){ pk.model = sel.value; txt.textContent = (pl.short || pl.name) + (pk.model ? " \u00B7 " + pk.model : ""); });
+        label.appendChild(sel);
+      }
+      var x = document.createElement("button"); x.type = "button"; x.className = "x"; x.setAttribute("aria-label", "Remove " + (pl.short || pl.name)); x.innerHTML = "&times;";
+      x.addEventListener("click", function(){ var i = pickIndex(pk.id); if (i >= 0) picks.splice(i, 1); renderPicks(); });
+      chip.appendChild(label); chip.appendChild(x); selRow.appendChild(chip);
+    });
+    var names = picks.map(function(pk){ var pl = platById(pk.id); return pl ? (pl.short || pl.name) : ""; }).filter(Boolean);
+    $("pickBox").querySelector("summary").textContent = names.length
+      ? "Your platforms: " + names.slice(0, 2).join(", ") + (names.length > 2 ? " +" + (names.length - 2) : "")
+      : "Add your platforms and models (optional)";
+  }
+  renderPicks();
+  if (typeof CATALOG_ASOF !== "undefined") $("catNote").textContent = "The platform and model list was last reviewed on " + CATALOG_ASOF + ". Model names and prices change often, so check your provider\u2019s current list.";
+
+  /* ---------- examples ---------- */
+  EXAMPLES.forEach(function(t){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = t;
+    b.addEventListener("click", function(){ ta.value = t; ta.focus(); setStatus(""); });
+    $("chips").appendChild(b);
+  });
+
+  /* ---------- voice: keeps listening until you tap stop ---------- */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var rec = null, sess = 0, vstate = "idle", restartTimer = null, stopTimer = null;
+  var voiceBase = "", committed = "", liveHeard = "", startedAt = 0, emptyRuns = 0;
+  var MAX_MS = 120000, MAX_EMPTY = 3, IDLE_HINT = "Tap, then start talking";
+  function joinText(a, b){ a = (a || "").trim(); b = (b || "").trim(); return (a && b) ? a + " " + b : (a || b); }
+  function setVoiceUI(on){
+    $("mic").setAttribute("aria-pressed", on ? "true" : "false");
+    $("mic").setAttribute("aria-label", on ? "Stop recording" : "Speak your description");
+    $("micHint").textContent = on ? "Listening. Tap to stop." : IDLE_HINT;
+  }
+  if (!SR) {
+    $("mic").hidden = true;
+    $("micHint").textContent = "Voice isn't available in this browser. Type instead.";
+  }
+  /* Detach and abort the recognizer so no late callback from it can touch the page. */
+  function killRec(){
+    clearTimeout(restartTimer); clearTimeout(stopTimer);
+    if (rec) {
+      var r = rec; rec = null;
+      r.onresult = r.onerror = r.onend = null;
+      try { r.abort(); } catch(e){}
+    }
+  }
+  /* Used when leaving the screen or starting an analysis: end quietly, keep the text. */
+  function hardStopVoice(){
+    if (vstate === "idle") return;
+    sess++; killRec(); liveHeard = ""; vstate = "idle"; setVoiceUI(false);
+  }
+  function finishVoice(err){
+    if (liveHeard.trim()) { committed = joinText(committed, liveHeard); liveHeard = ""; }   /* words already on screen count */
+    killRec(); vstate = "idle"; setVoiceUI(false);
+    if (committed !== voiceBase) { setStatus("Check the text, then tap Find savings. Tap the mic again to add more."); return; }
+    var msg;
+    if (err === "not-allowed" || err === "service-not-allowed") msg = "Microphone or speech access is blocked. Allow it in your device settings.";
+    else if (err === "audio-capture") msg = "No microphone was found.";
+    else if (err === "network") msg = "Voice needs an internet connection.";
+    else if (!err || err === "no-speech" || err === "aborted") msg = "I couldn't hear anything. Tap the mic and speak right away.";
+    else msg = "Voice input didn't work here (" + err + ").";
+    setStatus(msg, true);
+  }
+  var FATAL = /^(not-allowed|service-not-allowed|audio-capture|language-not-supported|network|start-failed)$/;
+  function launchRun(id, lang){
+    if (id !== sess || vstate === "idle") return;
+    var run = { heard:"", err:"", ended:false, t0:Date.now() }, r = null;
+    function end(){
+      if (run.ended || id !== sess || r !== rec) return;
+      run.ended = true;
+      var got = run.heard.trim();
+      liveHeard = "";
+      if (got) { committed = joinText(committed, got); ta.value = committed; emptyRuns = 0; }
+      else emptyRuns++;
+      if (run.err === "language-not-supported" && !lang) { rec = null; launchRun(id, "en-US"); return; }
+      if (vstate === "listening" && !FATAL.test(run.err) && (Date.now() - startedAt) < MAX_MS && emptyRuns < MAX_EMPTY) {
+        rec = null;
+        restartTimer = setTimeout(function(){ launchRun(id, lang); }, (Date.now() - run.t0) < 500 ? 500 : 200);
+        return;
+      }
+      finishVoice(run.err);
+    }
+    try {
+      r = new SR(); rec = r;
+      r.lang = lang || navigator.language || "en-US";
+      r.interimResults = true;
+      r.continuous = !isIOS;
+      r.onresult = function(e){
+        if (id !== sess || r !== rec) return;
+        var s = "";
+        for (var i = 0; i < e.results.length; i++) s += e.results[i][0].transcript + " ";
+        run.heard = s; liveHeard = s;
+        ta.value = joinText(committed, s);
+        if (vstate === "listening") setStatus("Got it. Keep talking, or tap the mic when you're done.");
+      };
+      r.onerror = function(e){
+        if (id !== sess || r !== rec) return;
+        run.err = e.error || "unknown";
+        if (FATAL.test(run.err)) end(); else setTimeout(end, 1500);
+      };
+      r.onend = end;
+      r.start();
+    } catch(err){
+      r = null; rec = null; run.err = "start-failed"; end();
+    }
+  }
+  $("mic").addEventListener("click", function(){
+    if (!SR) return;
+    if (vstate === "listening") {
+      /* Ask it to finish and deliver what it heard; never wait more than a moment. */
+      var id = sess;
+      vstate = "stopping"; clearTimeout(restartTimer);
+      $("micHint").textContent = "Finishing\u2026";
+      if (!rec) { finishVoice(""); return; }
+      try { rec.stop(); } catch(e){}
+      stopTimer = setTimeout(function(){ if (id === sess && vstate === "stopping") finishVoice(""); }, 1200);
+      return;
+    }
+    /* Idle, or still finishing: begin a clean new session right now, inside the tap. */
+    killRec(); sess++; liveHeard = "";
+    voiceBase = ta.value.trim(); committed = voiceBase;
+    emptyRuns = 0; startedAt = Date.now(); vstate = "listening";
+    setVoiceUI(true); setStatus("Listening. Speak now.");
+    launchRun(sess, "");
+  });
+  document.addEventListener("visibilitychange", function(){
+    if (document.hidden && vstate !== "idle") { hardStopVoice(); setStatus("Voice paused. Tap the mic to add more."); }
+  });
+
+  /* ---------- optional AI extraction (any provider) ---------- */
+  function buildPrompt(text){
+    return "You read a person's description of how they use AI tools and what they pay, so a savings calculator can run. Reply with only one JSON object and no other text.\n\n" +
+      "Description:\n\"\"\"\n" + text + "\n\"\"\"\n\n" +
+      "JSON fields:\n" +
+      "- relevant (boolean): false if the description is not about using AI tools, chatbots or AI APIs.\n" +
+      "- audience (\"everyday\" or \"developer\"): \"developer\" if they call an API or build a product, else \"everyday\".\n" +
+      "- summary (string): one plain sentence restating what they use and pay, max 25 words.\n" +
+      "- monthly_api_spend (number or null): money per month on pay-per-use or API usage. Add up amounts, convert days, weeks and years to months. null if none is given.\n" +
+      "- monthly_subscription_spend (number or null): money per month on flat subscriptions and plans. Multiply per-seat prices by the number of seats if stated. null if none is given.\n" +
+      "- currency (\"$\", \"\u00A3\" or \"\u20AC\"): the currency symbol used; \"$\" if unclear.\n" +
+      "- billing (\"subscription\" or \"usage\"): where to put an amount that is not clearly one or the other; usage = pay per use or API bill.\n" +
+      "- tools (array of strings): names of the AI tools or providers mentioned, such as ChatGPT, Claude, Gemini, Cursor.\n" +
+      "- current_tier (\"top\", \"mid\", \"small\" or \"unknown\"): top = largest flagship model, mid = balanced, small = cheapest and fastest.\n" +
+      "- task_difficulty (\"simple\", \"moderate\" or \"hard\"): simple = classification, extraction, short answers, rewrites; hard = complex reasoning, difficult coding, research.\n" +
+      "- realtime_needed (boolean): false only if results can wait (nightly jobs, overnight, bulk).\n" +
+      "- repeated_prefix_share (number from 0 to 1): share of each request that is identical every time, such as the same instructions or documents.\n" +
+      "- long_history (boolean): true if long chats or history are resent each turn.\n" +
+      "- sends_whole_documents (boolean): true if whole PDFs, files or logs are pasted or sent.\n" +
+      "- verbose_outputs (boolean): true if they mention long, wordy or unneeded answers.\n" +
+      "- assumptions (array of strings): everything you had to guess, each as one short sentence.\n\n" +
+      "Rules: use numbers, not strings, for numeric fields. Do not invent amounts. When something else is not stated, choose a conservative typical value and list it in assumptions.";
+  }
+  async function aiExtract(text, cfg, signal){
+    var url, headers = { "content-type":"application/json" }, body;
+    if (cfg.provider === "anthropic") {
+      url = "https://api.anthropic.com/v1/messages";
+      headers["x-api-key"] = cfg.key;
+      headers["anthropic-version"] = "2023-06-01";
+      headers["anthropic-dangerous-direct-browser-access"] = "true";
+      body = { model:cfg.model, max_tokens:1000, messages:[{ role:"user", content:buildPrompt(text) }] };
+    } else {
+      url = "https://api.openai.com/v1/chat/completions";
+      headers["authorization"] = "Bearer " + cfg.key;
+      body = { model:cfg.model, messages:[{ role:"user", content:buildPrompt(text) }], response_format:{ type:"json_object" } };
+    }
+    var res;
+    try { res = await fetch(url, { method:"POST", signal:signal, headers:headers, body:JSON.stringify(body) }); }
+    catch(e){ if (e && e.name === "AbortError") throw { code:"cancelled" }; throw { code:"network" }; }
+    if (!res.ok) throw { code: (res.status === 401 || res.status === 403) ? "bad_key" : (res.status === 429 ? "rate_limited" : "upstream_error") };
+    var data = await res.json(), out = "";
+    if (cfg.provider === "anthropic") out = (data.content || []).map(function(b){ return b.text || ""; }).join("");
+    else out = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
+    var m = out.match(/\{[\s\S]*\}/);
+    if (!m) throw { code:"invalid_json" };
+    try { return JSON.parse(m[0]); } catch(e){ throw { code:"invalid_json" }; }
+  }
+
+  /* ---------- tip copy ---------- */
+  var COPY = {
+    trim:{
+      effort:"Low",
+      title:{ dev:"Send less context with each request", everyday:"Start fresh chats and paste only what you need" },
+      why:{
+        dev:"Every call re-sends the conversation and documents, and you pay for all of it. Send a short running summary or only the relevant sections.",
+        everyday:"Each message makes the AI re-read the whole chat. Start a new chat for each task and paste only the pages that matter."
+      }
+    },
+    cap:{
+      effort:"Low",
+      title:{ dev:"Limit answer length", everyday:"Ask for shorter answers" },
+      why:{
+        dev:"Answers usually cost several times more than questions. Set a maximum answer length and ask for only the format you use.",
+        everyday:"Long answers use up more of your allowance. Say \u201Cin five bullets\u201D or \u201Cunder 100 words\u201D when that's enough."
+      }
+    },
+    size:{
+      effort:"Medium",
+      title:{
+        dev:function(x){ return "Move easy work from " + PRICES[x.from].label + " to " + PRICES[x.to].label + " models"; },
+        everyday:function(){ return "Use a cheaper model for easy tasks"; }
+      },
+      why:{
+        dev:"Send the easy requests to a cheaper model and keep the big one for hard ones. Test on about 20 real examples before you switch.",
+        everyday:"Rewrites, short answers and quick lookups don't need the strongest model. Pick the lighter model in your tool's model menu for those."
+      }
+    },
+    cache:{
+      effort:"Medium",
+      title:{ dev:"Reuse your repeated instructions (prompt caching)", everyday:"Reuse your repeated instructions" },
+      why:{
+        dev:function(x){ return "About " + x.pct + "% of each request is the same every time. Most major providers bill repeated prompt prefixes at a discount when you mark them for caching."; },
+        everyday:"Keep your standing instructions in one saved place instead of retyping them."
+      }
+    },
+    batch:{
+      effort:"Medium",
+      title:{ dev:"Run non-urgent work as a batch", everyday:"Run non-urgent work as a batch" },
+      why:{
+        dev:"Results can wait, and several providers offer batch pricing at roughly half the normal rate.",
+        everyday:"Results can wait, so ask for batch pricing if your provider offers it."
+      }
+    },
+    prompt:{
+      effort:"Medium",
+      title:{ dev:"Shorten your fixed instructions", everyday:"Shorten your fixed instructions" },
+      why:{
+        dev:function(x){ return "About " + x.words.toLocaleString("en-US") + " words of fixed instructions go out with every call. Cut repeated or unused rules by a fifth and every call gets cheaper."; },
+        everyday:"Shorter standing instructions cost less on every message."
+      }
+    },
+    maxtok:{
+      effort:"Low",
+      title:{ dev:"Set a sensible answer limit", everyday:"Set a sensible answer limit" },
+      why:{
+        dev:"Your code has no limit, or a very high one, on answer length. Set it near what you actually need so one runaway answer can\u2019t cost many times more than a normal one.",
+        everyday:"Set an answer limit so one long reply can\u2019t cost much more than usual."
+      }
+    },
+    debounce:{
+      effort:"Low",
+      title:{ dev:"Don\u2019t call the AI on every keystroke", everyday:"Don\u2019t call the AI on every keystroke" },
+      why:{
+        dev:"Your page listens for typing and also calls an AI provider. If a call fires as people type, wait until they stop or press a button. Worth checking.",
+        everyday:"Wait until someone finishes typing before asking the AI."
+      }
+    },
+    calls:{
+      effort:"Medium",
+      title:{ dev:"Check that every AI call is needed", everyday:"Check that every AI call is needed" },
+      why:{
+        dev:"Your code has several places that call an AI provider. Combine steps that could be one request, and skip calls when you already have the answer.",
+        everyday:"Combine steps that could be one request."
+      }
+    },
+    websearch:{
+      effort:"Low",
+      title:{ dev:"Limit web search use", everyday:"Limit web search use" },
+      why:{
+        dev:"Web search adds search results to the input of every call that uses it. Cap searches per request and turn it on only when a question needs fresh facts.",
+        everyday:"Only turn on web search when you need fresh facts."
+      }
+    },
+    images:{
+      effort:"Low",
+      title:{ dev:"Shrink images and documents before sending", everyday:"Shrink images and documents before sending" },
+      why:{
+        dev:"Images and documents count as a lot of input. Resize, crop or extract just the text you need before sending.",
+        everyday:"Send smaller images, or only the part you need."
+      }
+    },
+    retry:{
+      effort:"Low",
+      title:{ dev:"Cap retries", everyday:"Cap retries" },
+      why:{
+        dev:"Each retry repeats the whole call, so a failing request can cost several times over. Limit attempts and don\u2019t retry errors that won\u2019t change.",
+        everyday:"Limit how many times a failed request is retried."
+      }
+    },
+    overlap:{
+      effort:"Low",
+      title:{ dev:"You pay for more than one AI provider", everyday:"You pay for more than one AI tool" },
+      why:{
+        dev:"Check which one your team really uses. Cancel one for a month and see if anyone misses it.",
+        everyday:"Check which one you open most. Cancel one for a month and see if you miss it."
+      }
+    },
+    plan:{
+      effort:"Low",
+      title:{ dev:"Check whether a cheaper plan is enough", everyday:"Check whether a cheaper plan is enough" },
+      why:{
+        dev:"After the changes above, try the next plan down for a month. You can usually move back up.",
+        everyday:"After the changes above, try the next plan down for a month. You can usually move back up."
+      }
+    }
+  };
+  function pick(v, x){ return typeof v === "function" ? v(x) : v; }
+  function tipText(t, dev){
+    var c = COPY[t.id], k = dev ? "dev" : "everyday";
+    return { title:pick(c.title[k], t.extra), why:pick(c.why[k], t.extra), effort:c.effort };
+  }
+
+  /* ---------- rendering ---------- */
+  function renderResults(){
+    var dev = profile.audience === "developer";
+    document.body.setAttribute("data-aud", profile.audience);
+    var r = plan(profile), box = $("results"), sym = profile.sym, html = "";
+    if (profile.keyExposed) html += '<div class="alertbox"><strong>Heads up: your file appears to contain a secret API key.</strong> Anyone who can open the page or code can copy it and run up your bill. Keep the key on a server instead, and create a new one. I didn\u2019t store or show it.</div>';
+    if (profile.appMode && profile.found.length) {
+      html += '<div class="findbox"><h2 class="h2">What I found in your app</h2><ul>' + profile.found.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
+    }
+    if (r.hasNumeric) {
+      var A = r.api, B = r.sub;
+      var aHas = !!(A && A.high >= A.base * 0.01), bHas = !!(B && B.high >= B.base * 0.01);
+      var conf = confidence(profile);
+      var title = (A && B) ? "Directional estimate for your monthly AI spend" : (A ? "Directional estimate for your monthly API bill" : "Directional estimate for your plan");
+      var big = aHas ? "Could save roughly " + moneySpan(A.low, A.high, sym) + " a month" + (B ? " on your API bill" : "")
+                     : "Could use roughly " + pctSpan(B.low / B.base * 100, B.high / B.base * 100) + " less";
+      html += '<div class="receipt"><p class="rtitle">' + title + '</p><p class="big">' + big + '</p>';
+      if (A) {
+        html += '<div class="line"><span>API bill now</span><span>' + money(A.base) + '</span></div>';
+        html += aHas ? '<div class="line total"><span>Best guess after changes</span><span>about ' + fmtMoney(niceNum(A.after), sym) + '</span></div>'
+                     : '<div class="line"><span>After changes</span><span>No clear saving yet</span></div>';
+      }
+      if (B) {
+        html += '<div class="line"><span>Subscriptions now</span><span>' + money(B.base) + ' a month</span></div>';
+        if (bHas && A) html += '<div class="line"><span>Plan usage after changes</span><span>roughly ' + pctSpan(B.low / B.base * 100, B.high / B.base * 100) + ' less</span></div>';
+        html += '<div class="line total"><span>Subscription bill</span><span>Likely unchanged</span></div>';
+      }
+      if (A) html += '<p class="note">Not a promise. Your results may be lower or higher. Try one change at a time and check your next bill.</p>';
+      if (B) html += '<p class="note">A flat plan doesn\u2019t get cheaper by using less. Lower usage means fewer limit warnings, and it may let you move to a cheaper plan.</p>';
+      html += '<p class="conf"><strong>How sure am I: ' + conf.level + '.</strong> ' + esc(conf.text) + '</p></div><div class="edge" aria-hidden="true"></div>';
+    } else {
+      var ticks = [
+        ["hist", "My chats run long, or I paste big files or documents", profile.hist],
+        ["verb", "The answers are longer than I need", profile.verb],
+        ["top", "I use the biggest, most expensive model for most things", profile.tier === "top"]
+      ];
+      if (profile.apiSpend) {
+        ticks.push(["rep", "I send the same instructions with every request", profile.rep >= 0.3]);
+        ticks.push(["batch", "Some of the work can wait (overnight or in bulk)", !profile.realtime]);
+      }
+      var th = "";
+      ticks.forEach(function(x){
+        th += '<label class="tick"><input type="checkbox" data-k="' + x[0] + '"' + (x[2] ? " checked" : "") + '> <span>' + esc(x[1]) + '</span></label>';
+      });
+      html += '<div class="empty" style="margin-bottom:22px"><h2 class="h2">I don\u2019t see a big saving yet</h2>' +
+        '<p>Nothing you told me usually wastes money. Tick anything that sounds like you and I\u2019ll recalculate.</p><div class="ticks">' + th + '</div></div>';
+    }
+    if (r.tips.length) {
+      html += '<h2 class="h2">' + (r.hasNumeric ? "What to change" : "Also worth checking") + '</h2><ol class="tips">';
+      r.tips.forEach(function(t, i){
+        var tx = tipText(t, dev), chips = [];
+        if (t.api) chips.push("Could save roughly " + moneySpan(t.api.low, t.api.high, sym) + " a month" + (profile.subSpend ? " on your API bill" : ""));
+        if (t.sub) chips.push("Roughly " + pctSpan(t.sub.low / profile.subSpend * 100, t.sub.high / profile.subSpend * 100) + " less usage" + (profile.apiSpend ? " on your plans" : ""));
+        var chipHtml = chips.length ? chips.map(function(c){ return '<span class="save">' + esc(c) + '</span>'; }).join("") : '<span class="save soft">Savings vary</span>';
+        html += '<li class="tip' + (i === 0 && r.hasNumeric ? " first" : "") + '">' +
+          (i === 0 && r.hasNumeric ? '<p class="start">Try this first</p>' : "") +
+          '<h3>' + esc(tx.title) + '</h3><p>' + esc(tx.why) + '</p>' +
+          '<p class="meta">' + chipHtml + '<span>' + tx.effort + ' effort</span></p></li>';
+      });
+      html += "</ol>";
+    }
+    var adv = advise(profile, dev, dev ? 5 : 4);
+    if (adv.length) {
+      html += '<h2 class="h2" style="margin-top:8px">' + (dev ? "Bigger changes: architecture and workflow" : "Smarter habits for your tools") + '</h2>' +
+        '<p class="adv-note">Directional ideas, not promises. Try one at a time and check the result. \u201CPotential\u201D is how much it could help in a typical case.</p><ol class="tips adv">';
+      adv.forEach(function(a){
+        html += '<li class="tip"><h3>' + esc(a.title) + '</h3><p>' + esc(a.why) + '</p>' +
+          '<p class="meta"><span class="save' + (a.impact === "High" ? "" : " soft") + '">Potential: ' + a.impact + '</span><span>' + a.effort + ' effort</span></p></li>';
+      });
+      html += "</ol>";
+    }
+    box.innerHTML = html;
+    return r;
+  }
+  function fillFields(){
+    $("f-api").value = profile.apiSpend || ""; $("f-sub").value = profile.subSpend || "";
+    $("l-api").textContent = "API bill per month (" + profile.sym + ")"; $("l-sub").textContent = "Subscriptions per month (" + profile.sym + ")";
+    $("lbl-calls").hidden = !profile.appMode;
+    $("f-calls").value = (profile.appMode && profile.apiSpend && profile.appCost) ? Math.round(profile.apiSpend / profile.appCost.mid) : "";
+    $("f-tier").value = profile.tier; $("f-diff").value = profile.diff;
+    $("f-rep").value = Math.round(profile.rep * 100);
+    $("f-rt").checked = profile.realtime; $("f-hist").checked = profile.hist; $("f-verb").checked = profile.verb;
+  }
+  function readFields(target){
+    if (profile.appMode && profile.appCost && target && target.id === "f-calls") {
+      var cc = parseFloat($("f-calls").value);
+      if (isFinite(cc) && cc > 0) { profile.callsPerMonth = cc; $("f-api").value = Math.round(profile.appCost.mid * cc * 100) / 100; }
+    }
+    var a = parseFloat($("f-api").value), s = parseFloat($("f-sub").value);
+    profile.apiSpend = (isFinite(a) && a > 0) ? Math.min(a, 1e9) : null;
+    profile.subSpend = (isFinite(s) && s > 0) ? Math.min(s, 1e9) : null;
+    profile.tier = $("f-tier").value; profile.diff = $("f-diff").value;
+    profile.rep = num($("f-rep").value, profile.rep * 100, 0, 100) / 100;
+    profile.realtime = $("f-rt").checked; profile.hist = $("f-hist").checked; profile.verb = $("f-verb").checked;
+    if (profile.appMode && profile.appCost && profile.apiSpend && !(target && target.id === "f-calls")) $("f-calls").value = Math.round(profile.apiSpend / profile.appCost.mid);
+  }
+  function showReport(){
+    setView("report");
+    $("summary").textContent = profile.summary;
+    $("engine").textContent = (engineUsed === "local" ? "Analyzed on this device." : "Analyzed with " + engineUsed + ".") + (fallbackNote ? " " + fallbackNote : "") + (profile.fromFile ? " Your file was read on this device and not uploaded." : "");
+    var list = $("alist"); list.innerHTML = "";
+    if (!profile.assumptions.length) {
+      var li0 = document.createElement("li"); li0.textContent = "I used only what you told me."; list.appendChild(li0);
+    }
+    profile.assumptions.forEach(function(a){ var li = document.createElement("li"); li.textContent = a; list.appendChild(li); });
+    var fb = $("fbox"), fl = $("flist"); fl.innerHTML = "";
+    if (profile.fromFile && profile.found.length && !profile.appMode) {
+      fb.hidden = false;
+      profile.found.forEach(function(a){ var li = document.createElement("li"); li.textContent = a; fl.appendChild(li); });
+    } else fb.hidden = true;
+    Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-aud") === profile.audience ? "true" : "false");
+    });
+    fillFields(); renderResults();
+    window.scrollTo(0, 0);
+  }
+  function setView(v){
+    var compose = v === "compose";
+    $("compose").hidden = !compose; $("report").hidden = compose; $("hero").hidden = !compose;
+    if (typeof updateGoBar === "function") updateGoBar();
+  }
+  function finish(n){
+    if (engineUsed === "local" || !n.summary) n.summary = makeSummary(n);
+    profile = n; pending = null; $("ask").hidden = true; setStatus(""); showReport();
+  }
+
+  /* ---------- files: bills, usage exports, documents (read on this device) ---------- */
+  var fileState = null, MAX_FILE = 25 * 1024 * 1024;
+  function readText(f){ return new Promise(function(res, rej){ var r = new FileReader(); r.onload = function(){ res(String(r.result)); }; r.onerror = function(){ rej({ msg:"Couldn't read that file." }); }; r.readAsText(f); }); }
+  function readBuf(f){ return new Promise(function(res, rej){ var r = new FileReader(); r.onload = function(){ res(r.result); }; r.onerror = function(){ rej({ msg:"Couldn't read that file." }); }; r.readAsArrayBuffer(f); }); }
+  async function inflateRaw(u8){
+    if (!window.DecompressionStream) throw { msg:"This browser can't open Word files. Save it as a PDF and try again." };
+    var ds = new DecompressionStream("deflate-raw"), w = ds.writable.getWriter();
+    w.write(u8); w.close();
+    var rd = ds.readable.getReader(), chunks = [], total = 0, x;
+    for (;;) { x = await rd.read(); if (x.done) break; chunks.push(x.value); total += x.value.length; }
+    var out = new Uint8Array(total), off = 0;
+    chunks.forEach(function(c){ out.set(c, off); off += c.length; });
+    return out;
+  }
+  function loadPdfLib(){
+    if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+    return new Promise(function(res, rej){
+      var s = document.createElement("script"); s.src = "pdf.min.js";
+      s.onload = function(){ if (window.pdfjsLib) { window.pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.min.js"; res(window.pdfjsLib); } else rej({ msg:"Couldn't load the PDF reader." }); };
+      s.onerror = function(){ rej({ msg:"Couldn't load the PDF reader. Check your connection and try again." }); };
+      document.head.appendChild(s);
+    });
+  }
+  function renderFileCard(){
+    var c = $("fileCard");
+    if (!fileState) { c.hidden = true; return; }
+    c.hidden = false; c.classList.toggle("err", !!fileState.error);
+    $("fileName").textContent = fileState.name;
+    var sub = "";
+    if (fileState.busy) sub = "Reading on this device\u2026";
+    else if (fileState.error) sub = fileState.error;
+    else if (fileState.facts) sub = fileState.facts.found[0] || "Ready.";
+    else if (fileState.asDescription) sub = "I\u2019ll read this as a description of how you use AI.";
+    $("fileSub").textContent = sub;
+  }
+  async function handleFile(file){
+    if (!file) return;
+    fileState = { name:file.name, busy:true }; renderFileCard();
+    var st = fileState;
+    try {
+      var ext = (file.name.split(".").pop() || "").toLowerCase(), text, facts;
+      if (file.size > MAX_FILE) throw { msg:"That file is over 25 MB. Export a shorter date range and try again." };
+      if (ext === "csv" || ext === "tsv" || file.type === "text/csv") {
+        text = await readText(file); facts = analyzeUsageCsv(text);
+        if (!facts.ok) throw { msg:facts.reason };
+      } else if (ext === "txt" || ext === "md" || CODE_EXT.test(ext)) {
+        text = await readText(file);
+        if (CODE_EXT.test(ext) || looksLikeCode(text)) { facts = analyzeAppCode(text); if (!facts.ok) throw { msg:facts.reason }; }
+        else facts = analyzeDocText(text);
+      }
+      else if (ext === "docx") {
+        var b1 = await readBuf(file);
+        try { text = await extractDocxText(b1, inflateRaw); } catch(e){ throw (e && e.msg) ? e : { msg:"I couldn't read this Word file. Try saving it as a PDF." }; }
+        facts = analyzeDocText(text);
+      } else if (ext === "pdf") {
+        var b2 = await readBuf(file), lib = await loadPdfLib();
+        try { text = await extractPdfText(lib, new Uint8Array(b2)); } catch(e){ throw { msg:"I couldn't read this PDF. Try a CSV export or a different PDF." }; }
+        if (text.trim().length < 20) throw { msg:"This PDF has no selectable text (it may be a scan). Try a CSV export or a text-based PDF." };
+        facts = analyzeDocText(text);
+      } else if (ext === "doc") throw { msg:"Old .doc files can't be read here. Save it as .docx or PDF and try again." };
+      else throw { msg:"Use a CSV, PDF or Word (.docx) file." };
+      if (facts.ok) st = { name:file.name, facts:facts };
+      else {
+        if (text.trim().length < 40) throw { msg:"I couldn't find anything about AI usage or costs in this file." };
+        st = { name:file.name, asDescription:true, text:text };
+      }
+    } catch(e){ st = { name:file.name, error:(e && e.msg) || "I couldn't read this file." }; }
+    fileState = st; renderFileCard();
+  }
+  $("attach").addEventListener("click", function(){ $("file").click(); });
+  $("file").addEventListener("change", function(){ var f = this.files && this.files[0]; this.value = ""; handleFile(f); });
+  $("fileRemove").addEventListener("click", function(){ fileState = null; renderFileCard(); });
+  (function(){
+    var box = document.querySelector(".composer");
+    ["dragenter","dragover"].forEach(function(ev){ box.addEventListener(ev, function(e){ e.preventDefault(); box.classList.add("drag"); }); });
+    ["dragleave","drop"].forEach(function(ev){ box.addEventListener(ev, function(e){ e.preventDefault(); box.classList.remove("drag"); }); });
+    box.addEventListener("drop", function(e){ var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) handleFile(f); });
+  })();
+
+  /* ---------- events ---------- */
+  var ASK_CALLS = [["Under 1,000",500],["1,000 to 10,000",5000],["10,000 to 100,000",50000],["Over 100,000",300000]];
+  function showAsk(mode){
+    var list = mode === "calls" ? ASK_CALLS : ASK;
+    $("askTitle").textContent = mode === "calls" ? "About how many AI calls does your app make each month?" : "About how much do you spend on AI each month?";
+    var box = $("askChips"); box.innerHTML = "";
+    list.forEach(function(a){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = a[0];
+      b.addEventListener("click", function(){
+        if (!pending) return;
+        if (mode === "calls") setAppVolume(pending, a[1]);
+        else {
+          if (pending.billingDefault === "usage") { pending.apiSpend = a[1]; pending.audience = "developer"; } else pending.subSpend = a[1];
+          pending.assumptions.unshift("You picked \u201C" + a[0] + "\u201D, so I used " + fmtMoney(a[1], pending.sym) + " a month.");
+        }
+        finish(pending);
+      });
+      box.appendChild(b);
+    });
+    setStatus(""); $("ask").hidden = false;
+    $("ask").scrollIntoView({ block:"center" });
+  }
+  $("results").addEventListener("change", function(e){
+    var k = e.target && e.target.getAttribute ? e.target.getAttribute("data-k") : null;
+    if (!k || !profile) return;
+    var on = e.target.checked;
+    if (k === "hist") profile.hist = on;
+    else if (k === "verb") profile.verb = on;
+    else if (k === "top") profile.tier = on ? "top" : "mid";
+    else if (k === "rep") profile.rep = on ? 0.5 : 0;
+    else if (k === "batch") profile.realtime = !on;
+    fillFields(); renderResults();
+  });
+  $("fields").addEventListener("input", function(e){ readFields(e.target); renderResults(); });
+  $("fields").addEventListener("change", function(e){ readFields(e.target); renderResults(); });
+  Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function(b){
+    b.addEventListener("click", function(){
+      profile.audience = b.getAttribute("data-aud");
+      Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function(x){
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      renderResults();
+    });
+  });
+  /* Back to the top of the landing screen with the header expanded. */
+  function toLanding(){
+    setView("compose");
+    window.scrollTo(0, 0);
+    if (typeof topEl !== "undefined" && topEl) topEl.classList.remove("condensed");
+    tucked = false;
+  }
+  $("edit").addEventListener("click", function(){ toLanding(); try { ta.focus({ preventScroll:true }); } catch(e){ ta.focus(); } });
+  $("again").addEventListener("click", function(){
+    hardStopVoice();
+    ta.value = ""; profile = null; pending = null;
+    picks = []; activeTab = "apps"; renderPicks(); $("pickBox").open = false;
+    fileState = null; renderFileCard();
+    $("ask").hidden = true; setStatus(""); $("copyMsg").textContent = "";
+    toLanding();
+  });
+
+  $("copy").addEventListener("click", function(){
+    var dev = profile.audience === "developer", sym = profile.sym;
+    var r = plan(profile);
+    var lines = ["Token Savings Coach: directional estimate", profile.summary, ""];
+    if (profile.keyExposed) lines.push("Warning: the file appears to contain a secret API key. Keep it on a server and create a new one.", "");
+    if (profile.appMode) { profile.found.forEach(function(x){ lines.push("- " + x); }); lines.push(""); }
+    if (r.hasNumeric) {
+      if (r.api && r.api.high >= r.api.base * 0.01) lines.push("API bill: could save roughly " + moneySpan(r.api.low, r.api.high, sym) + " a month on a current " + money(r.api.base) + ".");
+      if (r.sub && r.sub.high >= r.sub.base * 0.01) lines.push("Subscriptions (" + money(r.sub.base) + " a month): could use roughly " + pctSpan(r.sub.low / r.sub.base * 100, r.sub.high / r.sub.base * 100) + " less. The plan price likely stays the same unless you move to a cheaper plan.");
+      lines.push("Confidence: " + confidence(profile).level + ".", "");
+    }
+    r.tips.forEach(function(t, i){ var tx = tipText(t, dev); lines.push((i + 1) + ". " + tx.title + " - " + tx.why); });
+    var advCopy = advise(profile, dev, dev ? 5 : 4);
+    if (advCopy.length) { lines.push("", dev ? "Bigger changes (architecture and workflow):" : "Smarter habits:"); advCopy.forEach(function(a, i){ lines.push((i + 1) + ". " + a.title + " - " + a.why + " (potential: " + a.impact + ", effort: " + a.effort + ")"); }); }
+    lines.push("", "Directional estimates from general rules of thumb. Not guaranteed and not financial advice. Check your provider's current pricing.");
+    var text = lines.join("\n");
+    var msg = $("copyMsg");
+    function ok(){ msg.className = "status"; msg.textContent = "Plan copied."; }
+    function fail(){ msg.className = "status err"; msg.textContent = "Couldn't copy here. Select the text on the page and copy it."; }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fail); else fail();
+    } catch(e){ fail(); }
+  });
+
+  goBtn.addEventListener("click", async function(){
+    if (busy) { if (ctl) ctl.abort(); return; }
+    if (fileState && fileState.busy) { setStatus("Still reading your file\u2026"); return; }
+    var text = ta.value.trim();
+    var fileFacts = (fileState && fileState.facts) ? fileState.facts : null;
+    var fileDoc = (fileState && fileState.asDescription) ? fileState.text : "";
+    if (text.length < 15 && !fileFacts && !fileDoc && !picks.length) { setStatus("Add a sentence or two about what you use AI for and what you pay, or attach a bill or usage file.", true); return; }
+    hardStopVoice();
+    $("ask").hidden = true; pending = null;
+    var cfg = getAI(), raw = null;
+    engineUsed = "local"; fallbackNote = "";
+    if (cfg && fileDoc) { cfg = null; fallbackNote = "Used the built-in analysis so your document stays on this device."; }
+    if (cfg && text.length >= 15) {
+      busy = true; ctl = new AbortController();
+      setGoLabel("Cancel");
+      setStatus("Asking " + PROVIDERS[cfg.provider].short + "\u2026");
+      try {
+        raw = await aiExtract(text, cfg, ctl.signal);
+        engineUsed = PROVIDERS[cfg.provider].short;
+      } catch(e){
+        if (e && e.code === "cancelled") { busy = false; ctl = null; setGoLabel("Find savings"); setStatus(""); return; }
+        fallbackNote = (ERR[e && e.code] || ERR.upstream_error) + " Used the built-in analysis instead.";
+      }
+      busy = false; ctl = null; setGoLabel("Find savings");
+    }
+    if (!raw) raw = localExtract(joinText(text, fileDoc.slice(0, 4000)));
+    var n = normalize(raw);
+    if (fileFacts) applyFacts(n, fileFacts);
+    applyPicks(n, picks);
+    if (picks.length && !n.relevant) n.relevant = true;
+    if (fileDoc && n.relevant) { n.fromFile = true; n.found = ["Read your document as a description of how you use AI."]; }
+    if (!n.relevant) { setStatus("That doesn't sound like AI usage. Say which AI tools you use and roughly what you pay.", true); return; }
+    if (n.appMode && n.needCalls) { pending = n; showAsk("calls"); return; }
+    if (!hasSpend(n)) { pending = n; showAsk("spend"); return; }
+    finish(n);
+  });
+
+  /* ---------- logo goes home; header tucks its intro away while you scroll ---------- */
+  $("home").addEventListener("click", function(e){
+    e.preventDefault();
+    hardStopVoice();
+    pending = null; $("ask").hidden = true; setStatus(""); $("copyMsg").textContent = "";
+    toLanding();
+  });
+  var topEl = $("top"), tucked = false, barTick = false;
+  /* A floating Find savings button appears whenever the main one has scrolled out of view. */
+  function updateGoBar(){
+    var show = false;
+    if (!$("compose").hidden) {
+      var r = goBtn.getBoundingClientRect(), hb = topEl ? topEl.getBoundingClientRect().bottom : 0;
+      show = !(r.bottom > hb + 4 && r.top < (window.innerHeight || 800) - 4);
+    }
+    $("goBar").hidden = !show;
+  }
+  function queueGoBar(){ if (barTick) return; barTick = true; (window.requestAnimationFrame || setTimeout)(function(){ barTick = false; updateGoBar(); }); }
+  $("goFloat").addEventListener("click", function(){ goBtn.click(); });
+  window.addEventListener("resize", queueGoBar);
+  updateGoBar();
+  window.addEventListener("scroll", function(){
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    if (!tucked && y > 80) { tucked = true; topEl.classList.add("condensed"); }
+    else if (tucked && y < 10) { tucked = false; topEl.classList.remove("condensed"); }
+    queueGoBar();
+  }, { passive:true });
+
+  /* ---------- install + offline ---------- */
+  var deferred = null;
+  window.addEventListener("beforeinstallprompt", function(e){
+    e.preventDefault(); deferred = e; $("install").hidden = false;
+  });
+  $("install").addEventListener("click", function(){
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function(){ deferred = null; $("install").hidden = true; });
+  });
+  window.addEventListener("appinstalled", function(){ $("install").hidden = true; });
+  if (isIOS && !standalone) $("iosHint").hidden = false;
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("sw.js").catch(function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>
