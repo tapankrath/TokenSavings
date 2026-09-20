@@ -40,7 +40,7 @@ A static, installable web app (PWA). No build step, no server.
   - **PDF, Word or text that is not a bill** is read as a description of how you use AI.
   - **Limits:** one file at a time, up to 25 MB. Old `.doc` files and scanned PDFs (pictures of text) can't be read. Code in other languages isn't analyzed yet. Provider export formats differ, so check the "From your file" list on the report.
   - **Privacy:** files are read in the browser and never uploaded. Only the numbers found in a file are used.
-- No account and no API key are needed. Everything is analyzed on the device, and nothing you type or attach is sent anywhere. A smarter server-side analysis can be added later, when there is a backend.
+- No account and no API key are needed. Everything is analyzed on the device. Nothing you type or attach is sent anywhere, with one exception: the email and answers someone types into the waitlist form, and only once you have connected a waitlist (see below).
 - Savings are estimated from general rules of thumb (shares of your bill), not from any provider's price list. Tune them in the constants at the top of the script in index.html (`IN_SHARE`, `TRIM_CUT`, `CAP_CUT`, `CACHE_SAVE`, `BATCH_CUT`, `MOVE_SHARE`, `RANGE`). When a file has tokens but no cost, the illustrative `PRICES` table is used, so keep it current.
 
 ## The built-in demo
@@ -50,6 +50,33 @@ Right under the input box, a one-line strip reads **Try a sample:** with two but
 While a sample is showing there are four ways back, all of which return to the landing page and restore anything the person had typed or picked before: the **Try it with your own** button in the banner, a **Try it with your own** bar pinned to the bottom of the screen, the **Exit sample** link at the top right (it says **Edit** for normal results), and the logo badge in the header. The banner also has a pill to switch to the other sample.
 
 The sample data is inside index.html (search for `DEMO_CSV` and `DEMO_PDF`, a text string and a base64 string), so the demo works offline and needs no extra files. To change it, replace those two values. The PDF sample needs the bundled PDF reader files (`pdf.min.js` and `pdf.worker.min.js`) to be uploaded, like any PDF.
+
+## Saved reports, progress and plans
+
+Everything here works on the device, with no account.
+
+- **Save report** (on the results screen) stores the report in the browser. **Saved reports** in the footer lists them, and each one can be opened or deleted. Up to 30 are kept.
+- **Progress since your last report:** when someone analyzes a newer bill, it is compared with their saved reports. For an API bill it shows what they predicted against what they pay now, for example "captured roughly 46% of the predicted saving". The comparison can be switched to any saved report.
+- **Done checklist:** every change and idea has a **Done** box. Progress ("2 of 8 changes done") is remembered across sessions and analyses. It is hidden in the sample demo so samples never pollute real progress.
+- **Count it (what-if):** each dollar change has a **Count it** box. Untick one to see the estimate without it. Untick everything to see there is nothing left to count.
+- **Test before you switch:** a short checklist and a downloadable CSV sheet for testing a cheaper model on ten real requests, pre-filled with the model names for that platform.
+- **Share and print:** **Share** uses the phone's share sheet where available. **Print or save as PDF** prints a clean copy of the report.
+- **Plans:** the footer's **Plans** link shows Free, Pro ($29 a month) and Team ($79 a month) with a waitlist form. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
+
+### Connecting the waitlist (Supabase)
+
+Until you connect it, waitlist entries stay on the visitor's own device and you will not see them.
+
+1. In the Supabase SQL editor, run `waitlist.sql` (in the same folder as this project's outputs). It creates the table and a rule that lets the public key add a row but never read the list.
+2. In Supabase, open **Project Settings, API** and copy the Project URL and the **anon public** key.
+3. In `index.html`, near the top of the script, set
+   `var WAITLIST_ENDPOINT = "https://YOUR-PROJECT.supabase.co/rest/v1/waitlist";`
+   and `var WAITLIST_KEY = "YOUR-ANON-KEY";`
+4. Re-upload `index.html`, join the waitlist yourself with a test email, and check the row in the Table editor.
+
+The anon key is meant to be public and is safe here only because of the row-level rule in the SQL. Never put the service role key in `index.html`. Any other form endpoint that accepts a JSON POST also works: set `WAITLIST_ENDPOINT` and leave `WAITLIST_KEY` empty.
+
+See `VALIDATION-PLAN.md` for how to read the results.
 
 ## The screens
 

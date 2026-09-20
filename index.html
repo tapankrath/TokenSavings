@@ -134,6 +134,51 @@ textarea:focus-visible{outline:none}
 .demo-actions{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:12px}
 .pill.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .demobox .pill{padding:0 14px}
+.viewhead{margin:0 0 8px}
+.plan{border:1.5px solid var(--rule);border-radius:14px;background:var(--card);padding:16px;margin:0 0 14px}
+.plan.featured{border:2px solid var(--ink)}
+.plan-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.plan .h3{font:700 1.2rem/1.2 var(--display);margin:0}
+.price{margin:0;font:800 1.5rem/1 var(--display)}
+.price span{font:500 .85rem var(--body);color:var(--muted)}
+.plan ul{margin:10px 0 12px;padding-left:18px;color:var(--muted);font-size:.95rem}
+.plan li{margin:0 0 6px}
+.plan .small{margin:6px 0 0}
+.waitform{border:1.5px solid var(--moss);border-radius:14px;background:var(--card);padding:16px;margin:4px 0 16px}
+.waitform .h3{font:700 1.15rem/1.2 var(--display);margin:0 0 12px}
+.waitform label.f{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--muted);margin:0 0 12px}
+.waitform input[type=email],.waitform textarea{border:1.5px solid var(--rule);border-radius:10px;background:var(--paper);padding:10px;color:var(--ink);font-size:16px;width:100%}
+.fair{border:0;padding:0;margin:0 0 12px}
+.fair legend{font-size:.9rem;color:var(--muted);padding:0;margin-bottom:6px}
+.fair-opts{display:flex;flex-wrap:wrap;gap:8px}
+.fair-opts label{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--rule);border-radius:999px;padding:6px 12px;color:var(--ink);font-size:.92rem;cursor:pointer}
+.fair-opts input{accent-color:var(--moss)}
+.hist-item{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--rule)}
+.hist-item:last-child{border-bottom:1px solid var(--rule)}
+.hist-item .small{margin:2px 0 0}
+.hi-actions{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none}
+.prog{margin:0 0 18px}
+.prog p{margin:0 0 6px;font-weight:600;font-size:.95rem}
+.progbar{height:8px;border-radius:99px;background:var(--rule);overflow:hidden}
+.progbar span{display:block;height:100%;background:var(--moss);width:0;transition:width .2s ease}
+.progresscard{background:var(--card);border-radius:12px;padding:14px 16px;margin:0 0 20px}
+.progresscard ul{margin:8px 0;padding-left:18px}
+.progresscard select{min-height:40px;border:1.5px solid var(--rule);border-radius:10px;background:var(--paper);padding:0 8px;color:var(--ink);font-size:16px;max-width:100%}
+.done,.incl{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;color:var(--ink);cursor:pointer}
+.done input,.incl input{width:18px;height:18px;accent-color:var(--moss)}
+.tip.is-done{opacity:.6}
+.tip.is-done h3{text-decoration:line-through;text-decoration-thickness:1px}
+.linkrow{margin:12px 0 0;color:var(--muted);font-size:.95rem}
+.foot{margin:26px 0 0;text-align:center;color:var(--muted);font-size:.92rem}
+.printhead{display:none}
+ol.steps-list{margin:10px 0;padding-left:20px;color:var(--muted);font-size:.95rem}
+ol.steps-list li{margin:0 0 6px}
+@media print{
+  .top,.gobar,.foot,.actions,.linkrow,#compose,#history,#plans,.done,.incl,.trybar,#saveMsg,#copyMsg,.understood button,.demobox,details.tune{display:none !important}
+  body{background:#fff;color:#000}
+  .printhead{display:block;font-weight:700;margin:0 0 10px}
+  .receipt,.tip,.progresscard{break-inside:avoid}
+}
 .lbl{margin:10px 0 2px;font-weight:600;font-size:.92rem}
 .go{flex:none;min-height:48px;padding:0 20px;border-radius:12px;border:0;background:var(--ink);color:var(--paper);font-weight:600;cursor:pointer}
 .link{background:none;border:0;padding:6px 0;color:var(--cobalt);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
@@ -285,6 +330,7 @@ details.tune .fields{margin-top:12px}
   </section>
 
   <section id="report" hidden>
+    <p class="printhead" id="printHead"></p>
     <div class="understood">
       <p id="summary"></p>
       <button id="edit" class="link" type="button">Edit</button>
@@ -320,9 +366,12 @@ details.tune .fields{margin-top:12px}
       </div>
     </details>
     <div class="actions">
-      <button id="copy" class="btn primary" type="button">Copy plan</button>
+      <button id="save" class="btn primary" type="button">Save report</button>
+      <button id="share" class="btn" type="button" hidden>Share</button>
       <button id="again" class="btn" type="button">Start over</button>
     </div>
+    <p class="linkrow"><button id="copy" class="link" type="button">Copy plan</button> · <button id="printBtn" class="link" type="button">Print or save as PDF</button></p>
+    <p id="saveMsg" class="status" role="status" aria-live="polite"></p>
     <p id="copyMsg" class="status" role="status" aria-live="polite"></p>
     <details class="how">
       <summary>How these estimates work</summary>
@@ -332,6 +381,53 @@ details.tune .fields{margin-top:12px}
     </details>
     <p class="fine">Directional estimates only. Savings are not guaranteed and depend on your provider, plan and how you use AI. Prices and features change, so check your provider's current pricing. This is general information, not financial advice.</p>
   </section>
+
+  <section id="history" hidden>
+    <div class="viewhead"><button id="histBack" class="link" type="button">← Back</button></div>
+    <h2 class="h2">Saved reports</h2>
+    <p class="small" style="margin:0 0 10px">Saved on this device only. Open one to see it again. When you analyze a newer bill, it is compared with your saved reports so you can see whether the changes paid off.</p>
+    <div id="histList"></div>
+    <div class="actions" style="margin-top:14px"><button id="histClear" class="btn" type="button" hidden>Delete all</button></div>
+  </section>
+
+  <section id="plans" hidden>
+    <div class="viewhead"><button id="plansBack" class="link" type="button">← Back</button></div>
+    <h2 class="h2">Plans (early access)</h2>
+    <p class="small" style="margin:0 0 14px">Everything you have used so far is free. Paid plans are not live yet and nobody is being charged. Features marked as planned are not built yet. Join a waitlist to be invited first, at the early-access price shown.</p>
+    <div class="plan">
+      <div class="plan-head"><h3 class="h3">Free</h3><p class="price">$0</p></div>
+      <p class="small">Everything in the app today.</p>
+      <ul><li>Unlimited analyses that stay on your device</li><li>Sample bills, cheaper-model and architecture advice</li><li>Save reports and track your progress on this device</li><li>Print or share any report</li></ul>
+      <p class="small"><strong>You already have this.</strong></p>
+    </div>
+    <div class="plan featured">
+      <div class="plan-head"><h3 class="h3">Pro</h3><p class="price">$29<span>/month</span></p></div>
+      <p class="small">For solo builders and freelancers with a real API bill. Early-access price, not charged yet.</p>
+      <ul><li>Reports and progress synced across your devices (planned)</li><li>Monthly proof of savings: predicted against your real bill (planned)</li><li>Alerts when prices change or a cheaper model appears (planned)</li><li>Shareable report links and PDF export (planned)</li></ul>
+      <button class="btn primary" type="button" data-plan="Pro">Join the Pro waitlist</button>
+    </div>
+    <div class="plan">
+      <div class="plan-head"><h3 class="h3">Team</h3><p class="price">$79<span>/month</span></p></div>
+      <p class="small">For teams with a real API bill. Up to 5 seats. Early-access price, not charged yet.</p>
+      <ul><li>Everything in Pro</li><li>Shared workspace and reports (planned)</li><li>Budgets and spend alerts (planned)</li><li>Read-only billing imports (planned)</li></ul>
+      <button class="btn" type="button" data-plan="Team">Join the Team waitlist</button>
+    </div>
+    <div id="waitForm" class="waitform" hidden>
+      <h3 class="h3">Join the <span id="wPlan">Pro</span> waitlist</h3>
+      <label class="f">Email<input id="wEmail" type="email" autocomplete="email" inputmode="email" placeholder="you@company.com"></label>
+      <fieldset class="fair"><legend>What would feel fair per month? (optional)</legend>
+        <div class="fair-opts">
+          <label><input type="radio" name="fair" value="$9"> $9</label><label><input type="radio" name="fair" value="$19"> $19</label><label><input type="radio" name="fair" value="$29"> $29</label><label><input type="radio" name="fair" value="$49"> $49</label><label><input type="radio" name="fair" value="$79+"> $79+</label><label><input type="radio" name="fair" value="Not sure"> Not sure</label>
+        </div>
+      </fieldset>
+      <label class="f">What would make it worth paying for? (optional)<textarea id="wNote" rows="2" maxlength="500"></textarea></label>
+      <button id="wSubmit" class="btn primary" type="button">Join the waitlist</button>
+      <p id="wStatus" class="status" role="status" aria-live="polite"></p>
+      <p class="small">We will only email you about early access. No spam, and you can ask to be removed at any time.</p>
+    </div>
+  </section>
+
+  <p class="foot" id="foot"><button id="navHist" class="link" type="button" hidden>Saved reports (0)</button><span id="navSep" hidden> · </span><button id="navPlans" class="link" type="button">Plans</button></p>
 </main>
 <div id="demoBar" class="gobar" hidden><button id="demoOwn" class="go" type="button">Try it with your own</button></div>
 <div id="goBar" class="gobar" hidden><button id="goFloat" class="go" type="button">Find savings</button></div>
@@ -346,6 +442,9 @@ details.tune .fields{margin-top:12px}
     "I pay $20 a month for ChatGPT Plus. Our OpenAI API bill is about $600 a month for a support bot with a long system prompt and wordy answers.",
     "Our nightly job classifies product reviews on the most expensive model and costs us about $1,500 a month. Results are needed by morning."
   ];
+  /* Waitlist: paste your endpoint here (see the README). Leave blank to keep entries on this device only. */
+  var WAITLIST_ENDPOINT = "";
+  var WAITLIST_KEY = "";
   var ASK = [["Under $30",20],["$30 to $100",60],["$100 to $500",250],["$500 to $2,000",1000],["Over $2,000",4000]];
 
 /* ===== Engine v3: dollars in, dollars out. API bills + subscriptions. Runs fully on the device. ===== */
@@ -578,18 +677,19 @@ function makeSummary(p){
 }
 
 /* ---------- the plan: each lever applied in turn to a portion of the bill ---------- */
-function levers(p, S, isSub){
+function levers(p, S, isSub, off){
+  off = off || {};
   var f = p.inShare || IN_SHARE;
   var inC = S * f, outC = S * (1 - f), tips = [];
   function total(){ return inC + outC; }
   function log(id, extra, before){ tips.push({ id:id, saving:before - total(), extra:extra || {} }); }
   var b;
-  if (p.hist) { b = total(); inC -= inC * TRIM_CUT; log("trim", null, b); }
-  if (p.verb) { b = total(); outC -= outC * CAP_CUT; log("cap", null, b); }
+  if (p.hist && !off.trim) { b = total(); inC -= inC * TRIM_CUT; log("trim", null, b); }
+  if (p.verb && !off.cap) { b = total(); outC -= outC * CAP_CUT; log("cap", null, b); }
 
-  if (!isSub && p.promptTokens >= 1500 && p.promptShare > 0.2) { b = total(); inC -= inC * Math.min(0.9, p.promptShare) * 0.25; log("prompt", { words:Math.round(p.promptTokens * 0.75 / 100) * 100 }, b); }
+  if (!isSub && !off.prompt && p.promptTokens >= 1500 && p.promptShare > 0.2) { b = total(); inC -= inC * Math.min(0.9, p.promptShare) * 0.25; log("prompt", { words:Math.round(p.promptTokens * 0.75 / 100) * 100 }, b); }
   var target = p.diff === "simple" ? "small" : (p.diff === "moderate" ? "mid" : null);
-  if (target) {
+  if (target && !off.size) {
     var shares = p.tierShare || (function(){ var o = {}; o[p.tier] = 1; return o; })();
     var cut = 0, fromTier = null, best = 0;
     ["top","mid"].forEach(function(tr){
@@ -603,8 +703,8 @@ function levers(p, S, isSub){
     if (cut > 0) { b = total(); inC -= inC * cut; outC -= outC * cut; log("size", { from:fromTier, to:target }, b); }
   }
   var rep = Math.max(0, p.rep - (p.alreadyCached || 0));
-  if (!isSub && rep >= 0.3) { b = total(); inC -= inC * Math.min(0.9, rep) * CACHE_SAVE; log("cache", { pct:Math.round(rep * 100) }, b); }
-  if (!isSub && !p.realtime) { b = total(); inC -= inC * BATCH_CUT; outC -= outC * BATCH_CUT; log("batch", null, b); }
+  if (!isSub && !off.cache && rep >= 0.3) { b = total(); inC -= inC * Math.min(0.9, rep) * CACHE_SAVE; log("cache", { pct:Math.round(rep * 100) }, b); }
+  if (!isSub && !off.batch && !p.realtime) { b = total(); inC -= inC * BATCH_CUT; outC -= outC * BATCH_CUT; log("batch", null, b); }
 
   tips = tips.filter(function(t){ return t.saving > S * 0.005; });
   var low = 0, high = 0;
@@ -613,10 +713,10 @@ function levers(p, S, isSub){
   return { tips:tips, after:total(), low:low, high:high };
 }
 
-function plan(p){
+function plan(p, off){
   var api = p.apiSpend || 0, sub = p.subSpend || 0;
-  var A = api ? levers(p, api, false) : null;
-  var B = sub ? levers(p, sub, true) : null;
+  var A = api ? levers(p, api, false, off) : null;
+  var B = sub ? levers(p, sub, true, off) : null;
   var map = {}, list = [];
   function add(res, key){
     res.tips.forEach(function(t){
@@ -1312,6 +1412,7 @@ function ladders(p){
   var DEMO_PDF = "JVBERi0xLjMKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQ29udGVudHMgOCAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDcgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyA3IDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKNiAwIG9iago8PAovQXV0aG9yIChhbm9ueW1vdXMpIC9DcmVhdGlvbkRhdGUgKEQ6MjAyNjA5MjAwMjIwNDUrMDAnMDAnKSAvQ3JlYXRvciAoYW5vbnltb3VzKSAvS2V5d29yZHMgKCkgL01vZERhdGUgKEQ6MjAyNjA5MjAwMjIwNDUrMDAnMDAnKSAvUHJvZHVjZXIgKFJlcG9ydExhYiBQREYgTGlicmFyeSAtIFwob3BlbnNvdXJjZVwpKSAKICAvU3ViamVjdCAodW5zcGVjaWZpZWQpIC9UaXRsZSAodW50aXRsZWQpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKNyAwIG9iago8PAovQ291bnQgMSAvS2lkcyBbIDQgMCBSIF0gL1R5cGUgL1BhZ2VzCj4+CmVuZG9iago4IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDkwNQo+PgpzdHJlYW0KR2F0JWI5bEhMZCY7S1pMJ20mamZXVVApRzVCOmkhVXA/NWcyUTNOWUxlU0wjJSQ7ITVxc1YtaSg/LmU3IUVsXS5eJGowJF9tJGBVWWwwXkhKJGY7Ok07ZSVEIUNAc0QjSnEoLnBgKiZoS0I+L3RVPjlsX09GMkNNSGpHUXAwYGdlSyVbWS4tUkI5QGg/Ti1IbjlJODhLYlZBOFAjaV0yJkoqSjYzOVhyMjRxcjg6PmA0Sy9XPmJAWSpmMSE/JlpgPi9aVEFJTjBiQVQoaVU5I0pnRDQ5TylRZldLZ0krI3JHVyc+cGFXbF0zaGMwNi5IbmVhIiZEPiFaYy8oU1syaCFPJW5uMzEmVj1dbSRHbUV0dChwWiFcIjh0J1gpQ3VyXkE9TWdxP1ZgPzwyUVZkLjZMR1w/NFhDSz4vI0MnIlE9aDFzYWwzQUZEXC1DWVpoJloqcm4mcU5FRDNVOEQjcWQybzU2YGlcWj1UOz1xR2lLZldQNnRVOy5cOzhJXGo5VDZXa2RDQ3MnPmZwN3QtcEFdSktlNkk9akVMUlYuLitZZGhDWTRBQXBWdDlKaWhUYSMpPEYzQmpUJ09QNWkyPHM3JTkyTkBiaWpqcic1PTlFIl8qMCpcQ10ldEEuMXBTIStOM2VUPHNhNVhvLDMlYGMvRC0uM148V0E8W3RNRFdNWDw7TWRmNzg7RjtvRmg8b2c4UUxvR0hjZWY4XWVwRFY2blRbXzNQa2ZFJFlzaXNRakk6LWQvQTFNZDxCLyFVdCRVIzJpSl1APG06YypXIkcvaCtfXWJTWUk/WzhfQjlrRDZPb1hOTTtbNUVHJClDXmlRLzFET15faTxncmdYVU4kSnBkZSM9QV5MMiNdLTlnaEVKbmprNSZkQz1GUio+XUpmM2RBbUNpPys5TVdMaV1JSExEXDIwNCVBL3JCPDV1I2dvP1I7XW1ZUnJRSDFBI3JlRGoxUWY6bE4jXDBiOjopI1ZCcFY0Kmw4Q3F1RzRNJjA4LVZcLmZQNTA1Pks8T0pCaGVBVCkvNDRMLyk0MmEpXGoxLURjSC4+SiJtb0E+cWZvJXJXI21TPEZxRXUySUQiUV9LSkxkZU1IMTg2IkZaJS8vT1xkMCZVYT8tV0hCcF1JRFlDaHEtRE0pZCQkaGtXQC8lNE8hUl9OWlFib2kiWCc8N210SG9oSCdedHF1YlsvQTcjfj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA5CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDA2MSAwMDAwMCBuIAowMDAwMDAwMTAyIDAwMDAwIG4gCjAwMDAwMDAyMDkgMDAwMDAgbiAKMDAwMDAwMDMyMSAwMDAwMCBuIAowMDAwMDAwNTE0IDAwMDAwIG4gCjAwMDAwMDA1ODIgMDAwMDAgbiAKMDAwMDAwMDg0MyAwMDAwMCBuIAowMDAwMDAwOTAyIDAwMDAwIG4gCnRyYWlsZXIKPDwKL0lEIApbPDkwYmQ5NjkxYzllNzVkMjkwNTZjZGEzYWNmNTZmYzZmPjw5MGJkOTY5MWM5ZTc1ZDI5MDU2Y2RhM2FjZjU2ZmM2Zj5dCiUgUmVwb3J0TGFiIGdlbmVyYXRlZCBQREYgZG9jdW1lbnQgLS0gZGlnZXN0IChvcGVuc291cmNlKQoKL0luZm8gNiAwIFIKL1Jvb3QgNSAwIFIKL1NpemUgOQo+PgpzdGFydHhyZWYKMTg5NwolJUVPRgo=";
 
   var profile = null, pending = null, demo = null, demoPending = null, demoStash = null;
+  var whatIfOff = {}, cmpId = "", sessionIds = [], savedNow = false, currentView = "compose", backTo = "compose";
   var ta = $("desc"), statusEl = $("status"), goBtn = $("go");
   function setGoLabel(x){ goBtn.textContent = x; $("goFloat").textContent = x; }
   var ua = navigator.userAgent || "";
@@ -1647,7 +1748,11 @@ function ladders(p){
   }
   function renderResults(){
     document.body.setAttribute("data-aud", profile.apiSpend ? "developer" : "everyday");
-    var r = plan(profile), box = $("results"), sym = profile.sym, html = "";
+    var r = plan(profile), sets = adviceSets(profile), box = $("results"), sym = profile.sym, html = "";
+    var off = whatIfOff, offIds = Object.keys(off).filter(function(k){ return off[k]; }), anyOff = offIds.length > 0;
+    var rs = anyOff ? plan(profile, off) : r, track = !demo, doneMap = track ? loadDone() : {};
+    var numericTips = r.tips.filter(function(t){ return t.api || t.sub; });
+    $("save").hidden = !!demo; $("save").textContent = savedNow ? "Saved \u2713" : "Save report";
     if (demo) {
       html += '<div class="demobox"><strong>Sample bill: a fictional company, August 2026.</strong>' +
         'This is what you would see for a real usage export or invoice: a savings range at the top, then what to change, cheaper models to try and bigger ideas. What I found in the file is at the bottom.' +
@@ -1659,12 +1764,12 @@ function ladders(p){
       html += '<div class="findbox"><h2 class="h2">What I found in your app</h2><ul>' + profile.found.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
     }
     if (r.hasNumeric) {
-      var A = r.api, B = r.sub;
+      var A = rs.api, B = rs.sub;
       var aHas = !!(A && A.high >= A.base * 0.01), bHas = !!(B && B.high >= B.base * 0.01);
       var conf = confidence(profile);
       var title = (A && B) ? "Directional estimate for your monthly AI spend" : (A ? "Directional estimate for your monthly API bill" : "Directional estimate for your plan");
       var big = aHas ? "Could save roughly " + moneySpan(A.low, A.high, sym) + " a month" + (B ? " on your API bill" : "")
-                     : "Could use roughly " + pctSpan(B.low / B.base * 100, B.high / B.base * 100) + " less";
+                     : (bHas ? "Could use roughly " + pctSpan(B.low / B.base * 100, B.high / B.base * 100) + " less" : "Pick a change below to see an estimate");
       html += '<div class="receipt"><p class="rtitle">' + title + '</p><p class="big">' + big + '</p>';
       if (A) {
         html += '<div class="line"><span>API bill now</span><span>' + money(A.base) + '</span></div>';
@@ -1678,6 +1783,7 @@ function ladders(p){
       }
       if (A) html += '<p class="note">Not a promise. Your results may be lower or higher. Try one change at a time and check your next bill.</p>';
       if (B) html += '<p class="note">A flat plan doesn\u2019t get cheaper by using less. Lower usage means fewer limit warnings, and it may let you move to a cheaper plan.</p>';
+      if (numericTips.length > 1) html += '<p class="note">' + (anyOff ? "Counting " + (numericTips.length - offIds.length) + " of " + numericTips.length + " changes. " : "") + 'Untick \u201CCount it\u201D on a change below to see the estimate without it.</p>';
       html += '<p class="conf"><strong>How sure am I: ' + conf.level + '.</strong> ' + esc(conf.text) + '</p></div><div class="edge" aria-hidden="true"></div>';
     } else {
       var ticks = [
@@ -1696,6 +1802,12 @@ function ladders(p){
       html += '<div class="empty" style="margin-bottom:22px"><h2 class="h2">I don\u2019t see a big saving yet</h2>' +
         '<p>Nothing you told me usually wastes money. Tick anything that sounds like you and I\u2019ll recalculate.</p><div class="ticks">' + th + '</div></div>';
     }
+    var ids = pageIds(r, sets);
+    if (track && ids.length) {
+      var nd = ids.filter(function(id){ return doneMap[id]; }).length;
+      html += '<div class="prog"><p id="progText">Your progress: ' + nd + ' of ' + ids.length + ' changes done</p><div class="progbar"><span id="progFill" style="width:' + Math.round(nd / ids.length * 100) + '%"></span></div></div>';
+    }
+    html += progressHtml(ids, doneMap);
     if (r.tips.length) {
       html += '<h2 class="h2">' + (r.hasNumeric ? "What to change" : "Also worth checking") + '</h2><ol class="tips">';
       r.tips.forEach(function(t, i){
@@ -1703,14 +1815,16 @@ function ladders(p){
         if (t.api) chips.push("Could save roughly " + moneySpan(t.api.low, t.api.high, sym) + " a month" + (profile.subSpend ? " on your API bill" : ""));
         if (t.sub) chips.push("Roughly " + pctSpan(t.sub.low / profile.subSpend * 100, t.sub.high / profile.subSpend * 100) + " less usage" + (profile.apiSpend ? " on your plans" : ""));
         var chipHtml = chips.length ? chips.map(function(c){ return '<span class="save">' + esc(c) + '</span>'; }).join("") : '<span class="save soft">Savings vary</span>';
-        html += '<li class="tip' + (i === 0 && r.hasNumeric ? " first" : "") + '">' +
+        var ctl = "";
+        if (t.api || t.sub) ctl += '<label class="incl"><input type="checkbox" data-incl="' + t.id + '"' + (off[t.id] ? "" : " checked") + '> <span>Count it</span></label>';
+        if (track) ctl += '<label class="done"><input type="checkbox" data-done="' + t.id + '"' + (doneMap[t.id] ? " checked" : "") + '> <span>Done</span></label>';
+        html += '<li class="tip' + (i === 0 && r.hasNumeric ? " first" : "") + (track && doneMap[t.id] ? " is-done" : "") + '">' +
           (i === 0 && r.hasNumeric ? '<p class="start">Try this first</p>' : "") +
           '<h3>' + esc(tx.title) + '</h3><p>' + esc(tx.why) + '</p>' +
-          '<p class="meta">' + chipHtml + '<span>' + tx.effort + ' effort</span></p></li>';
+          '<p class="meta">' + chipHtml + '<span>' + tx.effort + ' effort</span>' + ctl + '</p></li>';
       });
       html += "</ol>";
     }
-    var sets = adviceSets(profile);
     if (sets.ladders.length) {
       html += '<h2 class="h2" style="margin-top:8px">Cheaper alternatives to try</h2>' +
         '<p class="adv-note">Left is lightest and cheapest, right is most capable and most expensive. Start on the lightest option that does the job and move right only when the result isn\u2019t good enough. Lighter options usually cost less per request and produce less hidden \u201Cthinking\u201D text.</p><div class="ladders">';
@@ -1720,12 +1834,14 @@ function ladders(p){
       });
       html += "</div>";
     }
+    html += testKitHtml(r, sets);
     function advBlock(title, list){
       var h = '<h2 class="h2" style="margin-top:8px">' + title + '</h2>' +
         '<p class="adv-note">Directional ideas, not promises. Try one at a time and check the result. \u201CPotential\u201D is how much it could help in a typical case.</p><ol class="tips adv">';
       list.forEach(function(a){
-        h += '<li class="tip"><h3>' + esc(a.title) + '</h3><p>' + esc(a.why) + '</p>' +
-          '<p class="meta"><span class="save' + (a.impact === "High" ? "" : " soft") + '">Potential: ' + a.impact + '</span><span>' + a.effort + ' effort</span></p></li>';
+        var dctl = track ? '<label class="done"><input type="checkbox" data-done="' + a.id + '"' + (doneMap[a.id] ? " checked" : "") + '> <span>Done</span></label>' : "";
+        h += '<li class="tip' + (track && doneMap[a.id] ? " is-done" : "") + '"><h3>' + esc(a.title) + '</h3><p>' + esc(a.why) + '</p>' +
+          '<p class="meta"><span class="save' + (a.impact === "High" ? "" : " soft") + '">Potential: ' + a.impact + '</span><span>' + a.effort + ' effort</span>' + dctl + '</p></li>';
       });
       return h + "</ol>";
     }
@@ -1765,6 +1881,8 @@ function ladders(p){
     toggleLabels();
   }
   function showReport(){
+    whatIfOff = {}; savedNow = false;
+    $("share").hidden = !(navigator.share);
     setView("report");
     $("summary").textContent = profile.summary;
     $("edit").textContent = demo ? "Exit sample" : "Edit";
@@ -1784,12 +1902,13 @@ function ladders(p){
   }
   function setView(v){
     var compose = v === "compose";
-    $("compose").hidden = !compose; $("report").hidden = compose; $("hero").hidden = !compose;
+    currentView = v;
+    $("compose").hidden = !compose; $("report").hidden = v !== "report"; $("history").hidden = v !== "history"; $("plans").hidden = v !== "plans"; $("hero").hidden = !compose;
     if (typeof updateGoBar === "function") updateGoBar();
   }
   function finish(n){
     n.summary = makeSummary(n);
-    profile = n; pending = null; $("ask").hidden = true; setStatus(""); showReport();
+    profile = n; pending = null; sessionIds = []; cmpId = ""; $("ask").hidden = true; setStatus(""); showReport();
   }
 
   /* ---------- files: bills, usage exports, documents (read on this device) ---------- */
@@ -1872,6 +1991,215 @@ function ladders(p){
     box.addEventListener("drop", function(e){ var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) handleFile(f); });
   })();
 
+  /* ---------- saved reports, progress and plans (all kept on this device) ---------- */
+  var K_REPORTS = "tsc_reports", K_DONE = "tsc_done", K_WAIT = "tsc_wait", waitPlan = "Pro", clearArmed = false;
+  function lsGet(k, d){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
+  function lsSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch(e){ return false; } }
+  function loadReports(){ var a = lsGet(K_REPORTS, []); return Array.isArray(a) ? a : []; }
+  function loadDone(){ var o = lsGet(K_DONE, {}); return (o && typeof o === "object") ? o : {}; }
+  function fmtDate(ts){ try { return new Date(ts).toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }); } catch(e){ return ""; } }
+  function updateNav(){
+    var n = loadReports().length;
+    $("navHist").hidden = n === 0; $("navSep").hidden = n === 0; $("navHist").textContent = "Saved reports (" + n + ")";
+  }
+  function openPanel(v){
+    if (currentView !== "history" && currentView !== "plans") backTo = currentView;
+    if (v === "history") renderHistory();
+    setView(v); window.scrollTo(0, 0);
+  }
+  function closePanel(){ setView(backTo === "report" && profile ? "report" : "compose"); window.scrollTo(0, 0); }
+
+  function pageIds(r, sets){
+    var seen = {}, out = [];
+    r.tips.forEach(function(t){ if (!seen[t.id]) { seen[t.id] = 1; out.push(t.id); } });
+    sets.dev.concat(sets.hab).forEach(function(a){ if (!seen[a.id]) { seen[a.id] = 1; out.push(a.id); } });
+    return out;
+  }
+  function dirText(d, was, sym){
+    if (d === 0) return " (no change)";
+    return " (" + (d < 0 ? "down " : "up ") + fmtMoney(Math.abs(d), sym) + ", " + Math.round(Math.abs(d) / was * 100) + "%)";
+  }
+  /* Progress since an earlier saved report: what you predicted, against what you pay now. */
+  function progressHtml(ids, doneMap){
+    if (demo) return "";
+    var list = loadReports().filter(function(x){ return sessionIds.indexOf(x.id) < 0; });
+    if (!list.length) return "";
+    var prev = list.filter(function(x){ return x.id === cmpId; })[0] || list[0], sym = profile.sym, lines = [];
+    if (prev.api && profile.apiSpend) {
+      var was = prev.api.base, now = profile.apiSpend, pred = prev.api.after, d = now - was;
+      var s = "API bill: " + fmtMoney(was, sym) + " then, " + fmtMoney(now, sym) + " now" + dirText(d, was, sym) + ".";
+      if (isFinite(pred) && was - pred > 1) {
+        if (d < 0) s += " You predicted about " + fmtMoney(niceNum(pred), sym) + " after the changes, so you have captured roughly " + Math.min(100, Math.round((was - now) / (was - pred) * 100)) + "% of the predicted saving.";
+        else s += " You predicted about " + fmtMoney(niceNum(pred), sym) + " after the changes, so the saving has not shown up yet.";
+      }
+      lines.push(s);
+    }
+    if (prev.sub && profile.subSpend) {
+      var w2 = prev.sub.base, n2 = profile.subSpend;
+      lines.push("Subscriptions: " + fmtMoney(w2, sym) + " then, " + fmtMoney(n2, sym) + " now" + dirText(n2 - w2, w2, sym) + ".");
+    }
+    if (!lines.length) return "";
+    var opts = list.map(function(x){ return '<option value="' + esc(x.id) + '"' + (x.id === prev.id ? " selected" : "") + '>' + esc(x.label) + '</option>'; }).join("");
+    var nd = ids.filter(function(id){ return doneMap[id]; }).length;
+    return '<div class="progresscard"><h2 class="h2">Progress since your last report</h2>' +
+      '<p class="small" style="margin:0 0 6px">Compared with <select id="cmpSel" aria-label="Compare with">' + opts + '</select></p>' +
+      '<ul>' + lines.map(function(l){ return "<li>" + esc(l) + "</li>"; }).join("") + '</ul>' +
+      '<p class="small" style="margin:0">Changes marked done: ' + nd + ' of ' + ids.length + '. Real bills move for many reasons, such as volume and price changes, so read this as a signal, not proof.</p></div>';
+  }
+  function updateProgText(){
+    var boxes = document.querySelectorAll("#results [data-done]"), seen = {}, total = 0, n = 0;
+    Array.prototype.forEach.call(boxes, function(b){ var id = b.getAttribute("data-done"); if (seen[id]) return; seen[id] = 1; total++; if (b.checked) n++; });
+    var el = $("progText"), fill = $("progFill");
+    if (el) el.textContent = "Your progress: " + n + " of " + total + " changes done";
+    if (fill && total) fill.style.width = Math.round(n / total * 100) + "%";
+  }
+
+  /* Test before you switch */
+  function sheetCsv(){
+    var l = ladders(profile)[0], cur = "your current model", cheap = "the lighter model";
+    if (l) {
+      var idx = -1; l.steps.forEach(function(s, i){ if (s.tier === profile.tier) idx = i; });
+      if (idx < 0) idx = l.steps.length - 1;
+      cur = l.steps[idx].name; if (idx > 0) cheap = l.steps[idx - 1].name;
+    }
+    function q(x){ return '"' + String(x).replace(/"/g, '""') + '"'; }
+    var rows = [["#", "Real request (paste it here)", "Answer on " + cur + " good enough? (Y/N)", "Answer on " + cheap + " good enough? (Y/N)", "Notes"]], i;
+    for (i = 1; i <= 10; i++) rows.push([i, "", "", "", ""]);
+    return rows.map(function(r){ return r.map(q).join(","); }).join("\r\n");
+  }
+  function testKitHtml(r, sets){
+    if (!sets.ladders.length && !r.tips.some(function(t){ return t.id === "size"; })) return "";
+    return '<details class="tune" style="margin:0 0 22px"><summary>Test before you switch</summary>' +
+      '<ol class="steps-list"><li>Pick 10 real requests, including a few hard ones.</li><li>Run each on your current model and on the lighter one.</li><li>Mark each answer good enough or not.</li>' +
+      '<li>If about 9 of 10 pass, try the lighter model on a small share of live use (say 10%), then raise it.</li><li>Keep a quick way to switch back.</li></ol>' +
+      '<button class="pill" type="button" id="dlSheet">Download the test sheet (CSV)</button></details>';
+  }
+  function download(name, data, type){
+    try {
+      var url = URL.createObjectURL(new Blob([data], { type:type })), a = document.createElement("a");
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    } catch(e){ setStatus("Couldn\u2019t start the download here.", true); }
+  }
+
+  /* The plan as plain text (copy, share) */
+  function planText(){
+    var sym = profile.sym, r = plan(profile);
+    var lines = ["Token Savings Coach: directional estimate", profile.summary, ""];
+    if (profile.keyExposed) lines.push("Warning: the file appears to contain a secret API key. Keep it on a server and create a new one.", "");
+    if (profile.appMode) { profile.found.forEach(function(x){ lines.push("- " + x); }); lines.push(""); }
+    if (r.hasNumeric) {
+      if (r.api && r.api.high >= r.api.base * 0.01) lines.push("API bill: could save roughly " + moneySpan(r.api.low, r.api.high, sym) + " a month on a current " + money(r.api.base) + ".");
+      if (r.sub && r.sub.high >= r.sub.base * 0.01) lines.push("Subscriptions (" + money(r.sub.base) + " a month): could use roughly " + pctSpan(r.sub.low / r.sub.base * 100, r.sub.high / r.sub.base * 100) + " less. The plan price likely stays the same unless you move to a cheaper plan.");
+      lines.push("Confidence: " + confidence(profile).level + ".", "");
+    }
+    r.tips.forEach(function(t, i){ var tx = tipText(t, !!t.api || (!t.sub && !!profile.apiSpend)); lines.push((i + 1) + ". " + tx.title + " - " + tx.why); });
+    var sets = adviceSets(profile);
+    if (sets.ladders.length) { lines.push("", "Cheaper alternatives (lightest to most capable):"); sets.ladders.forEach(function(l){ lines.push("- " + l.name + ": " + l.steps.map(function(s){ return s.name; }).join(" > ")); }); }
+    function advCopy(title, list){ if (!list.length) return; lines.push("", title); list.forEach(function(a, i){ lines.push((i + 1) + ". " + a.title + " - " + a.why + " (potential: " + a.impact + ", effort: " + a.effort + ")"); }); }
+    advCopy("Bigger changes (architecture and workflow):", sets.dev);
+    advCopy("Smarter habits:", sets.hab);
+    lines.push("", "Directional estimates from general rules of thumb. Not guaranteed and not financial advice. Check your provider's current pricing.");
+    return lines.join("\n");
+  }
+
+  /* Save, open, delete */
+  function saveCurrent(){
+    if (!profile) return null;
+    var r = plan(profile), list = loadReports(), parts = [];
+    if (profile.apiSpend) parts.push(fmtMoney(profile.apiSpend, profile.sym) + " API");
+    if (profile.subSpend) parts.push(fmtMoney(profile.subSpend, profile.sym) + " plans");
+    var rec = { id:Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36), ts:Date.now(),
+      label:fmtDate(Date.now()) + " \u00B7 " + (parts.join(" + ") || "Report"), summary:profile.summary,
+      profile:JSON.parse(JSON.stringify(profile)),
+      api:r.api ? { base:r.api.base, after:r.api.after, low:r.api.low, high:r.api.high } : null,
+      sub:r.sub ? { base:r.sub.base, after:r.sub.after, low:r.sub.low, high:r.sub.high } : null,
+      tips:r.tips.map(function(t){ return t.id; }) };
+    list.unshift(rec); if (list.length > 30) list.length = 30;
+    if (!lsSet(K_REPORTS, list)) return null;
+    sessionIds.push(rec.id); savedNow = true; updateNav();
+    return rec;
+  }
+  function renderHistory(){
+    var list = loadReports(), box = $("histList"); box.innerHTML = "";
+    $("histClear").hidden = !list.length; clearArmed = false; $("histClear").textContent = "Delete all";
+    if (!list.length) { box.innerHTML = '<p class="small">Nothing saved yet. Run an analysis, then tap Save report.</p>'; return; }
+    list.forEach(function(rec){
+      var est = (rec.api && rec.api.high >= rec.api.base * 0.01) ? "Could save roughly " + moneySpan(rec.api.low, rec.api.high, rec.profile.sym) + " a month" : (rec.sub ? "Plan usage estimate" : "No clear saving");
+      var d = document.createElement("div"); d.className = "hist-item";
+      d.innerHTML = '<div class="hi-main"><strong>' + esc(rec.label) + '</strong><p class="small">' + esc(rec.summary || "") + '</p><p class="small">' + esc(est) + '</p></div>' +
+        '<div class="hi-actions"><button class="pill" type="button" data-open="' + esc(rec.id) + '">Open</button><button class="link" type="button" data-del="' + esc(rec.id) + '">Delete</button></div>';
+      box.appendChild(d);
+    });
+  }
+  function openReport(id){
+    var rec = loadReports().filter(function(x){ return x.id === id; })[0];
+    if (!rec) return;
+    demo = null; demoPending = null; profile = rec.profile; pending = null; cmpId = "";
+    sessionIds = [rec.id];
+    showReport(); savedNow = true; renderResults();
+  }
+  $("histList").addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("button") : null; if (!b) return;
+    if (b.getAttribute("data-open")) openReport(b.getAttribute("data-open"));
+    else if (b.getAttribute("data-del")) {
+      var id = b.getAttribute("data-del");
+      lsSet(K_REPORTS, loadReports().filter(function(x){ return x.id !== id; }));
+      updateNav(); renderHistory();
+    }
+  });
+  $("histClear").addEventListener("click", function(){
+    if (!clearArmed) { clearArmed = true; $("histClear").textContent = "Tap again to delete all"; setTimeout(function(){ clearArmed = false; $("histClear").textContent = "Delete all"; }, 3500); return; }
+    lsSet(K_REPORTS, []); updateNav(); renderHistory();
+  });
+  $("save").addEventListener("click", function(){
+    var rec = saveCurrent(), msg = $("saveMsg");
+    if (!rec) { msg.className = "status err"; msg.textContent = "Couldn\u2019t save. This browser is blocking storage."; return; }
+    $("save").textContent = "Saved \u2713"; msg.className = "status";
+    msg.innerHTML = 'Saved on this device. Open it any time from <button class="link" type="button" data-go="history">Saved reports</button>. Want it synced and tracked every month? <button class="link" type="button" data-go="plans">See plans</button>';
+  });
+  $("saveMsg").addEventListener("click", function(e){ var g = e.target && e.target.getAttribute ? e.target.getAttribute("data-go") : null; if (g) openPanel(g); });
+  $("navHist").addEventListener("click", function(){ openPanel("history"); });
+  $("navPlans").addEventListener("click", function(){ openPanel("plans"); });
+  $("histBack").addEventListener("click", closePanel);
+  $("plansBack").addEventListener("click", closePanel);
+  $("share").addEventListener("click", function(){
+    try { navigator.share({ title:"Token Savings Coach report", text:planText() }).catch(function(){}); } catch(e){}
+  });
+  $("printBtn").addEventListener("click", function(){
+    $("printHead").textContent = "Token Savings Coach \u00B7 directional estimate \u00B7 " + fmtDate(Date.now());
+    try { window.print(); } catch(e){}
+  });
+  $("results").addEventListener("click", function(e){
+    if (e.target && e.target.id === "dlSheet") download("model-switch-test-sheet.csv", sheetCsv(), "text/csv");
+  });
+
+  /* Plans and the waitlist */
+  $("plans").addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("[data-plan]") : null; if (!b) return;
+    waitPlan = b.getAttribute("data-plan"); $("wPlan").textContent = waitPlan;
+    $("waitForm").hidden = false; $("wStatus").textContent = ""; $("wStatus").className = "status";
+    try { $("waitForm").scrollIntoView({ block:"center" }); } catch(x){}
+  });
+  $("wSubmit").addEventListener("click", function(){
+    var email = $("wEmail").value.trim(), st = $("wStatus");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { st.className = "status err"; st.textContent = "Please enter a valid email address."; return; }
+    var fair = "", radios = document.querySelectorAll('input[name="fair"]'), i;
+    for (i = 0; i < radios.length; i++) if (radios[i].checked) fair = radios[i].value;
+    var payload = { email:email, plan:waitPlan, fair_price:fair || null, note:$("wNote").value.trim().slice(0, 500) || null, source:"app" };
+    var kept = lsGet(K_WAIT, []); if (!Array.isArray(kept)) kept = []; kept.push(payload); lsSet(K_WAIT, kept);
+    if (!WAITLIST_ENDPOINT) { st.className = "status"; st.textContent = "Thanks. This preview isn\u2019t connected to a waitlist yet, so your entry was saved on this device only."; return; }
+    st.className = "status"; st.textContent = "Sending\u2026"; $("wSubmit").disabled = true;
+    var headers = { "Content-Type":"application/json", "Prefer":"return=minimal" };
+    if (WAITLIST_KEY) { headers.apikey = WAITLIST_KEY; headers.Authorization = "Bearer " + WAITLIST_KEY; }
+    fetch(WAITLIST_ENDPOINT, { method:"POST", headers:headers, body:JSON.stringify(payload) }).then(function(res){
+      $("wSubmit").disabled = false;
+      if (res.ok || res.status === 409) { st.className = "status"; st.textContent = res.status === 409 ? "You\u2019re already on the list. Thank you!" : "You\u2019re on the list. Thank you! We\u2019ll email you about early access."; }
+      else { st.className = "status err"; st.textContent = "Couldn\u2019t send that just now. Please try again in a moment."; }
+    }).catch(function(){ $("wSubmit").disabled = false; st.className = "status err"; st.textContent = "Couldn\u2019t reach the waitlist. Check your connection and try again."; });
+  });
+  updateNav();
+
   /* ---------- demo: sample bills built into the app ---------- */
   function demoFile(kind){
     if (kind === "csv") return new File([DEMO_CSV], "SAMPLE_api_usage_aug2026.csv", { type:"text/csv" });
@@ -1928,18 +2256,27 @@ function ladders(p){
     $("ask").scrollIntoView({ block:"center" });
   }
   $("results").addEventListener("change", function(e){
-    var k = e.target && e.target.getAttribute ? e.target.getAttribute("data-k") : null;
-    if (!k || !profile) return;
-    var on = e.target.checked;
+    var el = e.target; if (!el || !el.getAttribute || !profile) return;
+    var dn = el.getAttribute("data-done"), inc = el.getAttribute("data-incl");
+    if (dn) {
+      var m = loadDone(); if (el.checked) m[dn] = true; else delete m[dn]; lsSet(K_DONE, m);
+      Array.prototype.forEach.call(document.querySelectorAll('#results [data-done="' + dn + '"]'), function(b){ b.checked = el.checked; var li = b.closest("li"); if (li) li.classList.toggle("is-done", el.checked); });
+      updateProgText(); return;
+    }
+    if (inc) { if (el.checked) delete whatIfOff[inc]; else whatIfOff[inc] = true; renderResults(); return; }
+    if (el.id === "cmpSel") { cmpId = el.value; renderResults(); return; }
+    var k = el.getAttribute("data-k");
+    if (!k) return;
+    var on = el.checked;
     if (k === "hist") profile.hist = on;
     else if (k === "verb") profile.verb = on;
     else if (k === "top") profile.tier = on ? "top" : "mid";
     else if (k === "rep") profile.rep = on ? 0.5 : 0;
     else if (k === "batch") profile.realtime = !on;
-    fillFields(); renderResults();
+    savedNow = false; fillFields(); renderResults();
   });
-  $("fieldsWrap").addEventListener("input", function(e){ readFields(e.target); renderResults(); });
-  $("fieldsWrap").addEventListener("change", function(e){ readFields(e.target); renderResults(); });
+  $("fieldsWrap").addEventListener("input", function(e){ readFields(e.target); savedNow = false; renderResults(); });
+  $("fieldsWrap").addEventListener("change", function(e){ readFields(e.target); savedNow = false; renderResults(); });
   /* Back to the top of the landing screen with the header expanded. */
   function toLanding(){
     setView("compose");
@@ -1953,7 +2290,7 @@ function ladders(p){
   });
   $("again").addEventListener("click", function(){
     hardStopVoice();
-    demo = null; demoPending = null; demoStash = null;
+    demo = null; demoPending = null; demoStash = null; whatIfOff = {}; cmpId = ""; sessionIds = []; savedNow = false;
     setText(""); profile = null; pending = null;
     picks = []; activeTab = "apps"; renderPicks(); $("pickBox").open = false;
     fileState = null; renderFileCard();
@@ -1962,25 +2299,7 @@ function ladders(p){
   });
 
   $("copy").addEventListener("click", function(){
-    var sym = profile.sym;
-    var r = plan(profile);
-    var lines = ["Token Savings Coach: directional estimate", profile.summary, ""];
-    if (profile.keyExposed) lines.push("Warning: the file appears to contain a secret API key. Keep it on a server and create a new one.", "");
-    if (profile.appMode) { profile.found.forEach(function(x){ lines.push("- " + x); }); lines.push(""); }
-    if (r.hasNumeric) {
-      if (r.api && r.api.high >= r.api.base * 0.01) lines.push("API bill: could save roughly " + moneySpan(r.api.low, r.api.high, sym) + " a month on a current " + money(r.api.base) + ".");
-      if (r.sub && r.sub.high >= r.sub.base * 0.01) lines.push("Subscriptions (" + money(r.sub.base) + " a month): could use roughly " + pctSpan(r.sub.low / r.sub.base * 100, r.sub.high / r.sub.base * 100) + " less. The plan price likely stays the same unless you move to a cheaper plan.");
-      lines.push("Confidence: " + confidence(profile).level + ".", "");
-    }
-    r.tips.forEach(function(t, i){ var tx = tipText(t, !!t.api || (!t.sub && !!profile.apiSpend)); lines.push((i + 1) + ". " + tx.title + " - " + tx.why); });
-    var sets = adviceSets(profile);
-    if (sets.ladders.length) { lines.push("", "Cheaper alternatives (lightest to most capable):"); sets.ladders.forEach(function(l){ lines.push("- " + l.name + ": " + l.steps.map(function(s){ return s.name; }).join(" > ")); }); }
-    function advCopy(title, list){ if (!list.length) return; lines.push("", title); list.forEach(function(a, i){ lines.push((i + 1) + ". " + a.title + " - " + a.why + " (potential: " + a.impact + ", effort: " + a.effort + ")"); }); }
-    advCopy("Bigger changes (architecture and workflow):", sets.dev);
-    advCopy("Smarter habits:", sets.hab);
-    lines.push("", "Directional estimates from general rules of thumb. Not guaranteed and not financial advice. Check your provider's current pricing.");
-    var text = lines.join("\n");
-    var msg = $("copyMsg");
+    var text = planText(), msg = $("copyMsg");
     function ok(){ msg.className = "status"; msg.textContent = "Plan copied."; }
     function fail(){ msg.className = "status err"; msg.textContent = "Couldn't copy here. Select the text on the page and copy it."; }
     try {
