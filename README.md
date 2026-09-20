@@ -45,10 +45,8 @@ A static, installable web app (PWA). No build step, no server.
 
 ## The built-in demo
 
-Right under the input box there are two labelled rows of samples:
+Right under the input box, one line reads **Sample:** followed by four equal pills, each with its name on two short lines: **Usage CSV** and **Invoice PDF** (a fictional company's August 2026 bill, about $5,946 of API spend across three models) and **Web app** and **Nightly job** (two fictional apps that show the architecture and workflow advice).
 
-- **Sample bills:** **Usage CSV** and **Invoice PDF**, a fictional company's August 2026 bill (about $5,946 of API spend across three models).
-- **Sample code:** **Web app** and **Nightly job**, two fictional apps that show the architecture and workflow advice.
   - **Web app** is a browser page that calls the AI provider directly. It contains a fake key, resends the whole conversation, has web search on, uses a top-tier model and calls the AI on every keystroke. Expect: a key warning, "call the AI from a server", retrieval instead of sending everything, model routing, and a debounce.
   - **Nightly job** is a Python job run from cron. It has long instructions, four separate AI calls, retries and a tool loop. Expect: "move non-urgent work into a batch pipeline" (naming the provider's batch option), caching, cheaper models for easy work, capped retries and a check that each call is needed.
 

@@ -119,8 +119,9 @@ textarea:focus-visible{outline:none}
 .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .step{border:1.5px solid var(--rule);border-radius:999px;padding:5px 11px;font-size:.92rem}
 .steps i{font-style:normal;color:var(--muted)}
-.trybar{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px 10px;margin:10px 2px 0}
-.trypills{display:flex;flex-wrap:wrap;gap:6px}
+.trybar{display:flex;align-items:center;gap:8px;margin:10px 2px 0}
+.trypills{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.pill.samp{min-height:52px;padding:4px 2px;border-radius:16px;font-size:clamp(11.5px,3.5vw,14px);line-height:1.15;text-align:center;min-width:0}
 .trylbl{font-size:.92rem;font-weight:600;color:var(--muted)}
 .pill{min-height:44px;padding:0 9px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;font-size:.92rem;font-weight:600;cursor:pointer}
 .pill:hover{background:var(--card)}
@@ -320,15 +321,12 @@ details.tune .fields{margin-top:12px}
       <input id="file" type="file" accept=".csv,.tsv,.txt,.md,.pdf,.docx,.doc,.html,.htm,.js,.mjs,.jsx,.ts,.tsx,.py,text/csv,application/pdf" hidden>
     </div>
     <div class="trybar" id="tryBar">
-      <span class="trylbl">Sample bills:</span>
+      <span class="trylbl">Sample:</span>
       <div class="trypills">
-        <button id="demoCsv" class="pill" type="button" aria-label="Run the app on a sample usage export (CSV)">Usage CSV</button>
-        <button id="demoPdf" class="pill" type="button" aria-label="Run the app on a sample invoice (PDF)">Invoice PDF</button>
-      </div>
-      <span class="trylbl">Sample code:</span>
-      <div class="trypills">
-        <button id="demoWeb" class="pill" type="button" aria-label="Run the app on sample web app code">Web app</button>
-        <button id="demoJob" class="pill" type="button" aria-label="Run the app on sample nightly job code">Nightly job</button>
+        <button id="demoCsv" class="pill samp" type="button" aria-label="Run the app on a sample usage export (CSV)">Usage <br>CSV</button>
+        <button id="demoPdf" class="pill samp" type="button" aria-label="Run the app on a sample invoice (PDF)">Invoice <br>PDF</button>
+        <button id="demoWeb" class="pill samp" type="button" aria-label="Run the app on sample web app code">Web <br>app</button>
+        <button id="demoJob" class="pill samp" type="button" aria-label="Run the app on sample nightly job code">Nightly <br>job</button>
       </div>
     </div>
     <p class="small" style="margin:10px 4px 0">Attach a bill, usage export or your app’s code. Files are read on this device and never uploaded.</p>
