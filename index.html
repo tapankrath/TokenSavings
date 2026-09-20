@@ -125,13 +125,15 @@ textarea:focus-visible{outline:none}
 .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .step{border:1.5px solid var(--rule);border-radius:999px;padding:5px 11px;font-size:.92rem}
 .steps i{font-style:normal;color:var(--muted)}
-.trybar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:10px 2px 0}
+.trybar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 8px;margin:10px 2px 0}
 .trylbl{font-size:.92rem;font-weight:600;color:var(--muted)}
-.pill{min-height:44px;padding:0 12px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;font-size:.92rem;font-weight:600;cursor:pointer}
+.pill{min-height:44px;padding:0 10px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;font-size:.92rem;font-weight:600;cursor:pointer}
 .pill:hover{background:var(--card)}
 .demobox{border:1.5px solid var(--moss);background:var(--card);border-radius:12px;padding:12px 14px;margin:0 0 18px;font-size:.95rem}
 .demobox strong{display:block;margin-bottom:4px}
-.demo-actions{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:6px}
+.demo-actions{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:12px}
+.pill.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.demobox .pill{padding:0 14px}
 .lbl{margin:10px 0 2px;font-weight:600;font-size:.92rem}
 .go{flex:none;min-height:48px;padding:0 20px;border-radius:12px;border:0;background:var(--ink);color:var(--paper);font-weight:600;cursor:pointer}
 .link{background:none;border:0;padding:6px 0;color:var(--cobalt);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
@@ -244,7 +246,7 @@ details.tune .fields{margin-top:12px}
       <input id="file" type="file" accept=".csv,.tsv,.txt,.md,.pdf,.docx,.doc,.html,.htm,.js,.mjs,.jsx,.ts,.tsx,.py,text/csv,application/pdf" hidden>
     </div>
     <div class="trybar" id="tryBar">
-      <span class="trylbl">See it work:</span>
+      <span class="trylbl">Try a sample:</span>
       <button id="demoCsv" class="pill" type="button" aria-label="Run the app on a sample usage export (CSV)">Usage CSV</button>
       <button id="demoPdf" class="pill" type="button" aria-label="Run the app on a sample invoice (PDF)">Invoice PDF</button>
     </div>
@@ -331,6 +333,7 @@ details.tune .fields{margin-top:12px}
     <p class="fine">Directional estimates only. Savings are not guaranteed and depend on your provider, plan and how you use AI. Prices and features change, so check your provider's current pricing. This is general information, not financial advice.</p>
   </section>
 </main>
+<div id="demoBar" class="gobar" hidden><button id="demoOwn" class="go" type="button">Try it with your own</button></div>
 <div id="goBar" class="gobar" hidden><button id="goFloat" class="go" type="button">Find savings</button></div>
 
 <script src="catalog.js"></script>
@@ -367,7 +370,8 @@ function fmtMoney(x, sym){
   return sym + (Math.abs(x - Math.round(x)) < 0.005 ? String(Math.round(x)) : x.toFixed(2));
 }
 function listJoin(a){ return a.length <= 1 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
-function orNull(v){ if (v == null || v === "") return null; v = Number(v); return (isFinite(v) && v > 0) ? Math.min(v, 1e9) : null; }
+function cents(x){ return Math.round(x * 100) / 100; }
+function orNull(v){ if (v == null || v === "") return null; v = Number(v); return (isFinite(v) && v > 0) ? cents(Math.min(v, 1e9)) : null; }
 
 function detectTools(t){
   var names = [], seen = {}, vendors = {};
@@ -769,7 +773,7 @@ function analyzeUsageCsv(text){
     if (span >= 27 && span <= 32) factor = 1; else factor = 30.4 / Math.max(1, span);
     if (span < 7) notes.push("Your file covers only " + span + " day" + (span === 1 ? "" : "s") + ", so the monthly figure is a rough projection.");
   } else notes.push("No dates found in the file, so I treated it as one month.");
-  var monthly = tot.cost * factor;
+  var monthly = cents(tot.cost * factor);
 
   var costByTier = {}, modelsArr = [];
   Object.keys(byModel).forEach(function(k){ var bm = byModel[k]; costByTier[bm.tier] = (costByTier[bm.tier] || 0) + bm.cost; modelsArr.push({ name:bm.name, tier:bm.tier, share:bm.cost / tot.cost }); });
@@ -863,7 +867,7 @@ function analyzeDocText(text){
   else found.push("No billing period found, so I treated the amount as one month.");
 
   var spendBase = total != null ? total : modelCost;
-  var monthly = spendBase * factor;
+  var monthly = cents(spendBase * factor);
   var bucket = (apiEvidence && !(subWords && !modelLines && inTok == null && outTok == null)) ? "api" : "sub";
   var tierShare = null, modelsArr = Object.keys(models).map(function(k){ return models[k]; }).sort(function(a, b){ return b.cost - a.cost; });
   if (modelsArr.length) { var cbt = {}; modelsArr.forEach(function(e){ cbt[e.tier] = (cbt[e.tier] || 0) + e.cost; }); tierShare = tierShareFrom(cbt); }
@@ -883,7 +887,7 @@ function analyzeDocText(text){
 /* Folds what a file showed into the profile. The file wins over guesses from typed text. */
 function setAppVolume(n, calls){
   n.callsPerMonth = calls; n.needCalls = false;
-  n.apiSpend = n.appCost.mid * calls;
+  n.apiSpend = cents(n.appCost.mid * calls);
   n.assumptions.unshift("Your call volume is a guess: about " + Math.round(calls).toLocaleString("en-US") + " calls a month.");
   n.found.push("At about " + Math.round(calls).toLocaleString("en-US") + " calls a month, that is roughly " + fmtMoney(n.apiSpend, n.sym) + " a month. Very rough: it depends on your real volume and prompts.");
   return n;
@@ -1646,9 +1650,9 @@ function ladders(p){
     var r = plan(profile), box = $("results"), sym = profile.sym, html = "";
     if (demo) {
       html += '<div class="demobox"><strong>Sample bill: a fictional company, August 2026.</strong>' +
-        'This is what the app shows for a real usage export or invoice. At the top is your estimated savings range. Below that: what to change, cheaper models to try, and bigger architecture or workflow ideas. At the bottom: what I found in the file and the guesses I made.' +
-        '<div class="demo-actions"><button class="link" type="button" data-demo="own">Try it with your own</button>' +
-        '<button class="link" type="button" data-demo="other">See the ' + (demo.kind === "csv" ? "invoice (PDF)" : "usage export (CSV)") + ' sample</button></div></div>';
+        'This is what you would see for a real usage export or invoice: a savings range at the top, then what to change, cheaper models to try and bigger ideas. What I found in the file is at the bottom.' +
+        '<div class="demo-actions"><button class="pill primary" type="button" data-demo="own">Try it with your own</button>' +
+        '<button class="pill" type="button" data-demo="other">See the ' + (demo.kind === "csv" ? "PDF" : "CSV") + ' sample</button></div></div>';
     }
     if (profile.keyExposed) html += '<div class="alertbox"><strong>Heads up: your file appears to contain a secret API key.</strong> Anyone who can open the page or code can copy it and run up your bill. Keep the key on a server instead, and create a new one. I didn\u2019t store or show it.</div>';
     if (profile.appMode && profile.found.length) {
@@ -1737,7 +1741,7 @@ function ladders(p){
     $("t-verb").textContent = api ? "Answers run longer than we need" : "I get longer answers than I need";
   }
   function fillFields(){
-    $("f-api").value = profile.apiSpend || ""; $("f-sub").value = profile.subSpend || "";
+    $("f-api").value = profile.apiSpend ? String(cents(profile.apiSpend)) : ""; $("f-sub").value = profile.subSpend ? String(cents(profile.subSpend)) : "";
     $("l-api").textContent = "API bill (" + profile.sym + "/month)"; $("l-sub").textContent = "Subscriptions (" + profile.sym + "/month)";
     toggleLabels();
     $("lbl-calls").hidden = !profile.appMode;
@@ -1763,6 +1767,7 @@ function ladders(p){
   function showReport(){
     setView("report");
     $("summary").textContent = profile.summary;
+    $("edit").textContent = demo ? "Exit sample" : "Edit";
     $("engine").textContent = "Analyzed on this device." + (profile.fromFile ? " Your file was read on this device and not uploaded." : "");
     var list = $("alist"); list.innerHTML = "";
     if (!profile.assumptions.length) {
@@ -1942,7 +1947,10 @@ function ladders(p){
     if (typeof topEl !== "undefined" && topEl) topEl.classList.remove("condensed");
     tucked = false;
   }
-  $("edit").addEventListener("click", function(){ toLanding(); try { ta.focus({ preventScroll:true }); } catch(e){ ta.focus(); } });
+  $("edit").addEventListener("click", function(){
+    if (demo) { exitDemo(); return; }
+    toLanding(); try { ta.focus({ preventScroll:true }); } catch(e){ ta.focus(); }
+  });
   $("again").addEventListener("click", function(){
     hardStopVoice();
     demo = null; demoPending = null; demoStash = null;
@@ -2006,7 +2014,7 @@ function ladders(p){
     e.preventDefault();
     hardStopVoice();
     pending = null; $("ask").hidden = true; setStatus(""); $("copyMsg").textContent = "";
-    toLanding();
+    if (demo) exitDemo(); else toLanding();
   });
   var topEl = $("top"), tucked = false, barTick = false;
   /* A floating Find savings button appears whenever the main one has scrolled out of view. */
@@ -2017,9 +2025,11 @@ function ladders(p){
       show = !(r.bottom > hb + 4 && r.top < (window.innerHeight || 800) - 4);
     }
     $("goBar").hidden = !show;
+    $("demoBar").hidden = !(demo && !$("report").hidden);
   }
   function queueGoBar(){ if (barTick) return; barTick = true; (window.requestAnimationFrame || setTimeout)(function(){ barTick = false; updateGoBar(); }); }
   $("goFloat").addEventListener("click", function(){ goBtn.click(); });
+  $("demoOwn").addEventListener("click", function(){ exitDemo(); });
   window.addEventListener("resize", queueGoBar);
   updateGoBar();
   window.addEventListener("scroll", function(){

@@ -45,7 +45,9 @@ A static, installable web app (PWA). No build step, no server.
 
 ## The built-in demo
 
-Right under the input box, a one-line strip reads **See it work:** with two buttons, **Usage CSV** and **Invoice PDF**. Tapping one loads a fictional company's August 2026 bill (about $5,946 of API spend across three models), runs the same analysis a real upload gets, and opens the results with a banner that says it is a sample. The banner links to the other sample and to **Try it with your own**, which returns to the landing page and restores anything the person had typed or picked before.
+Right under the input box, a one-line strip reads **Try a sample:** with two buttons, **Usage CSV** and **Invoice PDF**. Tapping one loads a fictional company's August 2026 bill (about $5,946 of API spend across three models), runs the same analysis a real upload gets, and opens the results with a banner that says it is a sample.
+
+While a sample is showing there are four ways back, all of which return to the landing page and restore anything the person had typed or picked before: the **Try it with your own** button in the banner, a **Try it with your own** bar pinned to the bottom of the screen, the **Exit sample** link at the top right (it says **Edit** for normal results), and the logo badge in the header. The banner also has a pill to switch to the other sample.
 
 The sample data is inside index.html (search for `DEMO_CSV` and `DEMO_PDF`, a text string and a base64 string), so the demo works offline and needs no extra files. To change it, replace those two values. The PDF sample needs the bundled PDF reader files (`pdf.min.js` and `pdf.worker.min.js`) to be uploaded, like any PDF.
 
