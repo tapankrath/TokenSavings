@@ -60,8 +60,8 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.5 var(--b
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
 
-.composer{background:var(--card);border:1.5px solid var(--rule);border-radius:16px;padding:12px}
-textarea{width:100%;min-height:140px;resize:vertical;border:0;background:transparent;padding:6px 4px;line-height:1.5;font-size:1.02rem}
+.composer{position:relative;background:var(--card);border:1.5px solid var(--rule);border-radius:16px;padding:12px}
+textarea{width:100%;min-height:140px;resize:vertical;border:0;background:transparent;padding:6px 60px 6px 4px;line-height:1.5;font-size:1.02rem}
 textarea:focus-visible{outline:none}
 .composer:focus-within{border-color:var(--cobalt)}
 .row{display:flex;align-items:center;gap:12px;margin-top:8px}
@@ -107,16 +107,31 @@ textarea:focus-visible{outline:none}
 .top.condensed .top-in{padding-top:7px;padding-bottom:9px}
 @media (prefers-reduced-motion: reduce){.top .hero h1,.top .logo,.top .brand{transition:none}}
 .adv-note{margin:0 0 6px;color:var(--muted);font-size:.9rem}
+.clearbtn{position:absolute;top:8px;right:10px;border:0;background:transparent;color:var(--muted);font-size:.9rem;font-weight:600;padding:6px 8px;border-radius:8px;cursor:pointer}
+.clearbtn:hover{background:var(--paper);color:var(--ink)}
+.gets{margin:18px 0 4px}
+.gets .h2{font-size:1.1rem;margin-bottom:6px}
+.gets ul{margin:0;padding-left:18px;color:var(--muted);font-size:.95rem}
+.gets li{margin:0 0 7px}
+.gets li strong{color:var(--ink)}
+.ladders{margin:0 0 22px}
+.ladder{padding:10px 0;border-top:1px solid var(--rule)}
+.ladder:last-child{border-bottom:1px solid var(--rule)}
+.lname{display:block;font-weight:600;margin-bottom:6px}
+.steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.step{border:1.5px solid var(--rule);border-radius:999px;padding:5px 11px;font-size:.92rem}
+.steps i{font-style:normal;color:var(--muted)}
 .lbl{margin:10px 0 2px;font-weight:600;font-size:.92rem}
 .go{flex:none;min-height:48px;padding:0 20px;border-radius:12px;border:0;background:var(--ink);color:var(--paper);font-weight:600;cursor:pointer}
 .link{background:none;border:0;padding:6px 0;color:var(--cobalt);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .status{min-height:1.5em;margin:12px 2px 0;color:var(--muted);font-size:.95rem}
 .status.err{color:var(--alert)}
+.status:empty{min-height:0;margin:0}
 .ask{margin:14px 0 0;padding:16px;border:1.5px solid var(--moss);border-radius:14px;background:var(--card)}
 .ask p{margin:0 0 10px;font-weight:600}
 .chips{display:flex;flex-direction:column;gap:8px}
 .chips.wrapped{flex-direction:row;flex-wrap:wrap}
-.tryhead{margin:26px 0 8px;font-weight:600}
+.tryhead{margin:14px 0 8px;font-weight:600}
 .chip{text-align:left;background:transparent;border:1.5px solid var(--rule);border-radius:12px;padding:10px 12px;cursor:pointer;line-height:1.4}
 .chips.wrapped .chip{padding:9px 14px;font-weight:500}
 .chip:hover{border-color:var(--cobalt)}
@@ -124,9 +139,6 @@ textarea:focus-visible{outline:none}
 .understood{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:6px}
 .understood p{margin:0;color:var(--muted)}
 .engine{margin:0 0 16px;font-size:.85rem;color:var(--muted)}
-.seg{display:inline-flex;border:1.5px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:20px}
-.seg button{border:0;background:transparent;padding:9px 16px;cursor:pointer;font-weight:500}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 
 .receipt{background:var(--card);padding:22px 20px 20px;border-radius:8px 8px 0 0}
 .rtitle{margin:0 0 4px;color:var(--muted);font-size:.95rem}
@@ -161,15 +173,18 @@ details.how p{margin:8px 0 0}
 .tick input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--moss)}
 
 details.assume,details.opt{border-top:1.5px solid var(--rule);padding-top:14px;margin-bottom:24px}
+details.opt{margin-bottom:8px}
 summary{cursor:pointer;font:700 1.05rem/1.3 var(--display);padding:4px 0}
 .alist{margin:10px 0 16px;padding-left:20px;color:var(--muted)}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fields label,.aiform label{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--muted)}
-.fields input[type=number],.fields select,.aiform input,.aiform select{min-height:44px;border:1.5px solid var(--rule);border-radius:10px;background:var(--card);padding:0 10px;color:var(--ink);width:100%}
-.fields .check{grid-column:1 / -1;flex-direction:row;align-items:center;gap:10px;color:var(--ink);font-size:.95rem;min-height:36px}
-.fields .check input{width:20px;height:20px;accent-color:var(--moss)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
+.fields label{display:flex;flex-direction:column;justify-content:flex-end;gap:4px;font-size:.9rem;color:var(--muted);min-width:0}
+.fields input[type=number],.fields select{min-height:46px;height:46px;border:1.5px solid var(--rule);border-radius:10px;background:var(--card);padding:0 10px;color:var(--ink);width:100%;font-size:16px}
+.fields .check{grid-column:1 / -1;flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;color:var(--ink);font-size:.95rem;min-height:36px;line-height:1.35}
+.fields .check input{width:20px;height:20px;flex:none;accent-color:var(--moss)}
 body[data-aud="everyday"] .dev-only{display:none}
-.aiform{display:grid;gap:10px;margin:12px 0 8px}
+details.tune{margin:16px 0 0}
+details.tune summary{font:600 .95rem/1.3 var(--body);color:var(--ink)}
+details.tune .fields{margin-top:12px}
 .actions{display:flex;gap:10px;flex-wrap:wrap}
 .btn{min-height:46px;padding:0 18px;border-radius:12px;border:1.5px solid var(--ink);background:transparent;font-weight:600;cursor:pointer}
 .btn.primary{background:var(--ink);color:var(--paper)}
@@ -189,7 +204,7 @@ body[data-aud="everyday"] .dev-only{display:none}
     </a>
     <div class="hero" id="hero">
       <h1>Find where your AI money goes.</h1>
-      <p class="lede">Type it, say it, or attach a bill or usage file. Get a plan to cut your subscription, API and token costs, for any AI tool: ChatGPT, Claude, Gemini, Copilot, Cursor and more.</p>
+      <p class="lede">Type it, say it, or attach a bill or your app’s code. Get directional advice on cheaper models, smarter API use and architecture changes, for any AI tool.</p>
     </div>
   </div>
 </header>
@@ -198,6 +213,7 @@ body[data-aud="everyday"] .dev-only{display:none}
   <section id="compose">
     <div class="composer">
       <label for="desc" class="sr">What do you use AI for, and what do you pay?</label>
+      <button id="clearIn" class="clearbtn" type="button" hidden aria-label="Clear the text and attachment">Clear</button>
       <textarea id="desc" placeholder="Example: I pay $20 a month for ChatGPT, and our OpenAI API bill is about $300 a month."></textarea>
       <div id="fileCard" class="attachchip" hidden>
         <svg class="ac-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
@@ -217,7 +233,17 @@ body[data-aud="everyday"] .dev-only{display:none}
       <input id="file" type="file" accept=".csv,.tsv,.txt,.md,.pdf,.docx,.doc,.html,.htm,.js,.mjs,.jsx,.ts,.tsx,.py,text/csv,application/pdf" hidden>
     </div>
     <p class="small" style="margin:8px 4px 0">Attach an invoice, usage export (CSV), document (PDF or Word), or your app’s code (HTML, JavaScript or Python). Files are read on this device and never uploaded.</p>
-    <details class="opt" id="pickBox" style="margin-top:18px">
+    <section class="gets" aria-label="What you will get">
+      <h2 class="h2">What you’ll get</h2>
+      <ul>
+        <li><strong>Cheaper ways to do the same job.</strong> Which model or mode to use for what, so you use fewer tokens for similar results.</li>
+        <li><strong>When and how to trim API costs.</strong> Caching, batching, shorter prompts and answer limits, with rough dollar ranges.</li>
+        <li><strong>Bigger changes for builders.</strong> Model routing, retrieval instead of pasting, saved answers and leaner agent loops.</li>
+        <li><strong>Better habits for everyday use.</strong> Get more from your plan and hit limits less.</li>
+      </ul>
+      <p class="small">Directional advice, not guarantees. Each idea shows how much it could help and how hard it is.</p>
+    </section>
+    <details class="opt" id="pickBox" style="margin-top:14px">
       <summary>Add your platforms and models (optional)</summary>
       <p class="small">Tap the ones you use, then tap a chosen platform to pick its model. This sharpens the advice.</p>
       <div id="selRow" class="selrow" hidden></div>
@@ -234,28 +260,6 @@ body[data-aud="everyday"] .dev-only{display:none}
     <p class="tryhead">Try an example</p>
     <div id="chips" class="chips"></div>
 
-    <details class="opt" id="opt" style="margin-top:28px">
-      <summary>Smarter analysis with an AI provider (optional, experimental)</summary>
-      <p class="small">By default your description is analyzed on this device and never leaves it. To let an AI model read it instead, choose a provider and paste your own API key. The key is saved only in this browser and sent only to that provider. Use a key with a low spend limit.</p>
-      <div class="aiform">
-        <label>Provider
-          <select id="prov"><option value="anthropic">Anthropic (Claude)</option><option value="openai">OpenAI</option></select>
-        </label>
-        <label>Model name
-          <input id="model" type="text" autocomplete="off" autocapitalize="off" spellcheck="false">
-        </label>
-        <label>API key
-          <input id="key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste key">
-        </label>
-        <div class="actions">
-          <button id="saveKey" class="btn" type="button">Save</button>
-          <button id="clearKey" class="link" type="button" hidden>Remove key</button>
-        </div>
-      </div>
-      <p id="keyMsg" class="small" role="status" aria-live="polite"></p>
-      <p class="small">Change the model name if the suggested one has been retired.</p>
-    </details>
-
     <div class="install">
       <button id="install" class="btn primary" type="button" hidden>Install on this device</button>
       <p id="iosHint" class="small" hidden>To install on iPhone: tap Share, then Add to Home Screen.</p>
@@ -268,30 +272,33 @@ body[data-aud="everyday"] .dev-only{display:none}
       <button id="edit" class="link" type="button">Edit</button>
     </div>
     <p id="engine" class="engine"></p>
-    <div class="seg" role="group" aria-label="Explain for">
-      <button type="button" data-aud="everyday" aria-pressed="true">Everyday</button>
-      <button type="button" data-aud="developer" aria-pressed="false">Developer</button>
-    </div>
     <div id="results"></div>
     <details class="assume" open>
       <summary>What I assumed</summary>
       <div id="fbox" hidden><p class="lbl">From your file</p><ul id="flist" class="alist"></ul><p class="lbl">Guesses I made</p></div>
       <ul id="alist" class="alist"></ul>
       <p class="small" style="margin:0 0 12px">Change anything and the plan updates.</p>
-      <div class="fields" id="fields">
-        <label><span id="l-api">API bill per month</span><input id="f-api" type="number" min="0" step="any" inputmode="decimal"></label>
-        <label><span id="l-sub">Subscriptions per month</span><input id="f-sub" type="number" min="0" step="any" inputmode="decimal"></label>
-        <label id="lbl-calls" hidden><span>AI calls per month</span><input id="f-calls" type="number" min="0" step="any" inputmode="numeric"></label>
-        <label>Model size
-          <select id="f-tier"><option value="top">Top-tier</option><option value="mid">Mid-tier</option><option value="small">Small</option></select>
-        </label>
-        <label>Task difficulty
-          <select id="f-diff"><option value="simple">Simple</option><option value="moderate">Moderate</option><option value="hard">Hard</option></select>
-        </label>
-        <label class="dev-only">Repeated part of prompt (%)<input id="f-rep" type="number" min="0" max="100" inputmode="numeric"></label>
-        <label class="check dev-only"><input id="f-rt" type="checkbox"> Results are needed right away</label>
-        <label class="check"><input id="f-hist" type="checkbox"> Long chats or whole documents are resent</label>
-        <label class="check"><input id="f-verb" type="checkbox"> Answers are longer than needed</label>
+      <div id="fieldsWrap">
+        <div class="fields" id="fields">
+          <label><span id="l-api">API bill ($/month)</span><input id="f-api" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label><span id="l-sub">Subscriptions ($/month)</span><input id="f-sub" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label id="lbl-calls" hidden><span>AI calls per month</span><input id="f-calls" type="number" min="0" step="any" inputmode="numeric"></label>
+        </div>
+        <details class="tune" id="tuneBox">
+          <summary>Fine-tune these guesses (optional)</summary>
+          <div class="fields">
+            <label>Model size
+              <select id="f-tier"><option value="top">Top-tier</option><option value="mid">Mid-tier</option><option value="small">Small</option></select>
+            </label>
+            <label>Task difficulty
+              <select id="f-diff"><option value="simple">Simple</option><option value="moderate">Moderate</option><option value="hard">Hard</option></select>
+            </label>
+            <label class="dev-only">Repeated part of prompt (%)<input id="f-rep" type="number" min="0" max="100" inputmode="numeric"></label>
+            <label class="check dev-only"><input id="f-rt" type="checkbox"> <span>Results are needed right away</span></label>
+            <label class="check"><input id="f-hist" type="checkbox"> <span id="t-hist"></span></label>
+            <label class="check"><input id="f-verb" type="checkbox"> <span id="t-verb"></span></label>
+          </div>
+        </details>
       </div>
     </details>
     <div class="actions">
@@ -315,24 +322,12 @@ body[data-aud="everyday"] .dev-only{display:none}
 (function(){
   "use strict";
   var $ = function(id){ return document.getElementById(id); };
-  var STORE = "tcc_ai";
-  var PROVIDERS = {
-    anthropic:{ short:"Claude", model:"claude-haiku-4-5-20251001", prefix:"sk-ant-" },
-    openai:{ short:"OpenAI", model:"gpt-4o-mini", prefix:"sk-" }
-  };
   var EXAMPLES = [
     "I pay $20 a month for ChatGPT and $20 for Claude. I paste long PDFs into chats and keep hitting limits.",
     "I pay $20 a month for ChatGPT Plus. Our OpenAI API bill is about $600 a month for a support bot with a long system prompt and wordy answers.",
     "Our nightly job classifies product reviews on the most expensive model and costs us about $1,500 a month. Results are needed by morning."
   ];
   var ASK = [["Under $30",20],["$30 to $100",60],["$100 to $500",250],["$500 to $2,000",1000],["Over $2,000",4000]];
-  var ERR = {
-    bad_key:"The provider rejected the API key.",
-    rate_limited:"The provider is rate limiting requests.",
-    network:"Couldn't reach the provider.",
-    upstream_error:"The provider returned an error.",
-    invalid_json:"The provider's answer wasn't readable."
-  };
 
 /* ===== Engine v3: dollars in, dollars out. API bills + subscriptions. Runs fully on the device. ===== */
 var PRICES = { top:{i:15,o:75,label:"top-tier"}, mid:{i:3,o:15,label:"mid-tier"}, small:{i:0.8,o:4,label:"small"} };
@@ -386,7 +381,7 @@ function tierOf(name){
 }
 
 /* ---------- money in plain text: split into API, subscription and unlabeled ---------- */
-var CLAUSE_BREAK = /[.;!?\n]|,\s|\s(?:and|plus|but)\s/;
+var CLAUSE_BREAK = /[.;!?\n]|,\s|\s(?:and|but)\s|\splus\s(?=[$\u00A3\u20AC\d])/;
 function clauseAround(t, start, end){
   var left = t.slice(0, start), right = t.slice(end);
   var re = new RegExp(CLAUSE_BREAK.source, "gi"), m, lm = 0;
@@ -1260,11 +1255,12 @@ var ADVICE = [
     why:function(){ return "Most tools and providers show usage or limits in settings. A quick weekly look shows what actually uses your allowance and what does not."; } }
 ];
 /* Returns the most relevant items for the audience, best first. */
-function advise(p, dev, limit){
+function advise(p, dev, limit, exclude){
   var pls = inferPlatforms(p), out = [];
   ADVICE.forEach(function(a){
     if (a.who === "dev" && !dev) return;
     if (a.who === "everyday" && dev) return;
+    if (exclude && exclude.indexOf(a.id) >= 0) return;
     var s = a.score(p, pls);
     if (s > 0) out.push({ id:a.id, score:s, effort:a.effort, impact:a.impact,
       title:typeof a.title === "function" ? a.title(p, pls) : a.title, why:a.why(p, pls) });
@@ -1273,8 +1269,26 @@ function advise(p, dev, limit){
   return out.slice(0, limit || 5);
 }
 
+/* Cheaper alternatives: for each platform someone uses, the model options from lightest to most capable. */
+function ladders(p){
+  var out = [];
+  inferPlatforms(p).forEach(function(pl){
+    var steps = [], seen = {};
+    if (pl.ladder) {
+      ["small", "mid", "top"].forEach(function(t){ var nm = pl.ladder[t]; if (nm && !seen[nm]) { seen[nm] = 1; steps.push({ tier:t, name:nm }); } });
+    } else if (pl.menu && (pl.kinds.indexOf("app") >= 0 || pl.kinds.indexOf("coding") >= 0)) {
+      ["small", "mid", "top"].forEach(function(t){
+        var m = pl.menu.filter(function(x){ return x.tier === t; })[0];
+        if (m && !seen[m.n]) { seen[m.n] = 1; steps.push({ tier:t, name:m.n }); }
+      });
+    }
+    if (steps.length >= 2) out.push({ name:pl.short || pl.name, kind:(pl.kinds.indexOf("api") >= 0 || pl.kinds.indexOf("cloud") >= 0) ? "api" : "app", steps:steps });
+  });
+  return out.slice(0, 3);
+}
 
-  var ctl = null, profile = null, busy = false, engineUsed = "local", fallbackNote = "", pending = null;
+
+  var profile = null, pending = null;
   var ta = $("desc"), statusEl = $("status"), goBtn = $("go");
   function setGoLabel(x){ goBtn.textContent = x; $("goFloat").textContent = x; }
   var ua = navigator.userAgent || "";
@@ -1284,31 +1298,6 @@ function advise(p, dev, limit){
   function esc(s){ var d = document.createElement("div"); d.textContent = String(s); return d.innerHTML; }
   function money(x){ return fmtMoney(x, profile ? profile.sym : "$"); }
   function setStatus(msg, isErr){ statusEl.textContent = msg || ""; statusEl.className = "status" + (isErr ? " err" : ""); }
-
-  /* ---------- optional AI settings (kept only in this browser) ---------- */
-  function getAI(){ try { var v = JSON.parse(localStorage.getItem(STORE) || "null"); return (v && v.key && PROVIDERS[v.provider]) ? v : null; } catch(e){ return null; } }
-  function putAI(v){ try { if (v) localStorage.setItem(STORE, JSON.stringify(v)); else localStorage.removeItem(STORE); return true; } catch(e){ return false; } }
-  function refreshAIUI(){
-    var cfg = getAI();
-    $("prov").value = cfg ? cfg.provider : $("prov").value || "anthropic";
-    $("model").value = cfg ? cfg.model : PROVIDERS[$("prov").value].model;
-    $("clearKey").hidden = !cfg;
-    $("key").value = "";
-    $("key").placeholder = cfg ? "Key saved. Paste a new one to replace it." : "Paste key";
-    $("keyMsg").textContent = cfg ? PROVIDERS[cfg.provider].short + " analysis is on. If it fails, the built-in analysis takes over." : "AI-provider analysis is off. Using the built-in analysis.";
-  }
-  $("prov").addEventListener("change", function(){ $("model").value = PROVIDERS[$("prov").value].model; });
-  $("saveKey").addEventListener("click", function(){
-    var prov = $("prov").value, v = $("key").value.trim(), model = $("model").value.trim() || PROVIDERS[prov].model;
-    var existing = getAI();
-    if (!v && existing && existing.provider === prov) v = existing.key;
-    if (!v) { $("keyMsg").textContent = "Paste a key first."; return; }
-    if (v.indexOf(PROVIDERS[prov].prefix) !== 0) { $("keyMsg").textContent = "That doesn't look like a key for this provider. It should start with " + PROVIDERS[prov].prefix; return; }
-    if (!putAI({ provider:prov, key:v, model:model })) { $("keyMsg").textContent = "This browser blocked saving. The built-in analysis stays on."; return; }
-    refreshAIUI();
-  });
-  $("clearKey").addEventListener("click", function(){ putAI(null); refreshAIUI(); });
-  refreshAIUI();
 
   /* ---------- platforms and models ---------- */
   var picks = [], activeTab = "apps";
@@ -1378,8 +1367,20 @@ function advise(p, dev, limit){
   EXAMPLES.forEach(function(t){
     var b = document.createElement("button");
     b.type = "button"; b.className = "chip"; b.textContent = t;
-    b.addEventListener("click", function(){ ta.value = t; ta.focus(); setStatus(""); });
+    b.addEventListener("click", function(){ setText(t); ta.focus(); setStatus(""); });
     $("chips").appendChild(b);
+  });
+
+  /* ---------- clear the input box (text and attachment) ---------- */
+  function updateClear(){
+    var has = ta.value.trim().length > 0 || (typeof fileState !== "undefined" && !!fileState);
+    $("clearIn").hidden = !has;
+  }
+  function setText(v){ ta.value = v; updateClear(); }
+  ta.addEventListener("input", updateClear);
+  $("clearIn").addEventListener("click", function(){
+    hardStopVoice(); setText(""); fileState = null; renderFileCard();
+    pending = null; $("ask").hidden = true; setStatus(""); updateGoBar();
   });
 
   /* ---------- voice: keeps listening until you tap stop ---------- */
@@ -1432,7 +1433,7 @@ function advise(p, dev, limit){
       run.ended = true;
       var got = run.heard.trim();
       liveHeard = "";
-      if (got) { committed = joinText(committed, got); ta.value = committed; emptyRuns = 0; }
+      if (got) { committed = joinText(committed, got); setText(committed); emptyRuns = 0; }
       else emptyRuns++;
       if (run.err === "language-not-supported" && !lang) { rec = null; launchRun(id, "en-US"); return; }
       if (vstate === "listening" && !FATAL.test(run.err) && (Date.now() - startedAt) < MAX_MS && emptyRuns < MAX_EMPTY) {
@@ -1452,7 +1453,7 @@ function advise(p, dev, limit){
         var s = "";
         for (var i = 0; i < e.results.length; i++) s += e.results[i][0].transcript + " ";
         run.heard = s; liveHeard = s;
-        ta.value = joinText(committed, s);
+        setText(joinText(committed, s));
         if (vstate === "listening") setStatus("Got it. Keep talking, or tap the mic when you're done.");
       };
       r.onerror = function(e){
@@ -1488,54 +1489,6 @@ function advise(p, dev, limit){
   document.addEventListener("visibilitychange", function(){
     if (document.hidden && vstate !== "idle") { hardStopVoice(); setStatus("Voice paused. Tap the mic to add more."); }
   });
-
-  /* ---------- optional AI extraction (any provider) ---------- */
-  function buildPrompt(text){
-    return "You read a person's description of how they use AI tools and what they pay, so a savings calculator can run. Reply with only one JSON object and no other text.\n\n" +
-      "Description:\n\"\"\"\n" + text + "\n\"\"\"\n\n" +
-      "JSON fields:\n" +
-      "- relevant (boolean): false if the description is not about using AI tools, chatbots or AI APIs.\n" +
-      "- audience (\"everyday\" or \"developer\"): \"developer\" if they call an API or build a product, else \"everyday\".\n" +
-      "- summary (string): one plain sentence restating what they use and pay, max 25 words.\n" +
-      "- monthly_api_spend (number or null): money per month on pay-per-use or API usage. Add up amounts, convert days, weeks and years to months. null if none is given.\n" +
-      "- monthly_subscription_spend (number or null): money per month on flat subscriptions and plans. Multiply per-seat prices by the number of seats if stated. null if none is given.\n" +
-      "- currency (\"$\", \"\u00A3\" or \"\u20AC\"): the currency symbol used; \"$\" if unclear.\n" +
-      "- billing (\"subscription\" or \"usage\"): where to put an amount that is not clearly one or the other; usage = pay per use or API bill.\n" +
-      "- tools (array of strings): names of the AI tools or providers mentioned, such as ChatGPT, Claude, Gemini, Cursor.\n" +
-      "- current_tier (\"top\", \"mid\", \"small\" or \"unknown\"): top = largest flagship model, mid = balanced, small = cheapest and fastest.\n" +
-      "- task_difficulty (\"simple\", \"moderate\" or \"hard\"): simple = classification, extraction, short answers, rewrites; hard = complex reasoning, difficult coding, research.\n" +
-      "- realtime_needed (boolean): false only if results can wait (nightly jobs, overnight, bulk).\n" +
-      "- repeated_prefix_share (number from 0 to 1): share of each request that is identical every time, such as the same instructions or documents.\n" +
-      "- long_history (boolean): true if long chats or history are resent each turn.\n" +
-      "- sends_whole_documents (boolean): true if whole PDFs, files or logs are pasted or sent.\n" +
-      "- verbose_outputs (boolean): true if they mention long, wordy or unneeded answers.\n" +
-      "- assumptions (array of strings): everything you had to guess, each as one short sentence.\n\n" +
-      "Rules: use numbers, not strings, for numeric fields. Do not invent amounts. When something else is not stated, choose a conservative typical value and list it in assumptions.";
-  }
-  async function aiExtract(text, cfg, signal){
-    var url, headers = { "content-type":"application/json" }, body;
-    if (cfg.provider === "anthropic") {
-      url = "https://api.anthropic.com/v1/messages";
-      headers["x-api-key"] = cfg.key;
-      headers["anthropic-version"] = "2023-06-01";
-      headers["anthropic-dangerous-direct-browser-access"] = "true";
-      body = { model:cfg.model, max_tokens:1000, messages:[{ role:"user", content:buildPrompt(text) }] };
-    } else {
-      url = "https://api.openai.com/v1/chat/completions";
-      headers["authorization"] = "Bearer " + cfg.key;
-      body = { model:cfg.model, messages:[{ role:"user", content:buildPrompt(text) }], response_format:{ type:"json_object" } };
-    }
-    var res;
-    try { res = await fetch(url, { method:"POST", signal:signal, headers:headers, body:JSON.stringify(body) }); }
-    catch(e){ if (e && e.name === "AbortError") throw { code:"cancelled" }; throw { code:"network" }; }
-    if (!res.ok) throw { code: (res.status === 401 || res.status === 403) ? "bad_key" : (res.status === 429 ? "rate_limited" : "upstream_error") };
-    var data = await res.json(), out = "";
-    if (cfg.provider === "anthropic") out = (data.content || []).map(function(b){ return b.text || ""; }).join("");
-    else out = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
-    var m = out.match(/\{[\s\S]*\}/);
-    if (!m) throw { code:"invalid_json" };
-    try { return JSON.parse(m[0]); } catch(e){ throw { code:"invalid_json" }; }
-  }
 
   /* ---------- tip copy ---------- */
   var COPY = {
@@ -1662,9 +1615,15 @@ function advise(p, dev, limit){
   }
 
   /* ---------- rendering ---------- */
+  /* Which advice fits: builders see architecture, plan users see habits, mixed users see both without repeats. */
+  function adviceSets(p){
+    var showDev = !!(p.apiSpend || p.appMode), showHab = !!p.subSpend || !showDev;
+    var d = showDev ? advise(p, true, 5) : [];
+    var h = showHab ? advise(p, false, showDev ? 3 : 4, d.map(function(a){ return a.id; })) : [];
+    return { dev:d, hab:h, ladders:ladders(p) };
+  }
   function renderResults(){
-    var dev = profile.audience === "developer";
-    document.body.setAttribute("data-aud", profile.audience);
+    document.body.setAttribute("data-aud", profile.apiSpend ? "developer" : "everyday");
     var r = plan(profile), box = $("results"), sym = profile.sym, html = "";
     if (profile.keyExposed) html += '<div class="alertbox"><strong>Heads up: your file appears to contain a secret API key.</strong> Anyone who can open the page or code can copy it and run up your bill. Keep the key on a server instead, and create a new one. I didn\u2019t store or show it.</div>';
     if (profile.appMode && profile.found.length) {
@@ -1711,7 +1670,7 @@ function advise(p, dev, limit){
     if (r.tips.length) {
       html += '<h2 class="h2">' + (r.hasNumeric ? "What to change" : "Also worth checking") + '</h2><ol class="tips">';
       r.tips.forEach(function(t, i){
-        var tx = tipText(t, dev), chips = [];
+        var tx = tipText(t, !!t.api || (!t.sub && !!profile.apiSpend)), chips = [];
         if (t.api) chips.push("Could save roughly " + moneySpan(t.api.low, t.api.high, sym) + " a month" + (profile.subSpend ? " on your API bill" : ""));
         if (t.sub) chips.push("Roughly " + pctSpan(t.sub.low / profile.subSpend * 100, t.sub.high / profile.subSpend * 100) + " less usage" + (profile.apiSpend ? " on your plans" : ""));
         var chipHtml = chips.length ? chips.map(function(c){ return '<span class="save">' + esc(c) + '</span>'; }).join("") : '<span class="save soft">Savings vary</span>';
@@ -1722,22 +1681,40 @@ function advise(p, dev, limit){
       });
       html += "</ol>";
     }
-    var adv = advise(profile, dev, dev ? 5 : 4);
-    if (adv.length) {
-      html += '<h2 class="h2" style="margin-top:8px">' + (dev ? "Bigger changes: architecture and workflow" : "Smarter habits for your tools") + '</h2>' +
+    var sets = adviceSets(profile);
+    if (sets.ladders.length) {
+      html += '<h2 class="h2" style="margin-top:8px">Cheaper alternatives to try</h2>' +
+        '<p class="adv-note">Left is lightest and cheapest, right is most capable and most expensive. Start on the lightest option that does the job and move right only when the result isn\u2019t good enough. Lighter options usually cost less per request and produce less hidden \u201Cthinking\u201D text.</p><div class="ladders">';
+      sets.ladders.forEach(function(l){
+        html += '<div class="ladder"><span class="lname">' + esc(l.name) + '</span><span class="steps">' +
+          l.steps.map(function(s){ return '<span class="step">' + esc(s.name) + '</span>'; }).join("<i>\u2192</i>") + '</span></div>';
+      });
+      html += "</div>";
+    }
+    function advBlock(title, list){
+      var h = '<h2 class="h2" style="margin-top:8px">' + title + '</h2>' +
         '<p class="adv-note">Directional ideas, not promises. Try one at a time and check the result. \u201CPotential\u201D is how much it could help in a typical case.</p><ol class="tips adv">';
-      adv.forEach(function(a){
-        html += '<li class="tip"><h3>' + esc(a.title) + '</h3><p>' + esc(a.why) + '</p>' +
+      list.forEach(function(a){
+        h += '<li class="tip"><h3>' + esc(a.title) + '</h3><p>' + esc(a.why) + '</p>' +
           '<p class="meta"><span class="save' + (a.impact === "High" ? "" : " soft") + '">Potential: ' + a.impact + '</span><span>' + a.effort + ' effort</span></p></li>';
       });
-      html += "</ol>";
+      return h + "</ol>";
     }
+    if (sets.dev.length) html += advBlock("Bigger changes: architecture and workflow", sets.dev);
+    if (sets.hab.length) html += advBlock("Smarter habits for your tools", sets.hab);
     box.innerHTML = html;
     return r;
   }
+  function toggleLabels(){
+    var api = !!profile.apiSpend;
+    document.body.setAttribute("data-aud", api ? "developer" : "everyday");
+    $("t-hist").textContent = api ? "We send long conversations or whole documents with every request" : "I keep long chats going or attach big documents";
+    $("t-verb").textContent = api ? "Answers run longer than we need" : "I get longer answers than I need";
+  }
   function fillFields(){
     $("f-api").value = profile.apiSpend || ""; $("f-sub").value = profile.subSpend || "";
-    $("l-api").textContent = "API bill per month (" + profile.sym + ")"; $("l-sub").textContent = "Subscriptions per month (" + profile.sym + ")";
+    $("l-api").textContent = "API bill (" + profile.sym + "/month)"; $("l-sub").textContent = "Subscriptions (" + profile.sym + "/month)";
+    toggleLabels();
     $("lbl-calls").hidden = !profile.appMode;
     $("f-calls").value = (profile.appMode && profile.apiSpend && profile.appCost) ? Math.round(profile.apiSpend / profile.appCost.mid) : "";
     $("f-tier").value = profile.tier; $("f-diff").value = profile.diff;
@@ -1756,11 +1733,12 @@ function advise(p, dev, limit){
     profile.rep = num($("f-rep").value, profile.rep * 100, 0, 100) / 100;
     profile.realtime = $("f-rt").checked; profile.hist = $("f-hist").checked; profile.verb = $("f-verb").checked;
     if (profile.appMode && profile.appCost && profile.apiSpend && !(target && target.id === "f-calls")) $("f-calls").value = Math.round(profile.apiSpend / profile.appCost.mid);
+    toggleLabels();
   }
   function showReport(){
     setView("report");
     $("summary").textContent = profile.summary;
-    $("engine").textContent = (engineUsed === "local" ? "Analyzed on this device." : "Analyzed with " + engineUsed + ".") + (fallbackNote ? " " + fallbackNote : "") + (profile.fromFile ? " Your file was read on this device and not uploaded." : "");
+    $("engine").textContent = "Analyzed on this device." + (profile.fromFile ? " Your file was read on this device and not uploaded." : "");
     var list = $("alist"); list.innerHTML = "";
     if (!profile.assumptions.length) {
       var li0 = document.createElement("li"); li0.textContent = "I used only what you told me."; list.appendChild(li0);
@@ -1771,9 +1749,6 @@ function advise(p, dev, limit){
       fb.hidden = false;
       profile.found.forEach(function(a){ var li = document.createElement("li"); li.textContent = a; fl.appendChild(li); });
     } else fb.hidden = true;
-    Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function(b){
-      b.setAttribute("aria-pressed", b.getAttribute("data-aud") === profile.audience ? "true" : "false");
-    });
     fillFields(); renderResults();
     window.scrollTo(0, 0);
   }
@@ -1783,7 +1758,7 @@ function advise(p, dev, limit){
     if (typeof updateGoBar === "function") updateGoBar();
   }
   function finish(n){
-    if (engineUsed === "local" || !n.summary) n.summary = makeSummary(n);
+    n.summary = makeSummary(n);
     profile = n; pending = null; $("ask").hidden = true; setStatus(""); showReport();
   }
 
@@ -1812,6 +1787,7 @@ function advise(p, dev, limit){
   }
   function renderFileCard(){
     var c = $("fileCard");
+    updateClear();
     if (!fileState) { c.hidden = true; return; }
     c.hidden = false; c.classList.toggle("err", !!fileState.error);
     $("fileName").textContent = fileState.name;
@@ -1900,17 +1876,8 @@ function advise(p, dev, limit){
     else if (k === "batch") profile.realtime = !on;
     fillFields(); renderResults();
   });
-  $("fields").addEventListener("input", function(e){ readFields(e.target); renderResults(); });
-  $("fields").addEventListener("change", function(e){ readFields(e.target); renderResults(); });
-  Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function(b){
-    b.addEventListener("click", function(){
-      profile.audience = b.getAttribute("data-aud");
-      Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function(x){
-        x.setAttribute("aria-pressed", x === b ? "true" : "false");
-      });
-      renderResults();
-    });
-  });
+  $("fieldsWrap").addEventListener("input", function(e){ readFields(e.target); renderResults(); });
+  $("fieldsWrap").addEventListener("change", function(e){ readFields(e.target); renderResults(); });
   /* Back to the top of the landing screen with the header expanded. */
   function toLanding(){
     setView("compose");
@@ -1921,7 +1888,7 @@ function advise(p, dev, limit){
   $("edit").addEventListener("click", function(){ toLanding(); try { ta.focus({ preventScroll:true }); } catch(e){ ta.focus(); } });
   $("again").addEventListener("click", function(){
     hardStopVoice();
-    ta.value = ""; profile = null; pending = null;
+    setText(""); profile = null; pending = null;
     picks = []; activeTab = "apps"; renderPicks(); $("pickBox").open = false;
     fileState = null; renderFileCard();
     $("ask").hidden = true; setStatus(""); $("copyMsg").textContent = "";
@@ -1929,7 +1896,7 @@ function advise(p, dev, limit){
   });
 
   $("copy").addEventListener("click", function(){
-    var dev = profile.audience === "developer", sym = profile.sym;
+    var sym = profile.sym;
     var r = plan(profile);
     var lines = ["Token Savings Coach: directional estimate", profile.summary, ""];
     if (profile.keyExposed) lines.push("Warning: the file appears to contain a secret API key. Keep it on a server and create a new one.", "");
@@ -1939,9 +1906,12 @@ function advise(p, dev, limit){
       if (r.sub && r.sub.high >= r.sub.base * 0.01) lines.push("Subscriptions (" + money(r.sub.base) + " a month): could use roughly " + pctSpan(r.sub.low / r.sub.base * 100, r.sub.high / r.sub.base * 100) + " less. The plan price likely stays the same unless you move to a cheaper plan.");
       lines.push("Confidence: " + confidence(profile).level + ".", "");
     }
-    r.tips.forEach(function(t, i){ var tx = tipText(t, dev); lines.push((i + 1) + ". " + tx.title + " - " + tx.why); });
-    var advCopy = advise(profile, dev, dev ? 5 : 4);
-    if (advCopy.length) { lines.push("", dev ? "Bigger changes (architecture and workflow):" : "Smarter habits:"); advCopy.forEach(function(a, i){ lines.push((i + 1) + ". " + a.title + " - " + a.why + " (potential: " + a.impact + ", effort: " + a.effort + ")"); }); }
+    r.tips.forEach(function(t, i){ var tx = tipText(t, !!t.api || (!t.sub && !!profile.apiSpend)); lines.push((i + 1) + ". " + tx.title + " - " + tx.why); });
+    var sets = adviceSets(profile);
+    if (sets.ladders.length) { lines.push("", "Cheaper alternatives (lightest to most capable):"); sets.ladders.forEach(function(l){ lines.push("- " + l.name + ": " + l.steps.map(function(s){ return s.name; }).join(" > ")); }); }
+    function advCopy(title, list){ if (!list.length) return; lines.push("", title); list.forEach(function(a, i){ lines.push((i + 1) + ". " + a.title + " - " + a.why + " (potential: " + a.impact + ", effort: " + a.effort + ")"); }); }
+    advCopy("Bigger changes (architecture and workflow):", sets.dev);
+    advCopy("Smarter habits:", sets.hab);
     lines.push("", "Directional estimates from general rules of thumb. Not guaranteed and not financial advice. Check your provider's current pricing.");
     var text = lines.join("\n");
     var msg = $("copyMsg");
@@ -1952,8 +1922,7 @@ function advise(p, dev, limit){
     } catch(e){ fail(); }
   });
 
-  goBtn.addEventListener("click", async function(){
-    if (busy) { if (ctl) ctl.abort(); return; }
+  goBtn.addEventListener("click", function(){
     if (fileState && fileState.busy) { setStatus("Still reading your file\u2026"); return; }
     var text = ta.value.trim();
     var fileFacts = (fileState && fileState.facts) ? fileState.facts : null;
@@ -1961,23 +1930,7 @@ function advise(p, dev, limit){
     if (text.length < 15 && !fileFacts && !fileDoc && !picks.length) { setStatus("Add a sentence or two about what you use AI for and what you pay, or attach a bill or usage file.", true); return; }
     hardStopVoice();
     $("ask").hidden = true; pending = null;
-    var cfg = getAI(), raw = null;
-    engineUsed = "local"; fallbackNote = "";
-    if (cfg && fileDoc) { cfg = null; fallbackNote = "Used the built-in analysis so your document stays on this device."; }
-    if (cfg && text.length >= 15) {
-      busy = true; ctl = new AbortController();
-      setGoLabel("Cancel");
-      setStatus("Asking " + PROVIDERS[cfg.provider].short + "\u2026");
-      try {
-        raw = await aiExtract(text, cfg, ctl.signal);
-        engineUsed = PROVIDERS[cfg.provider].short;
-      } catch(e){
-        if (e && e.code === "cancelled") { busy = false; ctl = null; setGoLabel("Find savings"); setStatus(""); return; }
-        fallbackNote = (ERR[e && e.code] || ERR.upstream_error) + " Used the built-in analysis instead.";
-      }
-      busy = false; ctl = null; setGoLabel("Find savings");
-    }
-    if (!raw) raw = localExtract(joinText(text, fileDoc.slice(0, 4000)));
+    var raw = localExtract(joinText(text, fileDoc.slice(0, 4000)));
     var n = normalize(raw);
     if (fileFacts) applyFacts(n, fileFacts);
     applyPicks(n, picks);

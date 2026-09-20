@@ -39,10 +39,15 @@ A static, installable web app (PWA). No build step, no server.
   - **Your app's code (HTML, JavaScript, TypeScript or Python):** finds the AI provider and model, the size of the fixed instructions, whether answers are capped, whether chat history is resent, whether caching, batching, web search or images are used, and how many places call an AI provider. It estimates the cost per call and asks roughly how many calls you make a month. It also warns if it sees what looks like a secret API key (the key is never shown or stored). This is pattern matching on the code, not a full analysis, so check the "What I found in your app" list.
   - **PDF, Word or text that is not a bill** is read as a description of how you use AI.
   - **Limits:** one file at a time, up to 25 MB. Old `.doc` files and scanned PDFs (pictures of text) can't be read. Code in other languages isn't analyzed yet. Provider export formats differ, so check the "From your file" list on the report.
-  - **Privacy:** files are read in the browser and never uploaded. Only the numbers found in a file are used. If you turn on an AI provider, your typed text can be sent to it, but file contents are not.
-- Your description is analyzed on the device by default. Nothing is sent anywhere.
-- Optional and experimental: under "Smarter analysis with an AI provider", choose Anthropic or OpenAI, paste your own API key, and that model reads your typed description instead. The key stays in that browser's local storage and goes only to the provider you chose. Use a key with a low spend limit. If the call fails, the app falls back to the on-device analysis. This path has not been tested with live keys, so change the model name if the suggested one is retired.
+  - **Privacy:** files are read in the browser and never uploaded. Only the numbers found in a file are used.
+- No account and no API key are needed. Everything is analyzed on the device, and nothing you type or attach is sent anywhere. A smarter server-side analysis can be added later, when there is a backend.
 - Savings are estimated from general rules of thumb (shares of your bill), not from any provider's price list. Tune them in the constants at the top of the script in index.html (`IN_SHARE`, `TRIM_CUT`, `CAP_CUT`, `CACHE_SAVE`, `BATCH_CUT`, `MOVE_SHARE`, `RANGE`). When a file has tokens but no cost, the illustrative `PRICES` table is used, so keep it current.
+
+## The screens
+
+- **Landing:** a short "What you'll get" explanation, the input box (type, speak or attach; a **Clear** button empties the text and attachment), an optional platform picker, and examples.
+- **Results:** dollar ranges for changes you can make, **Cheaper alternatives to try** (each platform's models from lightest to most capable), then advice matched to your situation. People with an API bill see **Bigger changes: architecture and workflow**. People on plans see **Smarter habits for your tools**. Someone with both sees both, without repeats.
+- **What I assumed:** the two money fields (API bill and subscriptions) are always shown. Model size, task difficulty and the yes/no questions are tucked into **Fine-tune these guesses**, and are worded to match your situation.
 
 ## Platforms, models and recommendations
 
