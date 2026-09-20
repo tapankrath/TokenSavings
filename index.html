@@ -90,16 +90,6 @@ textarea:focus-visible{outline:none}
 .findbox{background:var(--card);border-radius:12px;padding:16px 18px;margin-bottom:18px}
 .findbox ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.tabs{display:flex;gap:6px;overflow-x:auto;margin:12px 0 10px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
-.tab{flex:none;border:1.5px solid var(--rule);background:transparent;border-radius:999px;padding:7px 13px;font-weight:500;font-size:.95rem;cursor:pointer;white-space:nowrap}
-.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.chips.compact .chip{padding:7px 12px;font-size:.95rem}
-.selrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
-.selchip{display:inline-flex;align-items:center;border:1.5px solid var(--moss);border-radius:999px;background:var(--moss-soft);overflow:hidden}
-.selchip label{position:relative;display:inline-flex;align-items:center;gap:5px;padding:7px 2px 7px 12px;font-weight:600;font-size:.92rem;cursor:pointer}
-.selchip .caret{font-size:.7rem;color:var(--muted)}
-.selchip select{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:16px;cursor:pointer}
-.selchip .x{border:0;background:transparent;width:34px;height:36px;font-size:1.25rem;line-height:1;color:var(--muted);cursor:pointer}
 .gobar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;padding:14px 18px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--paper) 62%,transparent);pointer-events:none}
 .gobar .go{pointer-events:auto;width:100%;max-width:604px;min-height:52px;font-size:1.02rem;box-shadow:0 6px 18px rgba(0,0,0,.2)}
 .top .hero h1,.top .logo,.top .brand{transition:font-size .2s ease,width .2s ease,height .2s ease}
@@ -194,6 +184,26 @@ ol.steps-list li{margin:0 0 6px}
 .livebox.flash{animation:lvflash .7s ease}
 @keyframes lvflash{from{background:var(--moss-soft)}to{background:var(--card)}}
 @media (prefers-reduced-motion: reduce){.livebox.flash{animation:none}}
+.pickcard{background:var(--card);border:1.5px solid var(--rule);border-radius:18px;padding:12px;margin-top:10px}
+.catgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.catcard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:88px;padding:10px 8px;border:1.5px solid var(--rule);border-radius:14px;background:var(--paper);color:var(--ink);font-weight:600;font-size:.95rem;line-height:1.2;text-align:center;cursor:pointer}
+.catcard.open{border:2px solid var(--ink);background:var(--card)}
+.catcount{min-width:26px;height:26px;padding:0 6px;border-radius:999px;border:1.5px solid var(--moss);background:var(--moss-soft);color:var(--moss);font-weight:700;font-size:.9rem;display:grid;place-items:center}
+.catcount.ph{visibility:hidden}
+.chev{color:var(--muted);transition:transform .2s ease}
+.catcard.open .chev{transform:rotate(180deg)}
+.optpanel{margin-top:10px;background:var(--paper);border:1.5px solid var(--rule);border-radius:14px;padding:4px 14px}
+.optrow{padding:8px 0;border-bottom:1px solid var(--rule)}
+.optrow:last-child{border-bottom:0}
+.optlabel{display:flex;align-items:center;gap:14px;min-height:44px;font-weight:600;font-size:1.02rem;cursor:pointer}
+.optrow input[type=checkbox]{-webkit-appearance:none;appearance:none;flex:none;width:26px;height:26px;margin:0;border:2px solid var(--rule);border-radius:7px;background:var(--card);cursor:pointer;display:grid;place-items:center}
+.optrow input[type=checkbox]:checked{background:var(--moss);border-color:var(--moss)}
+.optrow input[type=checkbox]:checked::after{content:"";width:6px;height:12px;border:solid var(--card);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.optmodel{display:flex;align-items:center;gap:10px;margin:0 0 6px 40px;font-size:.88rem;color:var(--muted)}
+.optmodel select{flex:1;min-width:0;min-height:42px;border:1.5px solid var(--rule);border-radius:10px;background:var(--card);padding:0 8px;color:var(--ink);font-size:16px}
+.picksum{margin:12px 2px 0;font-size:.92rem;color:var(--muted)}
+.picksum strong{color:var(--ink)}
+.pickgo{width:100%;margin-top:12px}
 .lbl{margin:10px 0 2px;font-weight:600;font-size:.92rem}
 .go{flex:none;min-height:48px;padding:0 20px;border-radius:12px;border:0;background:var(--ink);color:var(--paper);font-weight:600;cursor:pointer}
 .link{background:none;border:0;padding:6px 0;color:var(--cobalt);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
@@ -333,10 +343,8 @@ details.tune .fields{margin-top:12px}
     </section>
     <details class="opt" id="pickBox" style="margin-top:14px">
       <summary>Add your platforms and models (optional)</summary>
-      <p class="small">Tap the ones you use, then tap a chosen platform to pick its model. This sharpens the advice.</p>
-      <div id="selRow" class="selrow" hidden></div>
-      <div id="platTabs" class="tabs" role="tablist" aria-label="Kinds of platform"></div>
-      <div id="platChips" class="chips wrapped compact"></div>
+      <p class="small">Open a category and tick what you use. Tick a platform to also choose its model. This sharpens the advice.</p>
+      <div id="pickHostLand"></div>
     </details>
     <p id="status" class="status" role="status" aria-live="polite"></p>
 
@@ -398,6 +406,10 @@ details.tune .fields{margin-top:12px}
           </div>
         </details>
       </div>
+      <details class="tune" id="pickBox2">
+        <summary>Your platforms and models</summary>
+        <div id="pickHostRep"></div>
+      </details>
     </details>
     <div class="actions">
       <button id="save" class="btn primary" type="button">Save report</button>
@@ -544,8 +556,11 @@ function clauseAround(t, start, end){
 }
 var API_CUE = /\b(api|per token|pay[- ]as[- ]you[- ]go|usage[- ]based|credits?|metered|bill|invoice|tokens?|inference)\b/i;
 var SUB_CUE = /\b(subscription|subscribe\w*|plus|pro|max|team|seats?|plan|premium|licen[cs]es?)\b/i;
-function classifyClause(c){
+var CONSUMER_APP = /\b(chat ?gpt|claude|gemini|cursor|copilot|perplexity|midjourney|windsurf|grok)\b(?!\s*(api|sdk))/i;
+function classifyClause(c, monthly){
   var a = API_CUE.test(c), s = SUB_CUE.test(c);
+  /* A plan-sized amount for a consumer app is a subscription, even if the sentence also mentions an API bill. */
+  if (!a && !s && monthly <= 250 && CONSUMER_APP.test(c)) return "sub";
   if (a && !s) return "api";
   if (s && !a) return "sub";
   if (a && s) return /\bapi\b/i.test(c) ? "api" : "sub";
@@ -567,7 +582,7 @@ function parseMoney(t){
     var monthly = n * (per ? mult[per.toLowerCase()] : 1);
     var clause = clauseAround(t, idx, idx + len);
     if (headcount > 1 && headcount < 5000 && /per\s+(seat|user|person|head|developer|engineer|member)|\/\s*(seat|user)/i.test(clause)) { monthly *= headcount; seatNote = "Multiplied the per-seat price by " + headcount + " seats."; }
-    sums[classifyClause(clause)] += monthly; count++;
+    sums[classifyClause(clause, monthly)] += monthly; count++;
   }
   while ((m = re1.exec(t))) { if (count === 0) sym = m[1]; add(m[2], m[3], m[4] || m[5], m.index, m[0].length); }
   while ((m = re2.exec(t))) add(m[1], m[2], m[3] || m[4], m.index, m[0].length);
@@ -689,7 +704,7 @@ function normalize(p){
     assumptions: Array.isArray(p.assumptions) ? p.assumptions.map(String).slice(0, 6) : [],
     billingDefault: ((p.billing_default || p.billing) === "usage" || (!(p.billing_default || p.billing) && (p.audience === "developer"))) ? "usage" : "subscription",
     inShare: null, tierShare: null, alreadyCached: 0, found: [], fromFile: false,
-    appMode: false, billTyped: false, appCost: null, promptTokens: 0, promptShare: 0, extraTips: [], keyExposed: false, needCalls: false
+    appMode: false, billTyped: false, pickTools: [], appCost: null, promptTokens: 0, promptShare: 0, extraTips: [], keyExposed: false, needCalls: false
   };
   if (o.tier === "unknown") { o.tier = "mid"; o.assumptions.push("Model not stated, so I assumed a mid-tier model."); }
   return o;
@@ -1278,11 +1293,11 @@ function inferPlatforms(p){
 /* Folds the platforms someone chose in the picker into the profile. */
 function applyPicks(n, picks){
   if (!picks || !picks.length) { n.vendors = Math.max(n.vendors || 0, vendorCount(n)); return n; }
-  n.picks = picks.slice();
+  n.picks = JSON.parse(JSON.stringify(picks)); n.pickTools = n.pickTools || [];
   var best = -1, bestTier = null, api = false, app = false;
   picks.forEach(function(pk){
     var pl = platformById(pk.id); if (!pl) return;
-    if (n.tools.indexOf(pl.names[0]) < 0 && !n.tools.some(function(tn){ return pl.names.indexOf(tn) >= 0; })) n.tools.push(pl.names[0]);
+    if (n.tools.indexOf(pl.names[0]) < 0 && !n.tools.some(function(tn){ return pl.names.indexOf(tn) >= 0; })) { n.tools.push(pl.names[0]); n.pickTools.push(pl.names[0]); }
     if (pl.kinds.indexOf("coding") >= 0 && n.audience === "everyday") n.audience = "developer";
     var isApi = pl.kinds.some(function(k){ return k === "api" || k === "cloud" || k === "host" || k === "router" || k === "open"; });
     if (isApi) api = true; else app = true;
@@ -1467,67 +1482,109 @@ function ladders(p){
   function money(x){ return fmtMoney(x, profile ? profile.sym : "$"); }
   function setStatus(msg, isErr){ statusEl.textContent = msg || ""; statusEl.className = "status" + (isErr ? " err" : ""); }
 
-  /* ---------- platforms and models ---------- */
-  var picks = [], activeTab = "apps";
+  /* ---------- platforms and models: category cards that open into checkbox lists ---------- */
+  var picks = [], appliedPicks = [], openCat = { land:"", rep:"" }, lastFocus = null;
   var TIER_HINT = { small:"lightweight", mid:"everyday", top:"most capable" };
-  var TABS = [
-    ["apps", "Chat apps", function(pl){ return pl.kinds.indexOf("app") >= 0; }],
-    ["apis", "Model APIs", function(pl){ return pl.kinds.indexOf("api") >= 0; }],
-    ["code", "Coding", function(pl){ return pl.kinds.indexOf("coding") >= 0; }],
-    ["host", "Cloud and hosts", function(pl){ return pl.kinds.some(function(k){ return k === "cloud" || k === "host" || k === "router" || k === "open"; }); }]
+  var CHEV = '<svg class="chev" viewBox="0 0 12 8" width="12" height="8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var CATS = [
+    { id:"apps", label:"Chat apps", test:function(pl){ return pl.kinds.indexOf("app") >= 0; } },
+    { id:"apis", label:"Model APIs", test:function(pl){ return pl.kinds.indexOf("api") >= 0; } },
+    { id:"code", label:"Coding tools", test:function(pl){ return pl.kinds.indexOf("coding") >= 0; } },
+    { id:"host", label:"Cloud & hosts", test:function(pl){ return pl.kinds.some(function(k){ return k === "cloud" || k === "host" || k === "router" || k === "open"; }); } }
   ];
+  var PICKERS = [
+    { key:"land", host:"pickHostLand", box:"pickBox", mode:"find", label:"Add your platforms and models (optional)" },
+    { key:"rep", host:"pickHostRep", box:"pickBox2", mode:"refresh", label:"Your platforms and models" }
+  ];
+  function escA(s){ return esc(s).replace(/"/g, "&quot;"); }
   function pickIndex(id){ for (var i = 0; i < picks.length; i++) if (picks[i].id === id) return i; return -1; }
   function platById(id){ var a = (typeof PLATFORMS !== "undefined") ? PLATFORMS : []; for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i]; return null; }
-  function renderPicks(){
+  function picksKey(list){ return JSON.stringify(list.map(function(x){ return x.id + "|" + (x.model || ""); }).sort()); }
+  function picksChanged(){ return picksKey(picks) !== picksKey(appliedPicks); }
+  function pickName(pk){ var pl = platById(pk.id); return pl ? (pl.short || pl.name) + (pk.model ? " (" + pk.model + ")" : "") : ""; }
+  function pickerHtml(P){
     var plats = (typeof PLATFORMS !== "undefined") ? PLATFORMS : [];
-    var tabsEl = $("platTabs"), chips = $("platChips"), selRow = $("selRow");
-    tabsEl.innerHTML = ""; chips.innerHTML = ""; selRow.innerHTML = "";
-    TABS.forEach(function(tb){
-      var count = picks.filter(function(pk){ var pl = platById(pk.id); return pl && tb[2](pl); }).length;
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "tab"; b.setAttribute("role", "tab");
-      b.textContent = tb[1] + (count ? " (" + count + ")" : "");
-      b.setAttribute("aria-selected", tb[0] === activeTab ? "true" : "false");
-      b.addEventListener("click", function(){ activeTab = tb[0]; renderPicks(); });
-      tabsEl.appendChild(b);
+    if (!plats.length) return "";
+    var open = openCat[P.key], h = '<div class="pickcard"><div class="catgrid">';
+    CATS.forEach(function(c){
+      var n = picks.filter(function(pk){ var pl = platById(pk.id); return pl && c.test(pl); }).length, isOpen = open === c.id;
+      h += '<button type="button" class="catcard' + (isOpen ? " open" : "") + '" data-cat="' + c.id + '" aria-expanded="' + isOpen + '"><span class="cattitle">' + esc(c.label) + '</span>' +
+        (n ? '<span class="catcount" aria-label="' + n + ' selected">' + n + '</span>' : '<span class="catcount ph" aria-hidden="true">0</span>') + CHEV + '</button>';
     });
-    var active = TABS.filter(function(tb){ return tb[0] === activeTab; })[0];
-    plats.filter(active[2]).forEach(function(pl){
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "chip"; b.textContent = pl.short || pl.name;
-      b.setAttribute("aria-pressed", pickIndex(pl.id) >= 0 ? "true" : "false");
-      b.addEventListener("click", function(){
-        var i = pickIndex(pl.id);
-        if (i >= 0) picks.splice(i, 1); else picks.push({ id:pl.id, model:"" });
-        renderPicks();
+    h += '</div>';
+    if (open) {
+      var cat = CATS.filter(function(c){ return c.id === open; })[0];
+      h += '<div class="optpanel" role="group" aria-label="' + escA(cat.label) + '">';
+      plats.filter(cat.test).forEach(function(pl){
+        var i = pickIndex(pl.id), on = i >= 0;
+        h += '<div class="optrow"><label class="optlabel"><input type="checkbox" data-pid="' + pl.id + '"' + (on ? " checked" : "") + '><span>' + esc(pl.short || pl.name) + '</span></label>';
+        if (on && pl.menu && pl.menu.length) {
+          h += '<label class="optmodel"><span>Model</span><select data-mfor="' + pl.id + '" aria-label="' + escA((pl.short || pl.name) + " model") + '"><option value="">Not sure which model</option>' +
+            pl.menu.map(function(m){ return '<option value="' + escA(m.n) + '"' + (picks[i].model === m.n ? " selected" : "") + '>' + esc(m.n) + ' (' + TIER_HINT[m.tier] + ')</option>'; }).join("") + '</select></label>';
+        }
+        h += '</div>';
       });
-      chips.appendChild(b);
-    });
-    selRow.hidden = !picks.length;
-    picks.forEach(function(pk){
-      var pl = platById(pk.id); if (!pl) return;
-      var chip = document.createElement("span"); chip.className = "selchip";
-      var label = document.createElement("label");
-      var txt = document.createElement("span"); txt.textContent = (pl.short || pl.name) + (pk.model ? " \u00B7 " + pk.model : "");
-      label.appendChild(txt);
-      if (pl.menu && pl.menu.length) {
-        var caret = document.createElement("span"); caret.className = "caret"; caret.textContent = "\u25BE"; label.appendChild(caret);
-        var sel = document.createElement("select"); sel.setAttribute("aria-label", (pl.short || pl.name) + " model");
-        var o0 = document.createElement("option"); o0.value = ""; o0.textContent = "Not sure which model"; sel.appendChild(o0);
-        pl.menu.forEach(function(m){ var o = document.createElement("option"); o.value = m.n; o.textContent = m.n + " (" + TIER_HINT[m.tier] + ")"; sel.appendChild(o); });
-        sel.value = pk.model || "";
-        sel.addEventListener("change", function(){ pk.model = sel.value; txt.textContent = (pl.short || pl.name) + (pk.model ? " \u00B7 " + pk.model : ""); });
-        label.appendChild(sel);
-      }
-      var x = document.createElement("button"); x.type = "button"; x.className = "x"; x.setAttribute("aria-label", "Remove " + (pl.short || pl.name)); x.innerHTML = "&times;";
-      x.addEventListener("click", function(){ var i = pickIndex(pk.id); if (i >= 0) picks.splice(i, 1); renderPicks(); });
-      chip.appendChild(label); chip.appendChild(x); selRow.appendChild(chip);
-    });
-    var names = picks.map(function(pk){ var pl = platById(pk.id); return pl ? (pl.short || pl.name) : ""; }).filter(Boolean);
-    $("pickBox").querySelector("summary").textContent = names.length
-      ? "Your platforms: " + names.slice(0, 2).join(", ") + (names.length > 2 ? " +" + (names.length - 2) : "")
-      : "Add your platforms and models (optional)";
+      h += '</div>';
+    }
+    if (picks.length) h += '<p class="picksum"><strong>' + picks.length + ' selected:</strong> ' + esc(picks.slice(0, 3).map(pickName).join(", ") + (picks.length > 3 ? " +" + (picks.length - 3) : "")) + '</p>';
+    if (P.mode === "find") {
+      if (picks.length) h += '<button type="button" class="btn primary pickgo" data-act="find">Find savings</button>';
+    } else if (picksChanged()) {
+      h += '<button type="button" class="btn primary pickgo" data-act="refresh">Refresh plan</button><p class="small" style="margin:6px 0 0">Platform changes apply when you tap Refresh plan.</p>';
+    } else if (picks.length) {
+      h += '<p class="small" style="margin:8px 0 0">The plan already reflects these platforms.</p>';
+    }
+    return h + '</div>';
   }
+  function renderPicks(){
+    var names = picks.map(pickName).filter(Boolean);
+    PICKERS.forEach(function(P){
+      var host = $(P.host); if (!host) return;
+      host.innerHTML = pickerHtml(P);
+      $(P.box).querySelector("summary").textContent = names.length
+        ? (P.mode === "find" ? "Your platforms: " : "Your platforms and models: ") + names.slice(0, 2).join(", ") + (names.length > 2 ? " +" + (names.length - 2) : "")
+        : P.label;
+    });
+    if (lastFocus) {
+      var host2 = $(lastFocus.host), el = host2 && host2.querySelector(lastFocus.sel);
+      if (el) { try { el.focus({ preventScroll:true }); } catch(e){ el.focus(); } }
+      lastFocus = null;
+    }
+  }
+  /* Apply the platforms chosen on the results screen to the plan that is already showing. */
+  function refreshPlan(){
+    if (!profile) return;
+    var prev = profile.pickTools || [];
+    profile.tools = profile.tools.filter(function(tn){ return prev.indexOf(tn) < 0; });
+    profile.pickTools = []; profile.picks = [];
+    applyPicks(profile, picks);
+    profile.vendors = vendorCount(profile);
+    profile.summary = makeSummary(profile);
+    appliedPicks = JSON.parse(JSON.stringify(picks));
+    dirtyFields = true; savedNow = false;
+    $("summary").textContent = profile.summary;
+    fillFields(); renderResults(); renderPicks();
+  }
+  PICKERS.forEach(function(P){
+    var host = $(P.host); if (!host) return;
+    host.addEventListener("click", function(e){
+      var card = e.target.closest ? e.target.closest(".catcard") : null;
+      if (card) { var id = card.getAttribute("data-cat"); openCat[P.key] = openCat[P.key] === id ? "" : id; renderPicks(); return; }
+      var go = e.target.closest ? e.target.closest(".pickgo") : null;
+      if (go) { if (go.getAttribute("data-act") === "find") goBtn.click(); else refreshPlan(); }
+    });
+    host.addEventListener("change", function(e){
+      var el = e.target, pid = el.getAttribute ? el.getAttribute("data-pid") : null, mf = el.getAttribute ? el.getAttribute("data-mfor") : null;
+      if (pid) {
+        var i = pickIndex(pid);
+        if (el.checked && i < 0) picks.push({ id:pid, model:"" }); else if (!el.checked && i >= 0) picks.splice(i, 1);
+        lastFocus = { host:P.host, sel:'[data-pid="' + pid + '"]' }; renderPicks();
+      } else if (mf) {
+        var j = pickIndex(mf); if (j >= 0) picks[j].model = el.value;
+        lastFocus = { host:P.host, sel:'[data-mfor="' + mf + '"]' }; renderPicks();
+      }
+    });
+  });
   renderPicks();
   if (typeof CATALOG_ASOF !== "undefined") $("catNote").textContent = "The platform and model list was last reviewed on " + CATALOG_ASOF + ". Model names and prices change often, so check your provider\u2019s current list.";
 
@@ -1954,6 +2011,7 @@ function ladders(p){
   function showReport(){
     whatIfOff = {}; savedNow = false; dirtyFields = false;
     baseProfile = JSON.parse(JSON.stringify(profile)); baseLive = liveOf(plan(profile), profile.sym);
+    picks = JSON.parse(JSON.stringify(profile.picks || [])); appliedPicks = JSON.parse(JSON.stringify(picks)); renderPicks();
     $("share").hidden = !(navigator.share);
     setView("report");
     $("summary").textContent = profile.summary;
@@ -2366,6 +2424,8 @@ function ladders(p){
   $("lvReset").addEventListener("click", function(){
     if (!baseProfile) return;
     profile = JSON.parse(JSON.stringify(baseProfile)); whatIfOff = {}; dirtyFields = false; savedNow = false;
+    picks = JSON.parse(JSON.stringify(profile.picks || [])); appliedPicks = JSON.parse(JSON.stringify(picks)); renderPicks();
+    $("summary").textContent = profile.summary;
     fillFields(); renderResults();
   });
   $("lvUp").addEventListener("click", function(){
@@ -2387,7 +2447,7 @@ function ladders(p){
     hardStopVoice();
     demo = null; demoPending = null; demoStash = null; whatIfOff = {}; cmpId = ""; sessionIds = []; savedNow = false;
     setText(""); profile = null; pending = null;
-    picks = []; activeTab = "apps"; renderPicks(); $("pickBox").open = false;
+    picks = []; appliedPicks = []; openCat = { land:"", rep:"" }; renderPicks(); $("pickBox").open = false; $("pickBox2").open = false;
     fileState = null; renderFileCard();
     $("ask").hidden = true; setStatus(""); $("copyMsg").textContent = "";
     toLanding();
