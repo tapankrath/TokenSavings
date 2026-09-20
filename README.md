@@ -61,7 +61,7 @@ Everything here works on the device, with no account.
 - **Count it (what-if):** each dollar change has a **Count it** box. Untick one to see the estimate without it. Untick everything to see there is nothing left to count.
 - **Test before you switch:** a short checklist and a downloadable CSV sheet for testing a cheaper model on ten real requests, pre-filled with the model names for that platform.
 - **Share and print:** **Share** uses the phone's share sheet where available. **Print or save as PDF** prints a clean copy of the report.
-- **Plans:** the footer's **Plans** link shows Free, Pro ($29 a month) and Team ($79 a month) with a waitlist form. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
+- **Plans:** the **Plans** pill at the top right of the header (and a **Plans** link in the footer) opens the plans page. While you are on it, the pill is highlighted and tapping it again goes back to where you were. The page shows Free, Pro ($29 a month) and Team ($79 a month) with a waitlist form. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
 
 ### Connecting the waitlist (Supabase)
 
@@ -103,7 +103,7 @@ After you change any file, open `sw.js` and change `CACHE_VERSION` (for example 
 
 ## Changing the brand colors and header style
 
-The header logo and name sit in a dark badge (`#10131A`) with a red border (`--brand-line`, a lighter red in dark mode). Inside, "Token Savings" is green (`#5FD47A`), "Coach" is red (`#F0605A`) and the receipt mark is light with a green arrow. All of these are in the CSS at the top of index.html (search for `.brand .b1`, `.brand .b2`, `.logo`). The name is extra-bold (800), so the Google Fonts link requests that weight. The home-screen icons are separate images (icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png), so if you change the colors in the header, replace those too. To see a new icon on a phone, delete the home-screen app and add it again.
+The header logo and name sit in a dark badge (`#10131A`) with a red border (`--brand-line`, a lighter red in dark mode). Inside, "Token Savings" is green (`#5FD47A`), "Coach" is red (`#F0605A`) and the receipt mark is light with a green arrow. All of these are in the CSS at the top of index.html (search for `.brand .b1`, `.brand .b2`, `.logo`). The name is extra-bold (800) and condensed to 80% width (`font-stretch`) so it leaves room for the Plans pill, which is why the Google Fonts link requests the width axis. Its size scales with the screen width in the `.brand` rule. The home-screen icons are separate images (icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png), so if you change the colors in the header, replace those too. To see a new icon on a phone, delete the home-screen app and add it again.
 
 ## Moving to Cloudflare Pages with your own domain
 

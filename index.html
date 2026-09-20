@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#F1F5EF; --card:#FFFFFF; --ink:#16241C; --muted:#56655B; --rule:#CBD6CD;
@@ -45,12 +45,13 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.5 var(--b
 .wrap{max-width:640px;margin:0 auto;padding:20px 18px 104px}
 .top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule);padding-top:env(safe-area-inset-top,0px)}
 .top-in{max-width:640px;margin:0 auto;padding:10px 18px 12px}
-.home{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;background:#10131A;border:2px solid var(--brand-line);border-radius:16px;padding:5px 14px 5px 7px;max-width:100%;-webkit-tap-highlight-color:transparent;transition:padding .2s ease,border-radius .2s ease}
+.home{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;background:#10131A;border:2px solid var(--brand-line);border-radius:16px;padding:5px 14px 5px 7px;max-width:100%;min-width:0;overflow:hidden;-webkit-tap-highlight-color:transparent;transition:padding .2s ease,border-radius .2s ease}
 .home:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
-.logo{width:42px;height:42px;flex:none}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.logo{width:40px;height:40px;flex:none}
 .logo .mark{fill:#5FD47A}
 .logo .sheet{fill:#EEF3EE}
-.brand{font:800 clamp(1.05rem,5.9vw,1.5rem)/1 var(--display);letter-spacing:-.015em;color:#EEF3EE;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
+.brand{font:800 clamp(15px,calc((100vw - 194px) / 8.6),24px)/1 var(--display);font-stretch:80%;letter-spacing:-.01em;color:#EEF3EE;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
 .brand .b1{color:#5FD47A}
 .brand .b2{color:#F0605A}
 .hero{margin-top:13px}
@@ -107,7 +108,10 @@ textarea:focus-visible{outline:none}
 .top.condensed .logo{width:32px;height:32px}
 .top.condensed .home{padding:3px 12px 3px 3px;border-radius:13px}
 .top.condensed{box-shadow:0 3px 14px rgba(0,0,0,.08)}
-.top.condensed .brand{font-size:1.1rem}
+.top.condensed .brand{font-size:min(1.1rem,calc((100vw - 170px) / 8.6))}
+.pill.plansbtn{flex:none;padding:0 13px}
+.pill.plansbtn.on{background:var(--ink);color:var(--paper)}
+.top.condensed .plansbtn{min-height:36px;padding:0 11px;font-size:.85rem}
 .top.condensed .top-in{padding-top:7px;padding-bottom:9px}
 @media (prefers-reduced-motion: reduce){.top .hero h1,.top .logo,.top .brand{transition:none}}
 .adv-note{margin:0 0 6px;color:var(--muted);font-size:.9rem}
@@ -256,10 +260,13 @@ details.tune .fields{margin-top:12px}
 <body data-aud="everyday">
 <header class="top" id="top">
   <div class="top-in">
+    <div class="brandrow">
     <a class="home" id="home" href="./" aria-label="Token Savings Coach home">
       <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><path class="sheet" d="M7 4H33V33L28.67 36.3L24.33 33L20 36.3L15.67 33L11.33 36.3L7 33Z"/><rect class="mark" x="18.2" y="9" width="3.6" height="11"/><path class="mark" d="M12 18.5H28L20 27Z"/></svg>
       <span class="brand"><span class="b1">Token Savings</span> <span class="b2">Coach</span></span>
     </a>
+    <button id="navPlansTop" class="pill plansbtn" type="button" aria-label="See plans">Plans</button>
+    </div>
     <div class="hero" id="hero">
       <h1>Find where your AI money goes.</h1>
       <p class="lede">Type it, say it, or attach a bill or your app’s code. Get directional advice on cheaper models, smarter API use and architecture changes, for any AI tool.</p>
@@ -1903,6 +1910,7 @@ function ladders(p){
   function setView(v){
     var compose = v === "compose";
     currentView = v;
+    $("navPlansTop").classList.toggle("on", v === "plans"); $("navPlansTop").setAttribute("aria-pressed", v === "plans" ? "true" : "false");
     $("compose").hidden = !compose; $("report").hidden = v !== "report"; $("history").hidden = v !== "history"; $("plans").hidden = v !== "plans"; $("hero").hidden = !compose;
     if (typeof updateGoBar === "function") updateGoBar();
   }
@@ -2161,6 +2169,7 @@ function ladders(p){
   $("saveMsg").addEventListener("click", function(e){ var g = e.target && e.target.getAttribute ? e.target.getAttribute("data-go") : null; if (g) openPanel(g); });
   $("navHist").addEventListener("click", function(){ openPanel("history"); });
   $("navPlans").addEventListener("click", function(){ openPanel("plans"); });
+  $("navPlansTop").addEventListener("click", function(){ if (currentView === "plans") closePanel(); else openPanel("plans"); });
   $("histBack").addEventListener("click", closePanel);
   $("plansBack").addEventListener("click", closePanel);
   $("share").addEventListener("click", function(){
