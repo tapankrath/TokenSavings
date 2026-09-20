@@ -66,9 +66,9 @@ After you change any file, open `sw.js` and change `CACHE_VERSION` (for example 
 - The on-device analyzer reads plain English with simple rules, so it can misread unusual wording. Every assumption is shown and editable.
 - Amounts in $, £ or € are recognized. There is no currency conversion; percentages are the same either way.
 
-## Changing the brand color
+## Changing the brand color and header style
 
-The logo tile uses `--brand` in the CSS (`#8C1D2C` light, `#6F1622` dark). The header itself follows the page background. The app icons are separate image files, so changing the color there means replacing those PNGs.
+The logo tile uses `--brand`, and the badge border around the logo and name uses `--brand-line` (`#8C1D2C` in light mode, a lighter red in dark mode). Both are in the CSS at the top of index.html. The name itself is set in extra-bold (800), so the Google Fonts link near the top requests that weight. The app icons are separate image files, so changing their color means replacing those PNGs.
 
 ## Moving to Cloudflare Pages with your own domain
 

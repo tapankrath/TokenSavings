@@ -16,12 +16,12 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#F1F5EF; --card:#FFFFFF; --ink:#16241C; --muted:#56655B; --rule:#CBD6CD;
   --moss:#0E6B45; --moss-soft:#DCEFE4; --cobalt:#2C3FE0; --on-cobalt:#FFFFFF; --alert:#A3261B;
-  --brand:#8C1D2C; --on-brand:#FFFFFF;
+  --brand:#8C1D2C; --brand-line:#8C1D2C; --on-brand:#FFFFFF;
   --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
   --body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
   box-sizing:border-box;
@@ -31,13 +31,13 @@
   :root:not([data-theme="light"]){
     --paper:#0F1712; --card:#18231C; --ink:#E7EFE9; --muted:#9BAAA0; --rule:#2C3B31;
     --moss:#56D598; --moss-soft:#1B3A2A; --cobalt:#8C9BFF; --on-cobalt:#0F1712; --alert:#FF8A7D;
-    --brand:#6F1622;
+    --brand:#B02B41; --brand-line:#D45B6E;
   }
 }
 :root[data-theme="dark"]{
   --paper:#0F1712; --card:#18231C; --ink:#E7EFE9; --muted:#9BAAA0; --rule:#2C3B31;
   --moss:#56D598; --moss-soft:#1B3A2A; --cobalt:#8C9BFF; --on-cobalt:#0F1712; --alert:#FF8A7D;
-  --brand:#6F1622;
+  --brand:#B02B41; --brand-line:#D45B6E;
 }
 html{scroll-padding-top:calc(96px + env(safe-area-inset-top,0px))}
 *,*::before,*::after{box-sizing:border-box}
@@ -45,14 +45,14 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.5 var(--b
 .wrap{max-width:640px;margin:0 auto;padding:20px 18px 104px}
 .top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule);padding-top:env(safe-area-inset-top,0px)}
 .top-in{max-width:640px;margin:0 auto;padding:10px 18px 12px}
-.home{display:inline-flex;align-items:center;gap:11px;color:var(--ink);text-decoration:none;border-radius:10px;-webkit-tap-highlight-color:transparent}
+.home{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;background:var(--card);border:2px solid var(--brand-line);border-radius:16px;padding:5px 14px 5px 5px;max-width:100%;-webkit-tap-highlight-color:transparent;transition:padding .2s ease,border-radius .2s ease}
 .home:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
-.logo{width:38px;height:38px;flex:none}
+.logo{width:42px;height:42px;flex:none}
 .logo .bg,.logo .mark{fill:var(--brand)}
 .logo .sheet{fill:#fff}
-.brand{font:700 1.4rem/1 var(--display);letter-spacing:-.02em}
-.hero{margin-top:10px}
-.hero h1{font:700 clamp(1.45rem,6.4vw,1.9rem)/1.08 var(--display);letter-spacing:-.02em;margin:0}
+.brand{font:800 clamp(1.05rem,5.9vw,1.5rem)/1 var(--display);letter-spacing:-.015em;color:var(--ink);white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
+.hero{margin-top:13px}
+.hero h1{font:700 clamp(1.25rem,5.6vw,1.65rem)/1.15 var(--display);letter-spacing:-.015em;margin:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
 .hero .lede{margin:6px 0 0;font-size:.92rem;line-height:1.4;color:var(--muted);max-height:5.6em;overflow:hidden;transition:max-height .2s ease,opacity .2s ease,margin .2s ease}
 .top.condensed .lede{max-height:0;opacity:0;margin-top:0}
 @media (prefers-reduced-motion: reduce){.hero .lede{transition:none}}
@@ -102,8 +102,10 @@ textarea:focus-visible{outline:none}
 .top .hero h1,.top .logo,.top .brand{transition:font-size .2s ease,width .2s ease,height .2s ease}
 .top.condensed .hero h1{font-size:1rem;line-height:1.2}
 .top.condensed .hero{margin-top:6px}
-.top.condensed .logo{width:30px;height:30px}
-.top.condensed .brand{font-size:1.2rem}
+.top.condensed .logo{width:32px;height:32px}
+.top.condensed .home{padding:3px 12px 3px 3px;border-radius:13px}
+.top.condensed{box-shadow:0 3px 14px rgba(0,0,0,.08)}
+.top.condensed .brand{font-size:1.1rem}
 .top.condensed .top-in{padding-top:7px;padding-bottom:9px}
 @media (prefers-reduced-motion: reduce){.top .hero h1,.top .logo,.top .brand{transition:none}}
 .adv-note{margin:0 0 6px;color:var(--muted);font-size:.9rem}
