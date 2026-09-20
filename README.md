@@ -72,14 +72,14 @@ Everything here works on the device, with no account.
 
 Until you connect it, waitlist entries stay on the visitor's own device and you will not see them.
 
-1. In the Supabase SQL editor, run `waitlist.sql`. It is a separate file that came with this project (in the outputs folder, next to this project's folder, not inside the files you deploy). It creates the table and a rule that lets the public key add a row but never read the list.
-2. In Supabase, open **Project Settings, API** and copy the Project URL and the **anon public** key.
+1. In the Supabase SQL editor, paste and run `waitlist.sql`. It is a separate file that came with this project (next to the project folder, not inside the files you deploy). It is safe to run twice. It creates the `waitlist` table and a rule that lets the public key add a row but never read, change or delete one. It also fills in `audience` and `company_size` columns from each note, so you can filter and count in the Table editor.
+2. In Supabase, open **Project Settings, API Keys** and copy the Project URL and the **publishable key** (it starts with `sb_publishable_`). Older projects can use the legacy **anon** key instead. Never use a secret key or the service role key.
 3. In `index.html`, near the top of the script, set
    `var WAITLIST_ENDPOINT = "https://YOUR-PROJECT.supabase.co/rest/v1/waitlist";`
-   and `var WAITLIST_KEY = "YOUR-ANON-KEY";`
-4. Re-upload `index.html`, join the waitlist yourself with a test email, and check the row in the Table editor.
+   and `var WAITLIST_KEY = "YOUR-PUBLISHABLE-KEY";`
+4. Re-upload `index.html`, join the waitlist yourself with a test email, and check the row in the Table editor. Joining the same plan with the same email twice shows "You're already on the list".
 
-The anon key is meant to be public and is safe here only because of the row-level rule in the SQL. Never put the service role key in `index.html`. Any other form endpoint that accepts a JSON POST also works: set `WAITLIST_ENDPOINT` and leave `WAITLIST_KEY` empty.
+The publishable key is meant to be public and is safe here only because of the row-level rule in the SQL. Any other form endpoint that accepts a JSON POST also works: set `WAITLIST_ENDPOINT` and leave `WAITLIST_KEY` empty.
 
 `VALIDATION-PLAN.md` (also a separate file) explains how to read the results and what to decide before looking at them.
 

@@ -1,6 +1,6 @@
 /* Token Savings Coach service worker.
    Bump CACHE_VERSION whenever you change any file so phones pick up the update. */
-const CACHE_VERSION = "v34";
+const CACHE_VERSION = "v36";
 const CACHE = "token-cost-coach-" + CACHE_VERSION;
 const ASSETS = [
   "./",

@@ -573,8 +573,8 @@ details.tune .fields{margin-top:12px}
   };
   function segOf(p){ return (p && AUD[p.seg]) ? p.seg : "me"; }
   /* Waitlist: paste your endpoint here (see the README). Leave blank to keep entries on this device only. */
-  var WAITLIST_ENDPOINT = "";
-  var WAITLIST_KEY = "";
+  var WAITLIST_ENDPOINT = "https://nkwsyanosyzkzovaxgou.supabase.co/rest/v1/waitlist";
+  var WAITLIST_KEY = "sb_publishable_KEN94g0nm9Ifp7WxbNO7Vw_0pf5s7uC";
 
 /* ===== Engine v3: dollars in, dollars out. API bills + subscriptions. Runs fully on the device. ===== */
 var PRICES = { top:{i:15,o:75,label:"top-tier"}, mid:{i:3,o:15,label:"mid-tier"}, small:{i:0.8,o:4,label:"small"} };
@@ -2489,7 +2489,7 @@ function ladders(p){
     if (!WAITLIST_ENDPOINT) { st.className = "status"; st.textContent = "Thanks. This preview isn\u2019t connected to a waitlist yet, so your entry was saved on this device only."; return; }
     st.className = "status"; st.textContent = "Sending\u2026"; $("wSubmit").disabled = true;
     var headers = { "Content-Type":"application/json", "Prefer":"return=minimal" };
-    if (WAITLIST_KEY) { headers.apikey = WAITLIST_KEY; headers.Authorization = "Bearer " + WAITLIST_KEY; }
+    if (WAITLIST_KEY) { headers.apikey = WAITLIST_KEY; if (WAITLIST_KEY.indexOf("sb_") !== 0) headers.Authorization = "Bearer " + WAITLIST_KEY; }  /* new sb_publishable_ keys are not JWTs, so they go in apikey only */
     fetch(WAITLIST_ENDPOINT, { method:"POST", headers:headers, body:JSON.stringify(payload) }).then(function(res){
       $("wSubmit").disabled = false;
       if (res.ok || res.status === 409) { st.className = "status"; st.textContent = res.status === 409 ? "You\u2019re already on the list. Thank you!" : "You\u2019re on the list. Thank you! We\u2019ll email you about early access."; }
