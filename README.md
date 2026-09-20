@@ -66,7 +66,7 @@ Everything here works on the device, with no account.
 - **Include in estimate (what-if):** each dollar change has an **Include in estimate** box. Untick one to see the total without it, for example if you already do it or won't. Untick everything to see there is nothing left to count. This is the box that recalculates the estimate.
 - **Test before you switch:** a short checklist and a downloadable CSV sheet for testing a cheaper model on ten real requests, pre-filled with the model names for that platform.
 - **Share and print:** **Share** uses the phone's share sheet where available. **Print or save as PDF** prints a clean copy of the report.
-- **Plans:** the **Plans** pill at the top right of the header (and a **Plans** link in the footer) opens the plans page. While you are on it, the pill is highlighted and tapping it again goes back to where you were. The page shows Free, Pro ($29 a month) and Team ($79 a month) with a waitlist form. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
+- **Plans:** the **Plans** pill at the top right of the header (and a **Plans** link in the footer) opens the plans page. While you are on it, the pill is highlighted and tapping it again goes back to where you were. The page shows Free, Pro ($29 a month), Team ($79 a month) and Business (talk to us) with a waitlist form. The plan that matches the chosen audience is outlined. The Business form asks for company size instead of a fair price. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
 
 ### Connecting the waitlist (Supabase)
 
@@ -89,6 +89,17 @@ The anon key is meant to be public and is safe here only because of the row-leve
 - **Results:** dollar ranges for changes you can make, **Cheaper alternatives to try** (each platform's models from lightest to most capable), then advice matched to your situation. People with an API bill see **Bigger changes: architecture and workflow**. People on plans see **Smarter habits for your tools**. Someone with both sees both, without repeats.
 - **Live estimate box:** at the top of **What I assumed**, a box shows the estimate as short text and stays pinned just under the header while the person scrolls through and edits the numbers. It updates as they type, flashes when the range changes, shows the original estimate next to the edited one, and has a **Reset** button (back to the original guesses) and a **Full results** button that scrolls to the top. It is pinned to the top, not the bottom, because phone keyboards cover bottom bars.
 - **What I assumed:** the two money fields (API bill and subscriptions) are always shown. Model size, task difficulty and the yes/no questions are tucked into **Fine-tune these guesses**, and are worded to match your situation.
+
+## Audiences: Just me, Small business, Mid-size
+
+A three-way toggle sits above the input box. It changes the words and the numbers, not the engine.
+
+- **What changes:** the headline and intro, the example prompt and example chips, the "What you'll get" list, the spend question's answer ranges, the wording of the report ("Your team\u2019s", "Your company\u2019s"), and which plan is outlined on the Plans page.
+- **Business numbers:** for Small business and Mid-size, the estimate card adds **Spend per year now**, **Per person now** and **Possible API saving per year**. The headcount is read from the text ("8 of us", "120 employees") and can be edited under **What I assumed** (People using AI). If it is missing, the card says how to add it.
+- **Where the words live:** the `AUD` object near the top of the script in index.html. Edit the copy, examples, answer ranges and the "roughly 50 to 1,000 people" hints there.
+- **Links per audience:** add `?for=small` or `?for=mid` (also `?for=me`) to the address, for example `https://your-domain/?for=mid`. The choice is remembered on the device after that.
+- **Waitlist:** every entry's note starts with the audience in brackets, for example `[Mid-size]`. Business entries also include the company size in the note. If you store waitlist rows in a table that restricts the `plan` values, allow `Business`.
+- **Not built yet:** advice that is specific to each audience (seat utilization, vendor consolidation, cost by team) and a finance-ready summary. Business and Team plan features marked planned are copy only.
 
 ## Platforms, models and recommendations
 
