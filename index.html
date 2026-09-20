@@ -16,13 +16,14 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=Instrument+Sans:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#F1F5EF; --card:#FFFFFF; --ink:#16241C; --muted:#56655B; --rule:#CBD6CD;
   --moss:#0E6B45; --moss-soft:#DCEFE4; --cobalt:#2C3FE0; --on-cobalt:#FFFFFF; --alert:#A3261B;
   --brand:#8C1D2C; --brand-line:#8C1D2C; --on-brand:#FFFFFF;
   --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --brandfont:"Plus Jakarta Sans","Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;
   --body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
   box-sizing:border-box;
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -51,7 +52,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.5 var(--b
 .logo{width:40px;height:40px;flex:none}
 .logo .mark{fill:#5FD47A}
 .logo .sheet{fill:#EEF3EE}
-.brand{font:800 clamp(15px,calc((100vw - 194px) / 8.6),24px)/1 var(--display);font-stretch:80%;letter-spacing:-.01em;color:#EEF3EE;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
+.brand{font:700 clamp(14px,calc((100vw - 194px) / 10.4),22px)/1 var(--brandfont);letter-spacing:-.015em;color:#EEF3EE;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
 .brand .b1{color:#5FD47A}
 .brand .b2{color:#F0605A}
 .hero{margin-top:13px}
@@ -98,7 +99,7 @@ textarea:focus-visible{outline:none}
 .top.condensed .logo{width:32px;height:32px}
 .top.condensed .home{padding:3px 12px 3px 3px;border-radius:13px}
 .top.condensed{box-shadow:0 3px 14px rgba(0,0,0,.08)}
-.top.condensed .brand{font-size:min(1.1rem,calc((100vw - 170px) / 8.6))}
+.top.condensed .brand{font-size:min(1.05rem,calc((100vw - 170px) / 10.4))}
 .pill.plansbtn{flex:none;padding:0 13px}
 .pill.plansbtn.on{background:var(--ink);color:var(--paper)}
 .top.condensed .plansbtn{min-height:36px;padding:0 11px;font-size:.85rem}
@@ -202,6 +203,7 @@ ol.steps-list li{margin:0 0 6px}
 .optrow input[type=checkbox]:checked{background:var(--moss);border-color:var(--moss)}
 .optrow input[type=checkbox]:checked::after{content:"";width:6px;height:12px;border:solid var(--card);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
 .optmodel{display:flex;align-items:center;gap:10px;margin:0 0 6px 40px;font-size:.88rem;color:var(--muted)}
+.pickcard button,.pickcard label,.pickcard select,.pickcard input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .optmodel select{flex:1;min-width:0;min-height:42px;border:1.5px solid var(--rule);border-radius:10px;background:var(--card);padding:0 8px;color:var(--ink);font-size:16px}
 .picksum{margin:12px 2px 0;font-size:.92rem;color:var(--muted)}
 .picksum strong{color:var(--ink)}
@@ -1518,8 +1520,8 @@ function ladders(p){
         var i = pickIndex(pl.id), on = i >= 0;
         h += '<div class="optrow"><label class="optlabel"><input type="checkbox" data-pid="' + pl.id + '"' + (on ? " checked" : "") + '><span>' + esc(pl.short || pl.name) + '</span></label>';
         if (on && pl.menu && pl.menu.length) {
-          h += '<label class="optmodel"><span>Model</span><select data-mfor="' + pl.id + '" aria-label="' + escA((pl.short || pl.name) + " model") + '"><option value="">Not sure which model</option>' +
-            pl.menu.map(function(m){ return '<option value="' + escA(m.n) + '"' + (picks[i].model === m.n ? " selected" : "") + '>' + esc(m.n) + ' (' + TIER_HINT[m.tier] + ')</option>'; }).join("") + '</select></label>';
+          h += '<div class="optmodel"><span>Model</span><select data-mfor="' + pl.id + '" aria-label="' + escA((pl.short || pl.name) + " model") + '"><option value="">Not sure which model</option>' +
+            pl.menu.map(function(m){ return '<option value="' + escA(m.n) + '"' + (picks[i].model === m.n ? " selected" : "") + '>' + esc(m.n) + ' (' + TIER_HINT[m.tier] + ')</option>'; }).join("") + '</select></div>';
         }
         h += '</div>';
       });
@@ -1535,11 +1537,16 @@ function ladders(p){
     }
     return h + '</div>';
   }
-  function renderPicks(){
+  function renderPicks(keepPanels){
     var names = picks.map(pickName).filter(Boolean);
     PICKERS.forEach(function(P){
       var host = $(P.host); if (!host) return;
+      var oldPanel = keepPanels ? host.querySelector(".optpanel") : null;
       host.innerHTML = pickerHtml(P);
+      /* A model change must not rebuild the list: replacing a <select> right after iOS closes its
+         picker swallows the next tap. Keep the live panel and refresh only the count and summary. */
+      var newPanel = oldPanel ? host.querySelector(".optpanel") : null;
+      if (oldPanel && newPanel) newPanel.parentNode.replaceChild(oldPanel, newPanel);
       $(P.box).querySelector("summary").textContent = names.length
         ? (P.mode === "find" ? "Your platforms: " : "Your platforms and models: ") + names.slice(0, 2).join(", ") + (names.length > 2 ? " +" + (names.length - 2) : "")
         : P.label;
@@ -1580,7 +1587,13 @@ function ladders(p){
         lastFocus = { host:P.host, sel:'[data-pid="' + pid + '"]' }; renderPicks();
       } else if (mf) {
         var j = pickIndex(mf); if (j >= 0) picks[j].model = el.value;
-        lastFocus = { host:P.host, sel:'[data-mfor="' + mf + '"]' }; renderPicks();
+        /* mirror the choice into the other picker (it is rebuilt, this one keeps its live select) */
+        PICKERS.forEach(function(Q){
+          if (Q.key === P.key) return;
+          var h2 = $(Q.host), s2 = h2 && h2.querySelector('[data-mfor="' + mf + '"]');
+          if (s2) s2.value = el.value;
+        });
+        renderPicks(true);
       }
     });
   });
