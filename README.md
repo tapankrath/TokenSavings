@@ -82,6 +82,7 @@ See `VALIDATION-PLAN.md` for how to read the results.
 
 - **Landing:** a short "What you'll get" explanation, the input box (type, speak or attach; a **Clear** button empties the text and attachment), an optional platform picker, and examples.
 - **Results:** dollar ranges for changes you can make, **Cheaper alternatives to try** (each platform's models from lightest to most capable), then advice matched to your situation. People with an API bill see **Bigger changes: architecture and workflow**. People on plans see **Smarter habits for your tools**. Someone with both sees both, without repeats.
+- **Live estimate box:** at the top of **What I assumed**, a box shows the estimate as short text and stays pinned just under the header while the person scrolls through and edits the numbers. It updates as they type, flashes when the range changes, shows the original estimate next to the edited one, and has a **Reset** button (back to the original guesses) and a **Full results** button that scrolls to the top. It is pinned to the top, not the bottom, because phone keyboards cover bottom bars.
 - **What I assumed:** the two money fields (API bill and subscriptions) are always shown. Model size, task difficulty and the yes/no questions are tucked into **Fine-tune these guesses**, and are worded to match your situation.
 
 ## Platforms, models and recommendations

@@ -183,6 +183,16 @@ ol.steps-list li{margin:0 0 6px}
   .printhead{display:block;font-weight:700;margin:0 0 10px}
   .receipt,.tip,.progresscard{break-inside:avoid}
 }
+.livebox{position:sticky;top:var(--hdr,76px);z-index:15;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:var(--card);border:1.5px solid var(--moss);border-radius:12px;padding:10px 12px;margin:10px 0 12px;box-shadow:0 4px 14px rgba(0,0,0,.09)}
+.lv-main{min-width:0;flex:1}
+.lv-title{margin:0;font-size:.78rem;font-weight:600;color:var(--muted)}
+.lv-big{margin:2px 0 0;font:700 1.05rem/1.25 var(--display);color:var(--moss)}
+.lv-sub,.lv-orig{margin:3px 0 0;font-size:.84rem;line-height:1.35;color:var(--muted)}
+.lv-actions{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none}
+.lv-actions .link{font-size:.85rem;padding:2px 0;white-space:nowrap}
+.livebox.flash{animation:lvflash .7s ease}
+@keyframes lvflash{from{background:var(--moss-soft)}to{background:var(--card)}}
+@media (prefers-reduced-motion: reduce){.livebox.flash{animation:none}}
 .lbl{margin:10px 0 2px;font-weight:600;font-size:.92rem}
 .go{flex:none;min-height:48px;padding:0 20px;border-radius:12px;border:0;background:var(--ink);color:var(--paper);font-weight:600;cursor:pointer}
 .link{background:none;border:0;padding:6px 0;color:var(--cobalt);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
@@ -346,6 +356,15 @@ details.tune .fields{margin-top:12px}
     <div id="results"></div>
     <details class="assume" open>
       <summary>What I assumed</summary>
+      <div id="liveBox" class="livebox" role="status" aria-live="polite">
+        <div class="lv-main">
+          <p class="lv-title" id="lvTitle">Your estimate</p>
+          <p class="lv-big" id="lvBig"></p>
+          <p class="lv-sub" id="lvSub"></p>
+          <p class="lv-orig" id="lvOrig" hidden></p>
+        </div>
+        <div class="lv-actions"><button id="lvUp" class="link" type="button">Full results \u2191</button><button id="lvReset" class="link" type="button" hidden>Reset</button></div>
+      </div>
       <div id="fbox" hidden><p class="lbl">From your file</p><ul id="flist" class="alist"></ul><p class="lbl">Guesses I made</p></div>
       <ul id="alist" class="alist"></ul>
       <p class="small" style="margin:0 0 12px">Change anything and the plan updates.</p>
@@ -1420,6 +1439,7 @@ function ladders(p){
 
   var profile = null, pending = null, demo = null, demoPending = null, demoStash = null;
   var whatIfOff = {}, cmpId = "", sessionIds = [], savedNow = false, currentView = "compose", backTo = "compose";
+  var baseProfile = null, baseLive = null, dirtyFields = false;
   var ta = $("desc"), statusEl = $("status"), goBtn = $("go");
   function setGoLabel(x){ goBtn.textContent = x; $("goFloat").textContent = x; }
   var ua = navigator.userAgent || "";
@@ -1747,6 +1767,29 @@ function ladders(p){
 
   /* ---------- rendering ---------- */
   /* Which advice fits: builders see architecture, plan users see habits, mixed users see both without repeats. */
+  /* A short version of the estimate that follows you down the page while you edit the assumptions. */
+  function liveOf(rs, sym){
+    var A = rs.api, B = rs.sub;
+    var aHas = !!(A && A.high >= A.base * 0.01), bHas = !!(B && B.high >= B.base * 0.01);
+    if (!A && !B) return { big:"Add your API bill or subscriptions above", sub:"" };
+    if (aHas) {
+      var s = "Best guess after changes: about " + fmtMoney(niceNum(A.after), sym) + " (now " + fmtMoney(A.base, sym) + ")";
+      if (B && bHas) s += ". Plans: roughly " + pctSpan(B.low / B.base * 100, B.high / B.base * 100) + " less usage";
+      return { big:"Could save roughly " + moneySpan(A.low, A.high, sym) + " a month", sub:s };
+    }
+    if (bHas) return { big:"Could use roughly " + pctSpan(B.low / B.base * 100, B.high / B.base * 100) + " less", sub:"Your plan price likely stays the same" };
+    return { big:"No clear saving yet", sub:"Try changing the details below" };
+  }
+  function updateLive(rs, edited){
+    var lv = liveOf(rs, profile.sym), box = $("liveBox"), changed = $("lvBig").textContent !== lv.big;
+    $("lvBig").textContent = lv.big; $("lvSub").textContent = lv.sub;
+    var showOrig = !!(edited && baseLive && baseLive.big !== lv.big);
+    $("lvOrig").hidden = !showOrig; $("lvOrig").textContent = showOrig ? "Original: " + baseLive.big : "";
+    $("lvReset").hidden = !edited;
+    $("lvTitle").textContent = edited ? "Updated estimate (with your edits)" : "Your estimate";
+    if (changed && edited) { box.classList.remove("flash"); void box.offsetWidth; box.classList.add("flash"); }
+  }
+  function setHdr(){ document.documentElement.style.setProperty("--hdr", ($("top").offsetHeight + 6) + "px"); }
   function adviceSets(p){
     var showDev = !!(p.apiSpend || p.appMode), showHab = !!p.subSpend || !showDev;
     var d = showDev ? advise(p, true, 5) : [];
@@ -1760,6 +1803,7 @@ function ladders(p){
     var rs = anyOff ? plan(profile, off) : r, track = !demo, doneMap = track ? loadDone() : {};
     var numericTips = r.tips.filter(function(t){ return t.api || t.sub; });
     $("save").hidden = !!demo; $("save").textContent = savedNow ? "Saved \u2713" : "Save report";
+    updateLive(rs, dirtyFields || anyOff);
     if (demo) {
       html += '<div class="demobox"><strong>Sample bill: a fictional company, August 2026.</strong>' +
         'This is what you would see for a real usage export or invoice: a savings range at the top, then what to change, cheaper models to try and bigger ideas. What I found in the file is at the bottom.' +
@@ -1888,7 +1932,8 @@ function ladders(p){
     toggleLabels();
   }
   function showReport(){
-    whatIfOff = {}; savedNow = false;
+    whatIfOff = {}; savedNow = false; dirtyFields = false;
+    baseProfile = JSON.parse(JSON.stringify(profile)); baseLive = liveOf(plan(profile), profile.sym);
     $("share").hidden = !(navigator.share);
     setView("report");
     $("summary").textContent = profile.summary;
@@ -2282,10 +2327,19 @@ function ladders(p){
     else if (k === "top") profile.tier = on ? "top" : "mid";
     else if (k === "rep") profile.rep = on ? 0.5 : 0;
     else if (k === "batch") profile.realtime = !on;
-    savedNow = false; fillFields(); renderResults();
+    savedNow = false; dirtyFields = true; fillFields(); renderResults();
   });
-  $("fieldsWrap").addEventListener("input", function(e){ readFields(e.target); savedNow = false; renderResults(); });
-  $("fieldsWrap").addEventListener("change", function(e){ readFields(e.target); savedNow = false; renderResults(); });
+  $("fieldsWrap").addEventListener("input", function(e){ readFields(e.target); savedNow = false; dirtyFields = true; renderResults(); });
+  $("fieldsWrap").addEventListener("change", function(e){ readFields(e.target); savedNow = false; dirtyFields = true; renderResults(); });
+  $("lvReset").addEventListener("click", function(){
+    if (!baseProfile) return;
+    profile = JSON.parse(JSON.stringify(baseProfile)); whatIfOff = {}; dirtyFields = false; savedNow = false;
+    fillFields(); renderResults();
+  });
+  $("lvUp").addEventListener("click", function(){
+    var el = document.querySelector("#results .receipt") || $("results");
+    try { el.scrollIntoView({ behavior:"smooth", block:"start" }); } catch(e){ el.scrollIntoView(); }
+  });
   /* Back to the top of the landing screen with the header expanded. */
   function toLanding(){
     setView("compose");
@@ -2358,13 +2412,15 @@ function ladders(p){
   function queueGoBar(){ if (barTick) return; barTick = true; (window.requestAnimationFrame || setTimeout)(function(){ barTick = false; updateGoBar(); }); }
   $("goFloat").addEventListener("click", function(){ goBtn.click(); });
   $("demoOwn").addEventListener("click", function(){ exitDemo(); });
-  window.addEventListener("resize", queueGoBar);
+  window.addEventListener("resize", function(){ setHdr(); queueGoBar(); });
+  setHdr();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setHdr);
   updateGoBar();
   window.addEventListener("scroll", function(){
     var y = window.pageYOffset || document.documentElement.scrollTop || 0;
     if (!tucked && y > 80) { tucked = true; topEl.classList.add("condensed"); }
     else if (tucked && y < 10) { tucked = false; topEl.classList.remove("condensed"); }
-    queueGoBar();
+    setHdr(); queueGoBar();
   }, { passive:true });
 
   /* ---------- install + offline ---------- */
