@@ -159,6 +159,7 @@ textarea:focus-visible{outline:none}
 .progresscard{background:var(--card);border-radius:12px;padding:14px 16px;margin:0 0 20px}
 .progresscard ul{margin:8px 0;padding-left:18px}
 .progresscard select{min-height:40px;border:1.5px solid var(--rule);border-radius:10px;background:var(--paper);padding:0 8px;color:var(--ink);font-size:16px;max-width:100%}
+.ctlrow{display:flex;flex-wrap:wrap;gap:6px 20px;margin:10px 0 0}
 .done,.incl{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;color:var(--ink);cursor:pointer}
 .done input,.incl input{width:18px;height:18px;accent-color:var(--moss)}
 .tip.is-done{opacity:.6}
@@ -1911,7 +1912,7 @@ function ladders(p){
       }
       if (A) html += '<p class="note">Not a promise. Your results may be lower or higher. Try one change at a time and check your next bill.</p>';
       if (B) html += '<p class="note">A flat plan doesn\u2019t get cheaper by using less. Lower usage means fewer limit warnings, and it may let you move to a cheaper plan.</p>';
-      if (numericTips.length > 1) html += '<p class="note">' + (anyOff ? "Counting " + (numericTips.length - offIds.length) + " of " + numericTips.length + " changes. " : "") + 'Untick \u201CCount it\u201D on a change below to see the estimate without it.</p>';
+      if (numericTips.length > 1) html += '<p class="note">' + (anyOff ? "Counting " + (numericTips.length - offIds.length) + " of " + numericTips.length + " changes. " : "") + 'Untick \u201CInclude in estimate\u201D on a change below to see the total without it, for example if you already do it or won\u2019t.</p>';
       html += '<p class="conf"><strong>How sure am I: ' + conf.level + '.</strong> ' + esc(conf.text) + '</p></div><div class="edge" aria-hidden="true"></div>';
     } else {
       var ticks = [
@@ -1933,7 +1934,7 @@ function ladders(p){
     var ids = pageIds(r, sets);
     if (track && ids.length) {
       var nd = ids.filter(function(id){ return doneMap[id]; }).length;
-      html += '<div class="prog"><p id="progText">Your progress: ' + nd + ' of ' + ids.length + ' changes done</p><div class="progbar"><span id="progFill" style="width:' + Math.round(nd / ids.length * 100) + '%"></span></div></div>';
+      html += '<div class="prog"><p id="progText">Your progress: ' + nd + ' of ' + ids.length + ' changes done</p><div class="progbar"><span id="progFill" style="width:' + Math.round(nd / ids.length * 100) + '%"></span></div><p class="small" style="margin:6px 0 0;font-weight:400">Tick \u201CI\u2019ve done this\u201D as you make each change. It tracks your progress and doesn\u2019t change the estimate.</p></div>';
     }
     html += progressHtml(ids, doneMap);
     if (r.tips.length) {
@@ -1944,12 +1945,12 @@ function ladders(p){
         if (t.sub) chips.push("Roughly " + pctSpan(t.sub.low / profile.subSpend * 100, t.sub.high / profile.subSpend * 100) + " less usage" + (profile.apiSpend ? " on your plans" : ""));
         var chipHtml = chips.length ? chips.map(function(c){ return '<span class="save">' + esc(c) + '</span>'; }).join("") : '<span class="save soft">Savings vary</span>';
         var ctl = "";
-        if (t.api || t.sub) ctl += '<label class="incl"><input type="checkbox" data-incl="' + t.id + '"' + (off[t.id] ? "" : " checked") + '> <span>Count it</span></label>';
-        if (track) ctl += '<label class="done"><input type="checkbox" data-done="' + t.id + '"' + (doneMap[t.id] ? " checked" : "") + '> <span>Done</span></label>';
+        if (t.api || t.sub) ctl += '<label class="incl"><input type="checkbox" data-incl="' + t.id + '"' + (off[t.id] ? "" : " checked") + '> <span>Include in estimate</span></label>';
+        if (track) ctl += '<label class="done"><input type="checkbox" data-done="' + t.id + '"' + (doneMap[t.id] ? " checked" : "") + '> <span>I\u2019ve done this</span></label>';
         html += '<li class="tip' + (i === 0 && r.hasNumeric ? " first" : "") + (track && doneMap[t.id] ? " is-done" : "") + '">' +
           (i === 0 && r.hasNumeric ? '<p class="start">Try this first</p>' : "") +
           '<h3>' + esc(tx.title) + '</h3><p>' + esc(tx.why) + '</p>' +
-          '<p class="meta">' + chipHtml + '<span>' + tx.effort + ' effort</span>' + ctl + '</p></li>';
+          '<p class="meta">' + chipHtml + '<span>' + tx.effort + ' effort</span></p>' + (ctl ? '<div class="ctlrow">' + ctl + '</div>' : "") + '</li>';
       });
       html += "</ol>";
     }
@@ -1967,9 +1968,9 @@ function ladders(p){
       var h = '<h2 class="h2" style="margin-top:8px">' + title + '</h2>' +
         '<p class="adv-note">Directional ideas, not promises. Try one at a time and check the result. \u201CPotential\u201D is how much it could help in a typical case.</p><ol class="tips adv">';
       list.forEach(function(a){
-        var dctl = track ? '<label class="done"><input type="checkbox" data-done="' + a.id + '"' + (doneMap[a.id] ? " checked" : "") + '> <span>Done</span></label>' : "";
+        var dctl = track ? '<label class="done"><input type="checkbox" data-done="' + a.id + '"' + (doneMap[a.id] ? " checked" : "") + '> <span>I\u2019ve done this</span></label>' : "";
         h += '<li class="tip' + (track && doneMap[a.id] ? " is-done" : "") + '"><h3>' + esc(a.title) + '</h3><p>' + esc(a.why) + '</p>' +
-          '<p class="meta"><span class="save' + (a.impact === "High" ? "" : " soft") + '">Potential: ' + a.impact + '</span><span>' + a.effort + ' effort</span>' + dctl + '</p></li>';
+          '<p class="meta"><span class="save' + (a.impact === "High" ? "" : " soft") + '">Potential: ' + a.impact + '</span><span>' + a.effort + ' effort</span></p>' + (dctl ? '<div class="ctlrow">' + dctl + '</div>' : "") + '</li>';
       });
       return h + "</ol>";
     }

@@ -58,6 +58,33 @@ While a sample is showing there are four ways back, all of which return to the l
 
 The sample data is inside index.html (search for `DEMO_CSV`, `DEMO_PDF`, `DEMO_WEB` and `DEMO_JOB`), so the demo works offline and needs no extra files. To change one, replace that value. The PDF sample needs the bundled PDF reader files (`pdf.min.js` and `pdf.worker.min.js`) to be uploaded, like any PDF. The `sample-files` folder that came with the project holds the same four files as real files, so people can try uploading them.
 
+## Saved reports, progress and plans
+
+Everything here works on the device, with no account.
+
+- **Save report** (on the results screen) stores the report in the browser. **Saved reports** in the footer lists them, and each one can be opened or deleted. Up to 30 are kept.
+- **Progress since your last report:** when someone analyzes a newer bill, it is compared with their saved reports. For an API bill it shows what they predicted against what they pay now, for example "captured roughly 46% of the predicted saving". The comparison can be switched to any saved report.
+- **I've done this (checklist):** every change and idea has an **I've done this** box. It only tracks progress: the card dims, and the progress line and bar ("2 of 8 changes done") update and are remembered across sessions and analyses. It does not change the estimate, because a change made today only shows up in the next bill. It is hidden in the sample demo so samples never pollute real progress.
+- **Include in estimate (what-if):** each dollar change has an **Include in estimate** box. Untick one to see the total without it, for example if you already do it or won't. Untick everything to see there is nothing left to count. This is the box that recalculates the estimate.
+- **Test before you switch:** a short checklist and a downloadable CSV sheet for testing a cheaper model on ten real requests, pre-filled with the model names for that platform.
+- **Share and print:** **Share** uses the phone's share sheet where available. **Print or save as PDF** prints a clean copy of the report.
+- **Plans:** the **Plans** pill at the top right of the header (and a **Plans** link in the footer) opens the plans page. While you are on it, the pill is highlighted and tapping it again goes back to where you were. The page shows Free, Pro ($29 a month) and Team ($79 a month) with a waitlist form. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
+
+### Connecting the waitlist (Supabase)
+
+Until you connect it, waitlist entries stay on the visitor's own device and you will not see them.
+
+1. In the Supabase SQL editor, run `waitlist.sql`. It is a separate file that came with this project (in the outputs folder, next to this project's folder, not inside the files you deploy). It creates the table and a rule that lets the public key add a row but never read the list.
+2. In Supabase, open **Project Settings, API** and copy the Project URL and the **anon public** key.
+3. In `index.html`, near the top of the script, set
+   `var WAITLIST_ENDPOINT = "https://YOUR-PROJECT.supabase.co/rest/v1/waitlist";`
+   and `var WAITLIST_KEY = "YOUR-ANON-KEY";`
+4. Re-upload `index.html`, join the waitlist yourself with a test email, and check the row in the Table editor.
+
+The anon key is meant to be public and is safe here only because of the row-level rule in the SQL. Never put the service role key in `index.html`. Any other form endpoint that accepts a JSON POST also works: set `WAITLIST_ENDPOINT` and leave `WAITLIST_KEY` empty.
+
+`VALIDATION-PLAN.md` (also a separate file) explains how to read the results and what to decide before looking at them.
+
 ## The screens
 
 - **Landing:** a short "What you'll get" explanation, the input box (type, speak or attach; a **Clear** button empties the text and attachment), an optional platform picker, and examples.
