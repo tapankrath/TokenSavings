@@ -45,38 +45,18 @@ A static, installable web app (PWA). No build step, no server.
 
 ## The built-in demo
 
-Right under the input box, a one-line strip reads **Try a sample:** with two buttons, **Usage CSV** and **Invoice PDF**. Tapping one loads a fictional company's August 2026 bill (about $5,946 of API spend across three models), runs the same analysis a real upload gets, and opens the results with a banner that says it is a sample.
+Right under the input box there are two labelled rows of samples:
 
-While a sample is showing there are four ways back, all of which return to the landing page and restore anything the person had typed or picked before: the **Try it with your own** button in the banner, a **Try it with your own** bar pinned to the bottom of the screen, the **Exit sample** link at the top right (it says **Edit** for normal results), and the logo badge in the header. The banner also has a pill to switch to the other sample.
+- **Sample bills:** **Usage CSV** and **Invoice PDF**, a fictional company's August 2026 bill (about $5,946 of API spend across three models).
+- **Sample code:** **Web app** and **Nightly job**, two fictional apps that show the architecture and workflow advice.
+  - **Web app** is a browser page that calls the AI provider directly. It contains a fake key, resends the whole conversation, has web search on, uses a top-tier model and calls the AI on every keystroke. Expect: a key warning, "call the AI from a server", retrieval instead of sending everything, model routing, and a debounce.
+  - **Nightly job** is a Python job run from cron. It has long instructions, four separate AI calls, retries and a tool loop. Expect: "move non-urgent work into a batch pipeline" (naming the provider's batch option), caching, cheaper models for easy work, capped retries and a check that each call is needed.
 
-The sample data is inside index.html (search for `DEMO_CSV` and `DEMO_PDF`, a text string and a base64 string), so the demo works offline and needs no extra files. To change it, replace those two values. The PDF sample needs the bundled PDF reader files (`pdf.min.js` and `pdf.worker.min.js`) to be uploaded, like any PDF.
+Tapping a sample runs the same analysis a real upload gets and opens the results with a banner that says it is a sample. For the code samples the monthly call volume is assumed (about 15,000 for the web app and 45,000 for the job), so no question is asked; the banner says so. The banner has a **Next** pill that cycles through all four samples.
 
-## Saved reports, progress and plans
+While a sample is showing there are four ways back, all of which return to the landing page and restore anything the person had typed or picked before: the **Try it with your own** button in the banner, a **Try it with your own** bar pinned to the bottom of the screen, the **Exit sample** link at the top right (it says **Edit** for normal results), and the logo badge in the header.
 
-Everything here works on the device, with no account.
-
-- **Save report** (on the results screen) stores the report in the browser. **Saved reports** in the footer lists them, and each one can be opened or deleted. Up to 30 are kept.
-- **Progress since your last report:** when someone analyzes a newer bill, it is compared with their saved reports. For an API bill it shows what they predicted against what they pay now, for example "captured roughly 46% of the predicted saving". The comparison can be switched to any saved report.
-- **Done checklist:** every change and idea has a **Done** box. Progress ("2 of 8 changes done") is remembered across sessions and analyses. It is hidden in the sample demo so samples never pollute real progress.
-- **Count it (what-if):** each dollar change has a **Count it** box. Untick one to see the estimate without it. Untick everything to see there is nothing left to count.
-- **Test before you switch:** a short checklist and a downloadable CSV sheet for testing a cheaper model on ten real requests, pre-filled with the model names for that platform.
-- **Share and print:** **Share** uses the phone's share sheet where available. **Print or save as PDF** prints a clean copy of the report.
-- **Plans:** the **Plans** pill at the top right of the header (and a **Plans** link in the footer) opens the plans page. While you are on it, the pill is highlighted and tapping it again goes back to where you were. The page shows Free, Pro ($29 a month) and Team ($79 a month) with a waitlist form. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
-
-### Connecting the waitlist (Supabase)
-
-Until you connect it, waitlist entries stay on the visitor's own device and you will not see them.
-
-1. In the Supabase SQL editor, run `waitlist.sql` (in the same folder as this project's outputs). It creates the table and a rule that lets the public key add a row but never read the list.
-2. In Supabase, open **Project Settings, API** and copy the Project URL and the **anon public** key.
-3. In `index.html`, near the top of the script, set
-   `var WAITLIST_ENDPOINT = "https://YOUR-PROJECT.supabase.co/rest/v1/waitlist";`
-   and `var WAITLIST_KEY = "YOUR-ANON-KEY";`
-4. Re-upload `index.html`, join the waitlist yourself with a test email, and check the row in the Table editor.
-
-The anon key is meant to be public and is safe here only because of the row-level rule in the SQL. Never put the service role key in `index.html`. Any other form endpoint that accepts a JSON POST also works: set `WAITLIST_ENDPOINT` and leave `WAITLIST_KEY` empty.
-
-See `VALIDATION-PLAN.md` for how to read the results.
+The sample data is inside index.html (search for `DEMO_CSV`, `DEMO_PDF`, `DEMO_WEB` and `DEMO_JOB`), so the demo works offline and needs no extra files. To change one, replace that value. The PDF sample needs the bundled PDF reader files (`pdf.min.js` and `pdf.worker.min.js`) to be uploaded, like any PDF. The `sample-files` folder that came with the project holds the same four files as real files, so people can try uploading them.
 
 ## The screens
 
