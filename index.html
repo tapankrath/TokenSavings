@@ -333,6 +333,7 @@ details.tune .fields{margin-top:12px}
       <p id="micHint" class="hintline">Tap, then start talking</p>
       <input id="file" type="file" accept=".csv,.tsv,.txt,.md,.pdf,.docx,.doc,.html,.htm,.js,.mjs,.jsx,.ts,.tsx,.py,text/csv,application/pdf" hidden>
     </div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
     <div class="trybar" id="tryBar">
       <span class="trylbl">Sample:</span>
       <div class="trypills">
@@ -358,7 +359,6 @@ details.tune .fields{margin-top:12px}
       <p class="small">Open a category and tick what you use. Tick a platform to also choose its model. This sharpens the advice.</p>
       <div id="pickHostLand"></div>
     </details>
-    <p id="status" class="status" role="status" aria-live="polite"></p>
 
     <div id="ask" class="ask" hidden>
       <p id="askTitle">About how much do you spend on AI each month?</p>
@@ -1569,7 +1569,16 @@ function ladders(p){
 
   function esc(s){ var d = document.createElement("div"); d.textContent = String(s); return d.innerHTML; }
   function money(x){ return fmtMoney(x, profile ? profile.sym : "$"); }
-  function setStatus(msg, isErr){ statusEl.textContent = msg || ""; statusEl.className = "status" + (isErr ? " err" : ""); }
+  function setStatus(msg, isErr){
+    statusEl.textContent = msg || ""; statusEl.className = "status" + (isErr ? " err" : "");
+    /* An error must be seen: bring it into view if the header or the floating button would hide it. */
+    if (msg && isErr) {
+      try {
+        var r = statusEl.getBoundingClientRect(), hb = $("top").getBoundingClientRect().bottom, vh = window.innerHeight || 800;
+        if (r.top < hb + 8 || r.bottom > vh - 80) statusEl.scrollIntoView({ block:"center" });
+      } catch(e){}
+    }
+  }
 
   /* ---------- platforms and models: category cards that open into checkbox lists ---------- */
   var picks = [], appliedPicks = [], openCat = { land:"", rep:"" }, lastFocus = null;
