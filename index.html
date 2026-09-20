@@ -125,10 +125,10 @@ textarea:focus-visible{outline:none}
 .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .step{border:1.5px solid var(--rule);border-radius:999px;padding:5px 11px;font-size:.92rem}
 .steps i{font-style:normal;color:var(--muted)}
-.demo{margin:16px 0 4px;padding:14px 16px;border:1.5px dashed var(--rule);border-radius:14px;background:var(--card)}
-.demo p{margin:0}
-.demo-btns{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 8px}
-.demo .link{font-size:.88rem;font-weight:500;padding:2px 0}
+.trybar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:10px 2px 0}
+.trylbl{font-size:.92rem;font-weight:600;color:var(--muted)}
+.pill{min-height:44px;padding:0 12px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;font-size:.92rem;font-weight:600;cursor:pointer}
+.pill:hover{background:var(--card)}
 .demobox{border:1.5px solid var(--moss);background:var(--card);border-radius:12px;padding:12px 14px;margin:0 0 18px;font-size:.95rem}
 .demobox strong{display:block;margin-bottom:4px}
 .demo-actions{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:6px}
@@ -243,7 +243,12 @@ details.tune .fields{margin-top:12px}
       <p id="micHint" class="hintline">Tap, then start talking</p>
       <input id="file" type="file" accept=".csv,.tsv,.txt,.md,.pdf,.docx,.doc,.html,.htm,.js,.mjs,.jsx,.ts,.tsx,.py,text/csv,application/pdf" hidden>
     </div>
-    <p class="small" style="margin:8px 4px 0">Attach an invoice, usage export (CSV), document (PDF or Word), or your app’s code (HTML, JavaScript or Python). Files are read on this device and never uploaded.</p>
+    <div class="trybar" id="tryBar">
+      <span class="trylbl">See it work:</span>
+      <button id="demoCsv" class="pill" type="button" aria-label="Run the app on a sample usage export (CSV)">Usage CSV</button>
+      <button id="demoPdf" class="pill" type="button" aria-label="Run the app on a sample invoice (PDF)">Invoice PDF</button>
+    </div>
+    <p class="small" style="margin:10px 4px 0">Attach a bill, usage export or your app’s code. Files are read on this device and never uploaded.</p>
     <section class="gets" aria-label="What you will get">
       <h2 class="h2">What you’ll get</h2>
       <ul>
@@ -254,14 +259,6 @@ details.tune .fields{margin-top:12px}
       </ul>
       <p class="small">Directional advice, not guarantees. Each idea shows how much it could help and how hard it is.</p>
     </section>
-    <div class="demo" id="demoBox">
-      <p><strong>See it in action.</strong> Tap a sample to run the app on a fictional company’s August bill:</p>
-      <div class="demo-btns">
-        <button id="demoCsv" class="btn primary" type="button">Usage export (CSV)</button>
-        <button id="demoPdf" class="btn" type="button">Invoice (PDF)</button>
-      </div>
-      <p class="small" style="margin:0">To try the upload yourself: <button id="dlCsv" class="link" type="button">download the CSV</button> or <button id="dlPdf" class="link" type="button">download the PDF</button>.</p>
-    </div>
     <details class="opt" id="pickBox" style="margin-top:14px">
       <summary>Add your platforms and models (optional)</summary>
       <p class="small">Tap the ones you use, then tap a chosen platform to pick its model. This sharpens the advice.</p>
@@ -1894,17 +1891,8 @@ function ladders(p){
     setText(st ? st.text : ""); picks = st ? st.picks : []; renderPicks();
     toLanding();
   }
-  function download(name, data, type){
-    try {
-      var url = URL.createObjectURL(new Blob([data], { type:type })), a = document.createElement("a");
-      a.href = url; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
-    } catch(e){ setStatus("Couldn\u2019t start the download here.", true); }
-  }
   $("demoCsv").addEventListener("click", function(){ runDemo("csv"); });
   $("demoPdf").addEventListener("click", function(){ runDemo("pdf"); });
-  $("dlCsv").addEventListener("click", function(){ download("SAMPLE_api_usage_aug2026.csv", DEMO_CSV, "text/csv"); });
-  $("dlPdf").addEventListener("click", function(){ download("SAMPLE_api_invoice_aug2026.pdf", demoFile("pdf"), "application/pdf"); });
   $("results").addEventListener("click", function(e){
     var b = e.target && e.target.closest ? e.target.closest("[data-demo]") : null;
     if (!b || !demo) return;
