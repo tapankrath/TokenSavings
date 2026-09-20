@@ -125,6 +125,13 @@ textarea:focus-visible{outline:none}
 .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .step{border:1.5px solid var(--rule);border-radius:999px;padding:5px 11px;font-size:.92rem}
 .steps i{font-style:normal;color:var(--muted)}
+.demo{margin:16px 0 4px;padding:14px 16px;border:1.5px dashed var(--rule);border-radius:14px;background:var(--card)}
+.demo p{margin:0}
+.demo-btns{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 8px}
+.demo .link{font-size:.88rem;font-weight:500;padding:2px 0}
+.demobox{border:1.5px solid var(--moss);background:var(--card);border-radius:12px;padding:12px 14px;margin:0 0 18px;font-size:.95rem}
+.demobox strong{display:block;margin-bottom:4px}
+.demo-actions{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:6px}
 .lbl{margin:10px 0 2px;font-weight:600;font-size:.92rem}
 .go{flex:none;min-height:48px;padding:0 20px;border-radius:12px;border:0;background:var(--ink);color:var(--paper);font-weight:600;cursor:pointer}
 .link{background:none;border:0;padding:6px 0;color:var(--cobalt);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
@@ -247,6 +254,14 @@ details.tune .fields{margin-top:12px}
       </ul>
       <p class="small">Directional advice, not guarantees. Each idea shows how much it could help and how hard it is.</p>
     </section>
+    <div class="demo" id="demoBox">
+      <p><strong>See it in action.</strong> Tap a sample to run the app on a fictional company’s August bill:</p>
+      <div class="demo-btns">
+        <button id="demoCsv" class="btn primary" type="button">Usage export (CSV)</button>
+        <button id="demoPdf" class="btn" type="button">Invoice (PDF)</button>
+      </div>
+      <p class="small" style="margin:0">To try the upload yourself: <button id="dlCsv" class="link" type="button">download the CSV</button> or <button id="dlPdf" class="link" type="button">download the PDF</button>.</p>
+    </div>
     <details class="opt" id="pickBox" style="margin-top:14px">
       <summary>Add your platforms and models (optional)</summary>
       <p class="small">Tap the ones you use, then tap a chosen platform to pick its model. This sharpens the advice.</p>
@@ -781,7 +796,7 @@ function analyzeUsageCsv(text){
 
   return { ok:true, kind:"usage", bucket:"api", monthly:monthly, sym:sym, costEstimated:est, span:span,
     models:modelsArr.slice(0, 5), tierShare:tierShare, inShare:inShare, avgIn:avgIn, avgOut:avgOut, cacheShare:cacheShare,
-    tools:[], found:found };
+    tools:detectTools(modelsArr.map(function(m){ return m.name; }).join(" ; ")).names, found:found };
 }
 
 /* Invoice, receipt or any document: looks for totals, model line items and token counts. */
@@ -1291,8 +1306,11 @@ function ladders(p){
   return out.slice(0, 3);
 }
 
+/* Sample data for the demo buttons. Fictional company, made-up numbers. */
+  var DEMO_CSV = "date,model,requests,input_tokens,output_tokens,cache_read_input_tokens,cost_usd\r\n2026-08-01,claude-opus-5,318,5089280,827777,152678,46.22\r\n2026-08-01,claude-sonnet-5,912,5254562,1064116,262728,31.8\r\n2026-08-01,claude-haiku-4-5,1792,1621921,276417,0,3.0\r\n2026-08-02,claude-opus-5,354,5794577,945077,173837,52.69\r\n2026-08-02,claude-sonnet-5,890,5386202,1040224,269310,31.84\r\n2026-08-02,claude-haiku-4-5,1797,1554344,278088,0,2.94\r\n2026-08-03,claude-opus-5,987,16289073,2613720,488672,147.03\r\n2026-08-03,claude-sonnet-5,2503,14582815,2928964,729140,87.9\r\n2026-08-03,claude-haiku-4-5,5575,5232909,861766,0,9.54\r\n2026-08-04,claude-opus-5,1119,17928327,2786134,537849,159.56\r\n2026-08-04,claude-sonnet-5,2308,13927557,2712026,696377,82.67\r\n2026-08-04,claude-haiku-4-5,4948,4620851,757339,0,8.41\r\n2026-08-05,claude-opus-5,1018,15513895,2702611,465416,145.37\r\n2026-08-05,claude-sonnet-5,2321,13817680,2757006,690884,83.02\r\n2026-08-05,claude-haiku-4-5,5102,4591090,735946,0,8.27\r\n2026-08-06,claude-opus-5,1001,16416635,2628669,492499,148.05\r\n2026-08-06,claude-sonnet-5,2394,14962626,2803463,748131,87.16\r\n2026-08-06,claude-haiku-4-5,4903,4600783,733919,0,8.27\r\n2026-08-07,claude-opus-5,1004,15301564,2538489,459046,140.2\r\n2026-08-07,claude-sonnet-5,2186,12524321,2676887,626216,77.91\r\n2026-08-07,claude-haiku-4-5,5464,4722162,829624,0,8.87\r\n2026-08-08,claude-opus-5,347,5542069,877743,166262,49.74\r\n2026-08-08,claude-sonnet-5,917,5571694,1095645,278584,33.23\r\n2026-08-08,claude-haiku-4-5,1737,1630438,273244,0,3.0\r\n2026-08-09,claude-opus-5,353,5681772,933380,170453,51.83\r\n2026-08-09,claude-sonnet-5,801,4950084,961382,247504,29.35\r\n2026-08-09,claude-haiku-4-5,1741,1627139,259402,0,2.92\r\n2026-08-10,claude-opus-5,950,14848934,2354677,445468,133.33\r\n2026-08-10,claude-sonnet-5,2489,15079267,2974323,753963,90.08\r\n2026-08-10,claude-haiku-4-5,5027,4519557,785833,0,8.45\r\n2026-08-11,claude-opus-5,942,15050249,2451959,451507,136.78\r\n2026-08-11,claude-sonnet-5,2587,16000014,3122355,800000,95.08\r\n2026-08-11,claude-haiku-4-5,5488,5102886,808107,0,9.14\r\n2026-08-12,claude-opus-5,1100,16893138,2914149,506794,157.57\r\n2026-08-12,claude-sonnet-5,2564,15407342,3062314,770367,92.39\r\n2026-08-12,claude-haiku-4-5,5558,5235936,862249,0,9.55\r\n2026-08-13,claude-opus-5,994,15211055,2524045,456331,139.38\r\n2026-08-13,claude-sonnet-5,2399,13813436,2950065,690671,85.9\r\n2026-08-13,claude-haiku-4-5,4893,4381414,698282,0,7.87\r\n2026-08-14,claude-opus-5,880,14193541,2386882,425806,130.85\r\n2026-08-14,claude-sonnet-5,2159,13334550,2525469,666727,78.09\r\n2026-08-14,claude-haiku-4-5,5145,4747121,806970,0,8.78\r\n2026-08-15,claude-opus-5,364,5902861,913726,177085,52.45\r\n2026-08-15,claude-sonnet-5,802,4851971,988339,242598,29.45\r\n2026-08-15,claude-haiku-4-5,1938,1742802,297109,0,3.23\r\n2026-08-16,claude-opus-5,319,4962582,836693,148877,45.8\r\n2026-08-16,claude-sonnet-5,932,5802255,1118928,290112,34.28\r\n2026-08-16,claude-haiku-4-5,1575,1441392,246528,0,2.67\r\n2026-08-17,claude-opus-5,1068,17797179,2722931,533915,157.33\r\n2026-08-17,claude-sonnet-5,2349,14528088,2824446,726404,86.17\r\n2026-08-17,claude-haiku-4-5,4636,3969676,668010,0,7.31\r\n2026-08-18,claude-opus-5,1093,16703445,2798325,501103,153.73\r\n2026-08-18,claude-sonnet-5,2315,14264382,2646264,713219,82.7\r\n2026-08-18,claude-haiku-4-5,5012,4433106,737040,0,8.12\r\n2026-08-19,claude-opus-5,958,14747640,2602582,442429,139.02\r\n2026-08-19,claude-sonnet-5,2441,15092613,2827817,754630,87.92\r\n2026-08-19,claude-haiku-4-5,5023,4490685,741124,0,8.2\r\n2026-08-20,claude-opus-5,1023,16660166,2545297,499804,147.18\r\n2026-08-20,claude-sonnet-5,2341,13618290,2927595,680914,84.97\r\n2026-08-20,claude-haiku-4-5,4454,4026545,690747,0,7.48\r\n2026-08-21,claude-opus-5,988,16210645,2488789,486319,143.52\r\n2026-08-21,claude-sonnet-5,2521,15697485,2913007,784874,91.02\r\n2026-08-21,claude-haiku-4-5,5035,4660833,756522,0,8.44\r\n2026-08-22,claude-opus-5,388,5997170,1043540,179915,56.16\r\n2026-08-22,claude-sonnet-5,817,4865408,971977,243270,29.25\r\n2026-08-22,claude-haiku-4-5,1573,1388081,232270,0,2.55\r\n2026-08-23,claude-opus-5,330,5278734,882045,158362,48.52\r\n2026-08-23,claude-sonnet-5,823,4922050,970394,246102,29.4\r\n2026-08-23,claude-haiku-4-5,1742,1508240,269050,0,2.85\r\n2026-08-24,claude-opus-5,1071,17677758,2881467,530332,160.69\r\n2026-08-24,claude-sonnet-5,2245,14081098,2796000,704054,84.39\r\n2026-08-24,claude-haiku-4-5,5174,4613760,798087,0,8.6\r\n2026-08-25,claude-opus-5,1083,17623267,2945664,528698,162.02\r\n2026-08-25,claude-sonnet-5,2314,13407444,2794016,670372,82.33\r\n2026-08-25,claude-haiku-4-5,5086,4594967,733123,0,8.26\r\n2026-08-26,claude-opus-5,1051,16909832,2751193,507294,153.58\r\n2026-08-26,claude-sonnet-5,2235,13134692,2619804,656734,78.9\r\n2026-08-26,claude-haiku-4-5,5066,4377687,741944,0,8.09\r\n2026-08-27,claude-opus-5,1109,17160710,2936612,514821,159.48\r\n2026-08-27,claude-sonnet-5,2549,15634074,2962599,781703,91.58\r\n2026-08-27,claude-haiku-4-5,5156,4643475,756136,0,8.42\r\n2026-08-28,claude-opus-5,1080,16918910,2755940,507567,153.75\r\n2026-08-28,claude-sonnet-5,2262,12978739,2690416,648936,79.49\r\n2026-08-28,claude-haiku-4-5,5477,5065732,814528,0,9.14\r\n2026-08-29,claude-opus-5,309,4744484,765076,142334,42.92\r\n2026-08-29,claude-sonnet-5,764,4669182,923811,233459,27.93\r\n2026-08-29,claude-haiku-4-5,1933,1713657,298061,0,3.2\r\n2026-08-30,claude-opus-5,359,5832869,944147,174986,52.86\r\n2026-08-30,claude-sonnet-5,925,5447915,1078435,272395,32.6\r\n2026-08-30,claude-haiku-4-5,1734,1635370,269942,0,2.99\r\n2026-08-31,claude-opus-5,1044,17307516,2763640,519225,155.89\r\n2026-08-31,claude-sonnet-5,2644,15687984,3314644,784399,97.02\r\n2026-08-31,claude-haiku-4-5,4827,4446559,719469,0,8.04\r\nTotal,,,,,,5945.92\r\n";
+  var DEMO_PDF = "JVBERi0xLjMKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQ29udGVudHMgOCAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDcgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyA3IDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKNiAwIG9iago8PAovQXV0aG9yIChhbm9ueW1vdXMpIC9DcmVhdGlvbkRhdGUgKEQ6MjAyNjA5MjAwMjIwNDUrMDAnMDAnKSAvQ3JlYXRvciAoYW5vbnltb3VzKSAvS2V5d29yZHMgKCkgL01vZERhdGUgKEQ6MjAyNjA5MjAwMjIwNDUrMDAnMDAnKSAvUHJvZHVjZXIgKFJlcG9ydExhYiBQREYgTGlicmFyeSAtIFwob3BlbnNvdXJjZVwpKSAKICAvU3ViamVjdCAodW5zcGVjaWZpZWQpIC9UaXRsZSAodW50aXRsZWQpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKNyAwIG9iago8PAovQ291bnQgMSAvS2lkcyBbIDQgMCBSIF0gL1R5cGUgL1BhZ2VzCj4+CmVuZG9iago4IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDkwNQo+PgpzdHJlYW0KR2F0JWI5bEhMZCY7S1pMJ20mamZXVVApRzVCOmkhVXA/NWcyUTNOWUxlU0wjJSQ7ITVxc1YtaSg/LmU3IUVsXS5eJGowJF9tJGBVWWwwXkhKJGY7Ok07ZSVEIUNAc0QjSnEoLnBgKiZoS0I+L3RVPjlsX09GMkNNSGpHUXAwYGdlSyVbWS4tUkI5QGg/Ti1IbjlJODhLYlZBOFAjaV0yJkoqSjYzOVhyMjRxcjg6PmA0Sy9XPmJAWSpmMSE/JlpgPi9aVEFJTjBiQVQoaVU5I0pnRDQ5TylRZldLZ0krI3JHVyc+cGFXbF0zaGMwNi5IbmVhIiZEPiFaYy8oU1syaCFPJW5uMzEmVj1dbSRHbUV0dChwWiFcIjh0J1gpQ3VyXkE9TWdxP1ZgPzwyUVZkLjZMR1w/NFhDSz4vI0MnIlE9aDFzYWwzQUZEXC1DWVpoJloqcm4mcU5FRDNVOEQjcWQybzU2YGlcWj1UOz1xR2lLZldQNnRVOy5cOzhJXGo5VDZXa2RDQ3MnPmZwN3QtcEFdSktlNkk9akVMUlYuLitZZGhDWTRBQXBWdDlKaWhUYSMpPEYzQmpUJ09QNWkyPHM3JTkyTkBiaWpqcic1PTlFIl8qMCpcQ10ldEEuMXBTIStOM2VUPHNhNVhvLDMlYGMvRC0uM148V0E8W3RNRFdNWDw7TWRmNzg7RjtvRmg8b2c4UUxvR0hjZWY4XWVwRFY2blRbXzNQa2ZFJFlzaXNRakk6LWQvQTFNZDxCLyFVdCRVIzJpSl1APG06YypXIkcvaCtfXWJTWUk/WzhfQjlrRDZPb1hOTTtbNUVHJClDXmlRLzFET15faTxncmdYVU4kSnBkZSM9QV5MMiNdLTlnaEVKbmprNSZkQz1GUio+XUpmM2RBbUNpPys5TVdMaV1JSExEXDIwNCVBL3JCPDV1I2dvP1I7XW1ZUnJRSDFBI3JlRGoxUWY6bE4jXDBiOjopI1ZCcFY0Kmw4Q3F1RzRNJjA4LVZcLmZQNTA1Pks8T0pCaGVBVCkvNDRMLyk0MmEpXGoxLURjSC4+SiJtb0E+cWZvJXJXI21TPEZxRXUySUQiUV9LSkxkZU1IMTg2IkZaJS8vT1xkMCZVYT8tV0hCcF1JRFlDaHEtRE0pZCQkaGtXQC8lNE8hUl9OWlFib2kiWCc8N210SG9oSCdedHF1YlsvQTcjfj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA5CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDA2MSAwMDAwMCBuIAowMDAwMDAwMTAyIDAwMDAwIG4gCjAwMDAwMDAyMDkgMDAwMDAgbiAKMDAwMDAwMDMyMSAwMDAwMCBuIAowMDAwMDAwNTE0IDAwMDAwIG4gCjAwMDAwMDA1ODIgMDAwMDAgbiAKMDAwMDAwMDg0MyAwMDAwMCBuIAowMDAwMDAwOTAyIDAwMDAwIG4gCnRyYWlsZXIKPDwKL0lEIApbPDkwYmQ5NjkxYzllNzVkMjkwNTZjZGEzYWNmNTZmYzZmPjw5MGJkOTY5MWM5ZTc1ZDI5MDU2Y2RhM2FjZjU2ZmM2Zj5dCiUgUmVwb3J0TGFiIGdlbmVyYXRlZCBQREYgZG9jdW1lbnQgLS0gZGlnZXN0IChvcGVuc291cmNlKQoKL0luZm8gNiAwIFIKL1Jvb3QgNSAwIFIKL1NpemUgOQo+PgpzdGFydHhyZWYKMTg5NwolJUVPRgo=";
 
-  var profile = null, pending = null;
+  var profile = null, pending = null, demo = null, demoPending = null, demoStash = null;
   var ta = $("desc"), statusEl = $("status"), goBtn = $("go");
   function setGoLabel(x){ goBtn.textContent = x; $("goFloat").textContent = x; }
   var ua = navigator.userAgent || "";
@@ -1383,7 +1401,7 @@ function ladders(p){
   function setText(v){ ta.value = v; updateClear(); }
   ta.addEventListener("input", updateClear);
   $("clearIn").addEventListener("click", function(){
-    hardStopVoice(); setText(""); fileState = null; renderFileCard();
+    hardStopVoice(); setText(""); fileState = null; renderFileCard(); demoStash = null;
     pending = null; $("ask").hidden = true; setStatus(""); updateGoBar();
   });
 
@@ -1629,6 +1647,12 @@ function ladders(p){
   function renderResults(){
     document.body.setAttribute("data-aud", profile.apiSpend ? "developer" : "everyday");
     var r = plan(profile), box = $("results"), sym = profile.sym, html = "";
+    if (demo) {
+      html += '<div class="demobox"><strong>Sample bill: a fictional company, August 2026.</strong>' +
+        'This is what the app shows for a real usage export or invoice. At the top is your estimated savings range. Below that: what to change, cheaper models to try, and bigger architecture or workflow ideas. At the bottom: what I found in the file and the guesses I made.' +
+        '<div class="demo-actions"><button class="link" type="button" data-demo="own">Try it with your own</button>' +
+        '<button class="link" type="button" data-demo="other">See the ' + (demo.kind === "csv" ? "invoice (PDF)" : "usage export (CSV)") + ' sample</button></div></div>';
+    }
     if (profile.keyExposed) html += '<div class="alertbox"><strong>Heads up: your file appears to contain a secret API key.</strong> Anyone who can open the page or code can copy it and run up your bill. Keep the key on a server instead, and create a new one. I didn\u2019t store or show it.</div>';
     if (profile.appMode && profile.found.length) {
       html += '<div class="findbox"><h2 class="h2">What I found in your app</h2><ul>' + profile.found.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
@@ -1846,6 +1870,47 @@ function ladders(p){
     box.addEventListener("drop", function(e){ var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) handleFile(f); });
   })();
 
+  /* ---------- demo: sample bills built into the app ---------- */
+  function demoFile(kind){
+    if (kind === "csv") return new File([DEMO_CSV], "SAMPLE_api_usage_aug2026.csv", { type:"text/csv" });
+    var bin = atob(DEMO_PDF), u8 = new Uint8Array(bin.length), i;
+    for (i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+    return new File([u8], "SAMPLE_api_invoice_aug2026.pdf", { type:"application/pdf" });
+  }
+  function runDemo(kind){
+    if (!demoStash) demoStash = { text:ta.value, picks:picks.slice() };   /* keep what the person had typed */
+    hardStopVoice(); setText(""); picks = []; renderPicks();
+    pending = null; $("ask").hidden = true; setStatus("");
+    demoPending = { kind:kind };
+    handleFile(demoFile(kind)).then(function(){
+      if (fileState && fileState.error) { demoPending = null; setStatus("Couldn\u2019t load the sample: " + fileState.error, true); return; }
+      goBtn.click();
+    });
+  }
+  function exitDemo(){
+    var st = demoStash;
+    demo = null; demoPending = null; demoStash = null;
+    fileState = null; renderFileCard();
+    setText(st ? st.text : ""); picks = st ? st.picks : []; renderPicks();
+    toLanding();
+  }
+  function download(name, data, type){
+    try {
+      var url = URL.createObjectURL(new Blob([data], { type:type })), a = document.createElement("a");
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    } catch(e){ setStatus("Couldn\u2019t start the download here.", true); }
+  }
+  $("demoCsv").addEventListener("click", function(){ runDemo("csv"); });
+  $("demoPdf").addEventListener("click", function(){ runDemo("pdf"); });
+  $("dlCsv").addEventListener("click", function(){ download("SAMPLE_api_usage_aug2026.csv", DEMO_CSV, "text/csv"); });
+  $("dlPdf").addEventListener("click", function(){ download("SAMPLE_api_invoice_aug2026.pdf", demoFile("pdf"), "application/pdf"); });
+  $("results").addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("[data-demo]") : null;
+    if (!b || !demo) return;
+    if (b.getAttribute("data-demo") === "own") exitDemo(); else runDemo(demo.kind === "csv" ? "pdf" : "csv");
+  });
+
   /* ---------- events ---------- */
   var ASK_CALLS = [["Under 1,000",500],["1,000 to 10,000",5000],["10,000 to 100,000",50000],["Over 100,000",300000]];
   function showAsk(mode){
@@ -1892,6 +1957,7 @@ function ladders(p){
   $("edit").addEventListener("click", function(){ toLanding(); try { ta.focus({ preventScroll:true }); } catch(e){ ta.focus(); } });
   $("again").addEventListener("click", function(){
     hardStopVoice();
+    demo = null; demoPending = null; demoStash = null;
     setText(""); profile = null; pending = null;
     picks = []; activeTab = "apps"; renderPicks(); $("pickBox").open = false;
     fileState = null; renderFileCard();
@@ -1927,6 +1993,7 @@ function ladders(p){
   });
 
   goBtn.addEventListener("click", function(){
+    demo = demoPending; demoPending = null;
     if (fileState && fileState.busy) { setStatus("Still reading your file\u2026"); return; }
     var text = ta.value.trim();
     var fileFacts = (fileState && fileState.facts) ? fileState.facts : null;
