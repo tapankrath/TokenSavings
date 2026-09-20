@@ -45,12 +45,14 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.5 var(--b
 .wrap{max-width:640px;margin:0 auto;padding:20px 18px 104px}
 .top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule);padding-top:env(safe-area-inset-top,0px)}
 .top-in{max-width:640px;margin:0 auto;padding:10px 18px 12px}
-.home{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;background:var(--card);border:2px solid var(--brand-line);border-radius:16px;padding:5px 14px 5px 5px;max-width:100%;-webkit-tap-highlight-color:transparent;transition:padding .2s ease,border-radius .2s ease}
+.home{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;background:#10131A;border:2px solid var(--brand-line);border-radius:16px;padding:5px 14px 5px 7px;max-width:100%;-webkit-tap-highlight-color:transparent;transition:padding .2s ease,border-radius .2s ease}
 .home:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
 .logo{width:42px;height:42px;flex:none}
-.logo .bg,.logo .mark{fill:var(--brand)}
-.logo .sheet{fill:#fff}
-.brand{font:800 clamp(1.05rem,5.9vw,1.5rem)/1 var(--display);letter-spacing:-.015em;color:var(--ink);white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
+.logo .mark{fill:#5FD47A}
+.logo .sheet{fill:#EEF3EE}
+.brand{font:800 clamp(1.05rem,5.9vw,1.5rem)/1 var(--display);letter-spacing:-.015em;color:#EEF3EE;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
+.brand .b1{color:#5FD47A}
+.brand .b2{color:#F0605A}
 .hero{margin-top:13px}
 .hero h1{font:700 clamp(1.25rem,5.6vw,1.65rem)/1.15 var(--display);letter-spacing:-.015em;margin:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
 .hero .lede{margin:6px 0 0;font-size:.92rem;line-height:1.4;color:var(--muted);max-height:5.6em;overflow:hidden;transition:max-height .2s ease,opacity .2s ease,margin .2s ease}
@@ -201,8 +203,8 @@ details.tune .fields{margin-top:12px}
 <header class="top" id="top">
   <div class="top-in">
     <a class="home" id="home" href="./" aria-label="Token Savings Coach home">
-      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect class="bg" width="40" height="40" rx="9"/><path class="sheet" d="M10 6H30V31L26.7 34.3L23.3 31L20 34.3L16.7 31L13.3 34.3L10 31Z"/><rect class="mark" x="18.3" y="11" width="3.4" height="9"/><path class="mark" d="M13.5 18.5H26.5L20 25.5Z"/></svg>
-      <span class="brand">Token Savings Coach</span>
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><path class="sheet" d="M7 4H33V33L28.67 36.3L24.33 33L20 36.3L15.67 33L11.33 36.3L7 33Z"/><rect class="mark" x="18.2" y="9" width="3.6" height="11"/><path class="mark" d="M12 18.5H28L20 27Z"/></svg>
+      <span class="brand"><span class="b1">Token Savings</span> <span class="b2">Coach</span></span>
     </a>
     <div class="hero" id="hero">
       <h1>Find where your AI money goes.</h1>

@@ -66,9 +66,9 @@ After you change any file, open `sw.js` and change `CACHE_VERSION` (for example 
 - The on-device analyzer reads plain English with simple rules, so it can misread unusual wording. Every assumption is shown and editable.
 - Amounts in $, £ or € are recognized. There is no currency conversion; percentages are the same either way.
 
-## Changing the brand color and header style
+## Changing the brand colors and header style
 
-The logo tile uses `--brand`, and the badge border around the logo and name uses `--brand-line` (`#8C1D2C` in light mode, a lighter red in dark mode). Both are in the CSS at the top of index.html. The name itself is set in extra-bold (800), so the Google Fonts link near the top requests that weight. The app icons are separate image files, so changing their color means replacing those PNGs.
+The header logo and name sit in a dark badge (`#10131A`) with a red border (`--brand-line`, a lighter red in dark mode). Inside, "Token Savings" is green (`#5FD47A`), "Coach" is red (`#F0605A`) and the receipt mark is light with a green arrow. All of these are in the CSS at the top of index.html (search for `.brand .b1`, `.brand .b2`, `.logo`). The name is extra-bold (800), so the Google Fonts link requests that weight. The home-screen icons are separate images (icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png), so if you change the colors in the header, replace those too. To see a new icon on a phone, delete the home-screen app and add it again.
 
 ## Moving to Cloudflare Pages with your own domain
 
