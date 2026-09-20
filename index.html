@@ -342,7 +342,7 @@ details.tune .fields{margin-top:12px}
       </ul>
       <p class="small">Directional advice, not guarantees. Each idea shows how much it could help and how hard it is.</p>
     </section>
-    <details class="opt" id="pickBox" style="margin-top:14px">
+    <details class="opt" id="pickBox" open style="margin-top:14px">
       <summary>Add your platforms and models (optional)</summary>
       <p class="small">Open a category and tick what you use. Tick a platform to also choose its model. This sharpens the advice.</p>
       <div id="pickHostLand"></div>
@@ -2448,7 +2448,7 @@ function ladders(p){
     hardStopVoice();
     demo = null; demoPending = null; demoStash = null; whatIfOff = {}; cmpId = ""; sessionIds = []; savedNow = false;
     setText(""); profile = null; pending = null;
-    picks = []; appliedPicks = []; openCat = { land:"", rep:"" }; renderPicks(); $("pickBox").open = false; $("pickBox2").open = false;
+    picks = []; appliedPicks = []; openCat = { land:"", rep:"" }; renderPicks(); $("pickBox").open = true; $("pickBox2").open = false;
     fileState = null; renderFileCard();
     $("ask").hidden = true; setStatus(""); $("copyMsg").textContent = "";
     toLanding();
