@@ -45,7 +45,7 @@ A static, installable web app (PWA). No build step, no server.
 
 ## The built-in demo
 
-Right under the input box, one line reads **Sample:** followed by four equal pills, each with its name on two short lines: **Usage CSV** and **Invoice PDF** (a fictional company's August 2026 bill, about $5,946 of API spend across three models) and **Web app** and **Nightly job** (two fictional apps that show the architecture and workflow advice).
+Under the input box, a **See how it works** block explains that a made-up sample will show the report you would get, with nothing to type or upload. It holds four pills in two labelled groups. **Sample bills**: **Usage CSV** and **Invoice PDF** (a fictional company's August 2026 bill, about $5,946 of API spend across three models). **Sample app code**: **Web app** and **Nightly job** (two fictional apps that show the architecture and workflow advice).
 
   - **Web app** is a browser page that calls the AI provider directly. It contains a fake key, resends the whole conversation, has web search on, uses a top-tier model and calls the AI on every keystroke. Expect: a key warning, "call the AI from a server", retrieval instead of sending everything, model routing, and a debounce.
   - **Nightly job** is a Python job run from cron. It has long instructions, four separate AI calls, retries and a tool loop. Expect: "move non-urgent work into a batch pipeline" (naming the provider's batch option), caching, cheaper models for easy work, capped retries and a check that each call is needed.
@@ -85,7 +85,7 @@ The publishable key is meant to be public and is safe here only because of the r
 
 ## The screens
 
-- **Landing:** a short "What you'll get" explanation, the input box (type, speak or attach; a **Clear** button empties the text and attachment), an optional platform picker, and examples.
+- **Landing:** the input box (type, speak or attach; a **Clear** button empties the text and attachment), the **See how it works** samples, a **What you'll get** button that opens a short explanation (closed by default, with a one-line preview), and an optional platform picker. The input box's grey placeholder is the example prompt.
 - **Results:** dollar ranges for changes you can make, **Cheaper alternatives to try** (each platform's models from lightest to most capable), then advice matched to your situation. People with an API bill see **Bigger changes: architecture and workflow**. People on plans see **Smarter habits for your tools**. Someone with both sees both, without repeats.
 - **Live estimate box:** at the top of **What I assumed**, a box shows the estimate as short text and stays pinned just under the header while the person scrolls through and edits the numbers. It updates as they type, flashes when the range changes, shows the original estimate next to the edited one, and has a **Reset** button (back to the original guesses) and a **Full results** button that scrolls to the top. It is pinned to the top, not the bottom, because phone keyboards cover bottom bars.
 - **What I assumed:** the two money fields (API bill and subscriptions) are always shown. Model size, task difficulty and the yes/no questions are tucked into **Fine-tune these guesses**, and are worded to match your situation.
@@ -94,9 +94,9 @@ The publishable key is meant to be public and is safe here only because of the r
 
 A three-way toggle sits above the input box. It changes the words and the numbers, not the engine.
 
-- **What changes:** the headline and intro, the example prompt and example chips, the "What you'll get" list, the spend question's answer ranges, the wording of the report ("Your team\u2019s", "Your company\u2019s"), and which plan is outlined on the Plans page.
+- **What changes:** the headline and intro, the example prompt (the placeholder in the input box), the "What you'll get" list and its one-line preview, the spend question's answer ranges, the wording of the report ("Your team\u2019s", "Your company\u2019s"), and which plan is outlined on the Plans page.
 - **Business numbers:** for Small business and Mid-size, the estimate card adds **Spend per year now**, **Per person now** and **Possible API saving per year**. The headcount is read from the text ("8 of us", "120 employees") and can be edited under **What I assumed** (People using AI). If it is missing, the card says how to add it.
-- **Where the words live:** the `AUD` object near the top of the script in index.html. Edit the copy, examples, answer ranges and the "roughly 50 to 1,000 people" hints there.
+- **Where the words live:** the `AUD` object near the top of the script in index.html. Edit the copy, placeholder, answer ranges and the "roughly 50 to 1,000 people" hints there.
 - **Links per audience:** add `?for=small` or `?for=mid` (also `?for=me`) to the address, for example `https://your-domain/?for=mid`. The choice is remembered on the device after that.
 - **Waitlist:** every entry's note starts with the audience in brackets, for example `[Mid-size]`. Business entries also include the company size in the note. If you store waitlist rows in a table that restricts the `plan` values, allow `Business`.
 - **Not built yet:** advice that is specific to each audience (seat utilization, vendor consolidation, cost by team) and a finance-ready summary. Business and Team plan features marked planned are copy only.

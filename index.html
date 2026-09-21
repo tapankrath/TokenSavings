@@ -108,11 +108,22 @@ textarea:focus-visible{outline:none}
 .adv-note{margin:0 0 6px;color:var(--muted);font-size:.9rem}
 .clearbtn{position:absolute;top:8px;right:10px;border:0;background:transparent;color:var(--muted);font-size:.9rem;font-weight:600;padding:6px 8px;border-radius:8px;cursor:pointer}
 .clearbtn:hover{background:var(--paper);color:var(--ink)}
-.gets{margin:18px 0 4px}
-.gets .h2{font-size:1.1rem;margin-bottom:6px}
-.gets ul{margin:0;padding-left:18px;color:var(--muted);font-size:.95rem}
-.gets li{margin:0 0 7px}
-.gets li strong{color:var(--ink)}
+details.gets{margin:12px 0 4px;border:1.5px solid var(--rule);border-radius:14px;background:var(--card)}
+details.gets:focus-within{border-color:var(--cobalt)}
+details.gets>summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:52px;padding:10px 14px;cursor:pointer;border-radius:14px;font:400 1rem/1.3 var(--body)}
+details.gets>summary::-webkit-details-marker{display:none}
+details.gets>summary:focus-visible{outline:none}
+.gets-txt{flex:1;min-width:0}
+.gets-ttl{display:block;font:700 1.02rem/1.3 var(--display);color:var(--ink)}
+.gets-peek{display:block;margin-top:2px;color:var(--muted);font-size:.85rem;line-height:1.35}
+details.gets[open] .gets-peek{display:none}
+.gets-chev{flex:none;width:22px;height:22px;color:var(--muted);transition:transform .2s ease}
+details.gets[open] .gets-chev{transform:rotate(180deg)}
+.gets-body{padding:0 14px 14px}
+.gets-body ul{margin:0;padding-left:18px;color:var(--muted);font-size:.95rem}
+.gets-body li{margin:0 0 7px}
+.gets-body li strong{color:var(--ink)}
+@media (prefers-reduced-motion: reduce){.gets-chev{transition:none}}
 .ladders{margin:0 0 22px}
 .ladder{padding:10px 0;border-top:1px solid var(--rule)}
 .ladder:last-child{border-bottom:1px solid var(--rule)}
@@ -120,10 +131,15 @@ textarea:focus-visible{outline:none}
 .steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .step{border:1.5px solid var(--rule);border-radius:999px;padding:5px 11px;font-size:.92rem}
 .steps i{font-style:normal;color:var(--muted)}
-.trybar{display:flex;align-items:center;gap:8px;margin:10px 2px 0}
-.trypills{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.trybar{margin:14px 0 0;padding:12px 12px 12px;border:1.5px dashed var(--rule);border-radius:14px}
+.tryttl{margin:0;font:700 1.02rem/1.3 var(--display);color:var(--ink)}
+.trysub{margin:3px 0 10px;font-size:.9rem;line-height:1.4;color:var(--muted)}
+.trypills{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trygrp{min-width:0}
+.trycap{display:block;margin:0 0 5px 2px;font-size:.78rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+.trybtns{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 .pill.samp{min-height:52px;padding:4px 2px;border-radius:16px;font-size:clamp(11.5px,3.5vw,14px);line-height:1.15;text-align:center;min-width:0}
-.trylbl{font-size:.92rem;font-weight:600;color:var(--muted)}
+.attachnote{margin:10px 4px 0}
 .pill{min-height:44px;padding:0 9px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;font-size:.92rem;font-weight:600;cursor:pointer}
 .pill:hover{background:var(--card)}
 .demobox{border:1.5px solid var(--moss);background:var(--card);border-radius:12px;padding:12px 14px;margin:0 0 18px;font-size:.95rem}
@@ -224,7 +240,6 @@ body[data-rseg="me"] .biz-only{display:none}
 .ask p{margin:0 0 10px;font-weight:600}
 .chips{display:flex;flex-direction:column;gap:8px}
 .chips.wrapped{flex-direction:row;flex-wrap:wrap}
-.tryhead{margin:14px 0 8px;font-weight:600}
 .chip{text-align:left;background:transparent;border:1.5px solid var(--rule);border-radius:12px;padding:10px 12px;cursor:pointer;line-height:1.4}
 .chips.wrapped .chip{padding:9px 14px;font-weight:500}
 .chip:hover{border-color:var(--cobalt)}
@@ -335,26 +350,37 @@ details.tune .fields{margin-top:12px}
       <input id="file" type="file" accept=".csv,.tsv,.txt,.md,.pdf,.docx,.doc,.html,.htm,.js,.mjs,.jsx,.ts,.tsx,.py,text/csv,application/pdf" hidden>
     </div>
     <p id="status" class="status" role="status" aria-live="polite"></p>
-    <div class="trybar" id="tryBar">
-      <span class="trylbl">Sample:</span>
+    <p class="small attachnote">Attach a bill, usage export or your app’s code. Files are read on this device and never uploaded.</p>
+    <section class="trybar" id="tryBar" aria-labelledby="tryTitle">
+      <h2 class="tryttl" id="tryTitle">See how it works</h2>
+      <p class="trysub">No file handy? Tap a made-up sample to see the report you’d get. Nothing to type or upload.</p>
       <div class="trypills">
-        <button id="demoCsv" class="pill samp" type="button" aria-label="Run the app on a sample usage export (CSV)">Usage <br>CSV</button>
-        <button id="demoPdf" class="pill samp" type="button" aria-label="Run the app on a sample invoice (PDF)">Invoice <br>PDF</button>
-        <button id="demoWeb" class="pill samp" type="button" aria-label="Run the app on sample web app code">Web <br>app</button>
-        <button id="demoJob" class="pill samp" type="button" aria-label="Run the app on sample nightly job code">Nightly <br>job</button>
+        <div class="trygrp" role="group" aria-label="Sample bills">
+          <span class="trycap" aria-hidden="true">Sample bills</span>
+          <div class="trybtns">
+            <button id="demoCsv" class="pill samp" type="button" aria-label="Run the app on a sample usage export (CSV)">Usage <br>CSV</button>
+            <button id="demoPdf" class="pill samp" type="button" aria-label="Run the app on a sample invoice (PDF)">Invoice <br>PDF</button>
+          </div>
+        </div>
+        <div class="trygrp" role="group" aria-label="Sample app code">
+          <span class="trycap" aria-hidden="true">Sample app code</span>
+          <div class="trybtns">
+            <button id="demoWeb" class="pill samp" type="button" aria-label="Run the app on sample web app code">Web <br>app</button>
+            <button id="demoJob" class="pill samp" type="button" aria-label="Run the app on sample nightly job code">Nightly <br>job</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <p class="small" style="margin:10px 4px 0">Attach a bill, usage export or your app’s code. Files are read on this device and never uploaded.</p>
-    <section class="gets" aria-label="What you will get">
-      <h2 class="h2">What you’ll get</h2>
-      <ul id="getsList">
-        <li><strong>Cheaper ways to do the same job.</strong> Which model or mode to use for what, so you use fewer tokens for similar results.</li>
-        <li><strong>When and how to trim API costs.</strong> Caching, batching, shorter prompts and answer limits, with rough dollar ranges.</li>
-        <li><strong>Bigger changes for builders.</strong> Model routing, retrieval instead of pasting, saved answers and leaner agent loops.</li>
-        <li><strong>Better habits for everyday use.</strong> Get more from your plan and hit limits less.</li>
-      </ul>
-      <p class="small">Directional advice, not guarantees. Each idea shows how much it could help and how hard it is.</p>
     </section>
+    <details class="gets" id="getsBox">
+      <summary>
+        <span class="gets-txt"><span class="gets-ttl">What you’ll get</span><span class="gets-peek" id="getsPeek"></span></span>
+        <svg class="gets-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="gets-body">
+        <ul id="getsList"></ul>
+        <p class="small">Directional advice, not guarantees. Each idea shows how much it could help and how hard it is.</p>
+      </div>
+    </details>
     <details class="opt" id="pickBox" open style="margin-top:14px">
       <summary>Add your platforms and models (optional)</summary>
       <p class="small">Open a category and tick what you use. Tick a platform to also choose its model. This sharpens the advice.</p>
@@ -365,9 +391,6 @@ details.tune .fields{margin-top:12px}
       <p id="askTitle">About how much do you spend on AI each month?</p>
       <div id="askChips" class="chips wrapped"></div>
     </div>
-
-    <p class="tryhead">Try an example</p>
-    <div id="chips" class="chips"></div>
 
     <div class="install">
       <button id="install" class="btn primary" type="button" hidden>Install on this device</button>
@@ -508,7 +531,7 @@ details.tune .fields{margin-top:12px}
 (function(){
   "use strict";
   var $ = function(id){ return document.getElementById(id); };
-  /* Audience: who the pitch, examples and report are written for. Edit the words here. */
+  /* Audience: who the pitch, placeholder example and report are written for. Edit the words here. */
   var SEG = "me", K_SEG = "tsc_seg", SEGS = ["me", "small", "mid"];
   var AUD = {
     me:{
@@ -517,16 +540,11 @@ details.tune .fields{margin-top:12px}
       lede:"Type it, say it, or attach a bill or your app\u2019s code. Get directional advice on cheaper models, smarter API use and architecture changes, for any AI tool.",
       hint:"For your own subscriptions and projects.",
       ph:"Example: I pay $20 a month for ChatGPT, and our OpenAI API bill is about $300 a month.",
-      examples:[
-        "I pay $20 a month for ChatGPT and $20 for Claude. I paste long PDFs into chats and keep hitting limits.",
-        "I pay $20 a month for ChatGPT Plus. My OpenAI API bill is about $600 a month for a support bot with a long system prompt and wordy answers.",
-        "I code with Cursor at $20 a month and Claude Max at $100 a month. I work in long sessions on big projects."
-      ],
       gets:[
-        ["Cheaper ways to do the same job.", "Which model or mode to use for what, so you use fewer tokens for similar results."],
-        ["When and how to trim API costs.", "Caching, batching, shorter prompts and answer limits, with rough dollar ranges."],
-        ["Bigger changes for builders.", "Model routing, retrieval instead of pasting, saved answers and leaner agent loops."],
-        ["Better habits for everyday use.", "Get more from your plan and hit limits less."]
+        ["Cheaper ways to do the same job.", "Which model or mode to use for what, so you use fewer tokens for similar results.", "Cheaper options"],
+        ["When and how to trim API costs.", "Caching, batching, shorter prompts and answer limits, with rough dollar ranges.", "API savings"],
+        ["Bigger changes for builders.", "Model routing, retrieval instead of pasting, saved answers and leaner agent loops.", "Bigger changes"],
+        ["Better habits for everyday use.", "Get more from your plan and hit limits less.", "Better habits"]
       ],
       askTitle:"About how much do you spend on AI each month?",
       ask:[["Under $30",20],["$30 to $100",60],["$100 to $500",250],["$500 to $2,000",1000],["Over $2,000",4000]]
@@ -537,16 +555,11 @@ details.tune .fields{margin-top:12px}
       lede:"Add up seats, plans and API bills across your team. Get directional advice on what to trim. Describe it, say it, or attach a bill.",
       hint:"For teams of up to about 50 people.",
       ph:"Example: 8 of us use ChatGPT Team at $25 per seat, and our support bot runs on the OpenAI API for about $300 a month.",
-      examples:[
-        "8 of us use ChatGPT Team at $25 per seat. Our support bot calls the OpenAI API with a long system prompt and wordy answers, and that bill is about $300 a month.",
-        "12 people each have a ChatGPT Plus plan at $20 per seat. We paste long documents into chats and often hit limits.",
-        "Our 6 developers each pay for Cursor at $40 per seat. Our app calls the OpenAI API with a long system prompt and wordy answers, and the bill is about $1,200 a month."
-      ],
       gets:[
-        ["Cost per person and per year.", "Your spend split across your headcount and shown annually, so it\u2019s easy to weigh against what the tools are worth."],
-        ["Tools you may be paying for twice.", "A flag when your team pays more than one AI provider."],
-        ["Cheaper ways to do the same job.", "Which model or plan fits which task, with rough dollar ranges."],
-        ["When and how to trim API costs.", "Caching, batching, shorter prompts and answer limits."]
+        ["Cost per person and per year.", "Your spend split across your headcount and shown annually, so it\u2019s easy to weigh against what the tools are worth.", "Cost per person"],
+        ["Tools you may be paying for twice.", "A flag when your team pays more than one AI provider.", "Double-paid tools"],
+        ["Cheaper ways to do the same job.", "Which model or plan fits which task, with rough dollar ranges.", "Cheaper options"],
+        ["When and how to trim API costs.", "Caching, batching, shorter prompts and answer limits.", "API savings"]
       ],
       askTitle:"About how much does your team spend on AI each month?",
       ask:[["Under $100",60],["$100 to $500",250],["$500 to $2,000",1000],["$2,000 to $10,000",5000],["Over $10,000",15000]]
@@ -557,16 +570,11 @@ details.tune .fields{margin-top:12px}
       lede:"Estimate what your company spends on AI seats, tools and API bills, and where it likely overlaps. Files stay on this device.",
       hint:"For companies of roughly 50 to 1,000 people.",
       ph:"Example: About 120 employees have ChatGPT Enterprise at $30 per seat. Three product teams call the OpenAI and Anthropic APIs, and the API bill is about $18,000 a month.",
-      examples:[
-        "About 120 employees have ChatGPT Enterprise at $30 per seat. Three product teams call the OpenAI and Anthropic APIs with long prompts and wordy answers. The API bill is about $18,000 a month.",
-        "300 people have Claude Team at $30 per seat, and about 40 engineers also use Cursor. Many paste long documents into chats and hit limits.",
-        "Our 200 employees in support and sales use an internal assistant built on Claude. The API bill was $9,500 last month, and the system prompt is long and mostly the same for every request."
-      ],
       gets:[
-        ["Cost per employee and per year.", "Total spend shown annually and split by headcount, ready to compare against budget."],
-        ["Overlap across vendors.", "A flag when more than one AI provider is being paid for."],
-        ["Where API spend can drop.", "Model routing, caching, batch pricing and shorter prompts, with rough dollar ranges."],
-        ["Stays on this device.", "Files are read in your browser and never uploaded, so an invoice or usage export doesn\u2019t leave your machine."]
+        ["Cost per employee and per year.", "Total spend shown annually and split by headcount, ready to compare against budget.", "Cost per employee"],
+        ["Overlap across vendors.", "A flag when more than one AI provider is being paid for.", "Vendor overlap"],
+        ["Where API spend can drop.", "Model routing, caching, batch pricing and shorter prompts, with rough dollar ranges.", "API savings"],
+        ["Stays on this device.", "Files are read in your browser and never uploaded, so an invoice or usage export doesn\u2019t leave your machine.", "Stays on device"]
       ],
       askTitle:"About how much does your company spend on AI each month?",
       ask:[["Under $2,000",1000],["$2,000 to $10,000",5000],["$10,000 to $50,000",25000],["$50,000 to $200,000",100000],["Over $200,000",300000]]
@@ -1698,18 +1706,10 @@ function ladders(p){
   renderPicks();
   if (typeof CATALOG_ASOF !== "undefined") $("catNote").textContent = "The platform and model list was last reviewed on " + CATALOG_ASOF + ". Model names and prices change often, so check your provider\u2019s current list.";
 
-  /* ---------- examples ---------- */
-  function renderChips(){
-    var box = $("chips"); box.innerHTML = "";
-    AUD[SEG].examples.forEach(function(t){
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "chip"; b.textContent = t;
-      b.addEventListener("click", function(){ setText(t); ta.focus(); setStatus(""); });
-      box.appendChild(b);
-    });
-  }
   function renderGets(){
-    $("getsList").innerHTML = AUD[SEG].gets.map(function(g){ return "<li><strong>" + esc(g[0]) + "</strong> " + esc(g[1]) + "</li>"; }).join("");
+    var G = AUD[SEG].gets;
+    $("getsList").innerHTML = G.map(function(g){ return "<li><strong>" + esc(g[0]) + "</strong> " + esc(g[1]) + "</li>"; }).join("");
+    $("getsPeek").textContent = G.map(function(g){ return g[2]; }).join(" \u00B7 ");
   }
   function updatePlansSeg(){
     var want = SEG === "small" ? "Team" : (SEG === "mid" ? "Business" : "Pro");
@@ -1726,7 +1726,7 @@ function ladders(p){
     ta.placeholder = A.ph;
     var bs = $("segBar").querySelectorAll("[data-seg]"), i;
     for (i = 0; i < bs.length; i++) { var on = bs[i].getAttribute("data-seg") === seg; bs[i].setAttribute("aria-checked", on ? "true" : "false"); bs[i].tabIndex = on ? 0 : -1; }
-    renderChips(); renderGets(); updatePlansSeg(); setHdr();
+    renderGets(); updatePlansSeg(); setHdr();
   }
   function initialSeg(){
     var q = "";
