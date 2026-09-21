@@ -65,7 +65,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
 
 .composer{position:relative;background:var(--card);border:1.5px solid var(--rule);border-radius:16px;padding:12px}
-textarea{width:100%;min-height:140px;resize:vertical;border:0;background:transparent;padding:6px 60px 6px 4px;line-height:1.5;font-size:1.02rem}
+textarea{width:100%;min-height:150px;resize:vertical;border:0;background:transparent;padding:6px 60px 6px 4px;line-height:1.5;font-size:1.02rem}
 textarea:focus-visible{outline:none}
 textarea.isex{color:var(--muted)}
 .extag{margin:2px 70px 2px 4px;font-size:.84rem;line-height:1.35;font-weight:600;color:var(--muted)}
@@ -542,7 +542,6 @@ details.tune .fields{margin-top:12px}
       h1:"Find where your AI money goes.",
       lede:"Type it, say it, or attach a bill or your app\u2019s code. Get directional advice on cheaper models, smarter API use and architecture changes, for any AI tool.",
       hint:"For your own subscriptions and projects.",
-      ph:"What AI tools do you use, and what do you pay for them?",
       example:"I pay $20 a month for ChatGPT Plus. My OpenAI API bill is about $600 a month for a support bot with a long system prompt and wordy answers.",
       gets:[
         ["Cheaper ways to do the same job.", "Which model or mode to use for what, so you use fewer tokens for similar results.", "Cheaper options"],
@@ -558,7 +557,6 @@ details.tune .fields{margin-top:12px}
       h1:"See where your team\u2019s AI money goes.",
       lede:"Add up seats, plans and API bills across your team. Get directional advice on what to trim. Describe it, say it, or attach a bill.",
       hint:"For teams of up to about 50 people.",
-      ph:"Which AI tools does your team use, how many people, and what do you pay?",
       example:"8 of us use ChatGPT Team at $25 per seat. Our support bot calls the OpenAI API with a long system prompt and wordy answers, and that bill is about $300 a month.",
       gets:[
         ["Cost per person and per year.", "Your spend split across your headcount and shown annually, so it\u2019s easy to weigh against what the tools are worth.", "Cost per person"],
@@ -574,8 +572,7 @@ details.tune .fields{margin-top:12px}
       h1:"Get a clear view of your company\u2019s AI spend.",
       lede:"Estimate what your company spends on AI seats, tools and API bills, and where it likely overlaps. Files stay on this device.",
       hint:"For companies of roughly 50 to 1,000 people.",
-      ph:"Which AI tools does your company use, for how many people, and what do you pay?",
-      example:"About 120 employees have ChatGPT Enterprise at $30 per seat. Three product teams call the OpenAI and Anthropic APIs with long prompts and wordy answers. The API bill is about $18,000 a month.",
+      example:"120 employees have ChatGPT Enterprise at $30 per seat. Our teams call the OpenAI API with long prompts and wordy answers. That bill is about $18,000 a month.",
       gets:[
         ["Cost per employee and per year.", "Total spend shown annually and split by headcount, ready to compare against budget.", "Cost per employee"],
         ["Overlap across vendors.", "A flag when more than one AI provider is being paid for.", "Vendor overlap"],
@@ -1729,7 +1726,7 @@ function ladders(p){
     var A = AUD[seg];
     document.body.setAttribute("data-seg", seg);
     $("heroH1").textContent = A.h1; $("heroLede").textContent = A.lede; $("segHint").textContent = A.hint;
-    ta.placeholder = A.ph;
+    ta.placeholder = "Example: " + A.example;   /* grey guide once the box is cleared */
     if (isExampleText(ta.value)) setText(A.example);   /* untouched example follows the audience */
     var bs = $("segBar").querySelectorAll("[data-seg]"), i;
     for (i = 0; i < bs.length; i++) { var on = bs[i].getAttribute("data-seg") === seg; bs[i].setAttribute("aria-checked", on ? "true" : "false"); bs[i].tabIndex = on ? 0 : -1; }
@@ -1773,7 +1770,9 @@ function ladders(p){
   $("clearIn").addEventListener("click", function(){
     hardStopVoice(); setText(""); fileState = null; renderFileCard(); demoStash = null;
     pending = null; $("ask").hidden = true; setStatus(""); updateGoBar();
+    try { ta.focus({ preventScroll:true }); } catch(e){ ta.focus(); }   /* ready to type */
   });
+  ta.addEventListener("input", function(){ if (statusEl.classList.contains("err")) setStatus(""); });
 
   /* ---------- voice: keeps listening until you tap stop ---------- */
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -2556,7 +2555,7 @@ function ladders(p){
     var st = demoStash;
     demo = null; demoPending = null; demoStash = null;
     fileState = null; renderFileCard();
-    setText(st ? st.text : ""); picks = st ? st.picks : []; renderPicks();
+    setText(st ? st.text : AUD[SEG].example); picks = st ? st.picks : []; renderPicks();
     toLanding();
   }
   $("demoCsv").addEventListener("click", function(){ runDemo("csv"); });
@@ -2640,7 +2639,7 @@ function ladders(p){
   $("again").addEventListener("click", function(){
     hardStopVoice();
     demo = null; demoPending = null; demoStash = null; whatIfOff = {}; cmpId = ""; sessionIds = []; savedNow = false;
-    setText(""); profile = null; pending = null;
+    setText(AUD[SEG].example); profile = null; pending = null;   /* fresh start: example is back, Clear empties it */
     picks = []; appliedPicks = []; openCat = { land:"", rep:"" }; renderPicks(); $("pickBox").open = true; $("pickBox2").open = false;
     fileState = null; renderFileCard();
     $("ask").hidden = true; setStatus(""); $("copyMsg").textContent = "";
@@ -2660,6 +2659,8 @@ function ladders(p){
     demo = demoPending; demoPending = null;
     if (fileState && fileState.busy) { setStatus("Still reading your file\u2026"); return; }
     var text = ta.value.trim();
+    /* Empty box showing the grey example, nothing attached or picked: run that example. */
+    if (!text && !fileState && !picks.length) { text = AUD[SEG].example; setText(text); }
     var fileFacts = (fileState && fileState.facts) ? fileState.facts : null;
     var fileDoc = (fileState && fileState.asDescription) ? fileState.text : "";
     if (text.length < 15 && !fileFacts && !fileDoc && !picks.length) { setStatus("Add a sentence or two about what you use AI for and what you pay, or attach a bill or usage file.", true); return; }
