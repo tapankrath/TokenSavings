@@ -154,8 +154,9 @@ textarea:focus-visible{outline:none}
 .hist-item:last-child{border-bottom:1px solid var(--rule)}
 .hist-item .small{margin:2px 0 0}
 .hi-actions{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none}
-.prog{margin:0 0 18px}
+.prog{position:sticky;top:calc(var(--hdr,76px) - 6px);z-index:14;margin:0 0 4px;padding:8px 0 10px;background:var(--paper);border-bottom:1px solid var(--rule)}
 .prog p{margin:0 0 6px;font-weight:600;font-size:.95rem}
+.proghelp{margin:6px 0 18px;font-weight:400}
 .progbar{height:8px;border-radius:99px;background:var(--rule);overflow:hidden}
 .progbar span{display:block;height:100%;background:var(--moss);width:0;transition:width .2s ease}
 .progresscard{background:var(--card);border-radius:12px;padding:14px 16px;margin:0 0 20px}
@@ -2089,7 +2090,7 @@ function ladders(p){
     var ids = pageIds(r, sets);
     if (track && ids.length) {
       var nd = ids.filter(function(id){ return doneMap[id]; }).length;
-      html += '<div class="prog"><p id="progText">Your progress: ' + nd + ' of ' + ids.length + ' changes done</p><div class="progbar"><span id="progFill" style="width:' + Math.round(nd / ids.length * 100) + '%"></span></div><p class="small" style="margin:6px 0 0;font-weight:400">Tick \u201CI\u2019ve done this\u201D as you make each change. It tracks your progress and doesn\u2019t change the estimate.</p></div>';
+      html += '<div class="prog"><p id="progText">Your progress: ' + nd + ' of ' + ids.length + ' changes done</p><div class="progbar"><span id="progFill" style="width:' + Math.round(nd / ids.length * 100) + '%"></span></div></div><p class="small proghelp">Tick \u201CI\u2019ve done this\u201D as you make each change. It tracks your progress and doesn\u2019t change the estimate.</p>';
     }
     html += progressHtml(ids, doneMap);
     if (r.tips.length) {
