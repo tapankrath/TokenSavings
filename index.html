@@ -16,13 +16,14 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=Instrument+Sans:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#F1F5EF; --card:#FFFFFF; --ink:#16241C; --muted:#56655B; --rule:#CBD6CD;
   --moss:#0E6B45; --moss-soft:#DCEFE4; --cobalt:#2C3FE0; --on-cobalt:#FFFFFF; --alert:#A3261B;
   --brand:#8C1D2C; --brand-line:#8C1D2C; --on-brand:#FFFFFF;
   --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --brandfont:"Plus Jakarta Sans","Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;
   --body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
   box-sizing:border-box;
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -51,7 +52,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.5 var(--b
 .logo{width:40px;height:40px;flex:none}
 .logo .mark{fill:#5FD47A}
 .logo .sheet{fill:#EEF3EE}
-.brand{font:800 clamp(15px,calc((100vw - 194px) / 8.6),24px)/1 var(--display);font-stretch:80%;letter-spacing:-.01em;color:#EEF3EE;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
+.brand{font:700 clamp(14px,calc((100vw - 194px) / 10.4),22px)/1 var(--brandfont);letter-spacing:-.015em;color:#EEF3EE;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-synthesis:none}
 .brand .b1{color:#5FD47A}
 .brand .b2{color:#F0605A}
 .hero{margin-top:13px}
@@ -98,7 +99,7 @@ textarea:focus-visible{outline:none}
 .top.condensed .logo{width:32px;height:32px}
 .top.condensed .home{padding:3px 12px 3px 3px;border-radius:13px}
 .top.condensed{box-shadow:0 3px 14px rgba(0,0,0,.08)}
-.top.condensed .brand{font-size:min(1.1rem,calc((100vw - 170px) / 8.6))}
+.top.condensed .brand{font-size:min(1.05rem,calc((100vw - 170px) / 10.4))}
 .pill.plansbtn{flex:none;padding:0 13px}
 .pill.plansbtn.on{background:var(--ink);color:var(--paper)}
 .top.condensed .plansbtn{min-height:36px;padding:0 11px;font-size:.85rem}
@@ -153,8 +154,9 @@ textarea:focus-visible{outline:none}
 .hist-item:last-child{border-bottom:1px solid var(--rule)}
 .hist-item .small{margin:2px 0 0}
 .hi-actions{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none}
-.prog{margin:0 0 18px}
+.prog{position:sticky;top:calc(var(--hdr,76px) - 6px);z-index:14;margin:0 0 4px;padding:8px 0 10px;background:var(--paper);border-bottom:1px solid var(--rule)}
 .prog p{margin:0 0 6px;font-weight:600;font-size:.95rem}
+.proghelp{margin:6px 0 18px;font-weight:400}
 .progbar{height:8px;border-radius:99px;background:var(--rule);overflow:hidden}
 .progbar span{display:block;height:100%;background:var(--moss);width:0;transition:width .2s ease}
 .progresscard{background:var(--card);border-radius:12px;padding:14px 16px;margin:0 0 20px}
@@ -202,6 +204,12 @@ ol.steps-list li{margin:0 0 6px}
 .optrow input[type=checkbox]:checked{background:var(--moss);border-color:var(--moss)}
 .optrow input[type=checkbox]:checked::after{content:"";width:6px;height:12px;border:solid var(--card);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
 .optmodel{display:flex;align-items:center;gap:10px;margin:0 0 6px 40px;font-size:.88rem;color:var(--muted)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;background:var(--card);border:1.5px solid var(--rule);border-radius:14px}
+.seg button{min-height:44px;padding:6px 4px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-weight:600;font-size:.92rem;line-height:1.15;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.seg button[aria-checked="true"]{background:var(--ink);color:var(--paper)}
+.seghint{margin:6px 4px 12px;font-size:.88rem;color:var(--muted)}
+body[data-rseg="me"] .biz-only{display:none}
+.pickcard button,.pickcard label,.pickcard select,.pickcard input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .optmodel select{flex:1;min-width:0;min-height:42px;border:1.5px solid var(--rule);border-radius:10px;background:var(--card);padding:0 8px;color:var(--ink);font-size:16px}
 .picksum{margin:12px 2px 0;font-size:.92rem;color:var(--muted)}
 .picksum strong{color:var(--ink)}
@@ -280,7 +288,7 @@ details.tune .fields{margin-top:12px}
 @media (max-width:380px){.fields{grid-template-columns:1fr}}
 </style>
 </head>
-<body data-aud="everyday">
+<body data-aud="everyday" data-seg="me" data-rseg="me">
 <header class="top" id="top">
   <div class="top-in">
     <div class="brandrow">
@@ -291,14 +299,20 @@ details.tune .fields{margin-top:12px}
     <button id="navPlansTop" class="pill plansbtn" type="button" aria-label="See plans">Plans</button>
     </div>
     <div class="hero" id="hero">
-      <h1>Find where your AI money goes.</h1>
-      <p class="lede">Type it, say it, or attach a bill or your app’s code. Get directional advice on cheaper models, smarter API use and architecture changes, for any AI tool.</p>
+      <h1 id="heroH1">Find where your AI money goes.</h1>
+      <p class="lede" id="heroLede">Type it, say it, or attach a bill or your app’s code. Get directional advice on cheaper models, smarter API use and architecture changes, for any AI tool.</p>
     </div>
   </div>
 </header>
 <main class="wrap">
 
   <section id="compose">
+    <div class="seg" id="segBar" role="radiogroup" aria-label="Who is this for?">
+      <button type="button" role="radio" data-seg="me" aria-checked="true" tabindex="0">Just me</button>
+      <button type="button" role="radio" data-seg="small" aria-checked="false" tabindex="-1">Small business</button>
+      <button type="button" role="radio" data-seg="mid" aria-checked="false" tabindex="-1" aria-label="Mid-size company">Mid-size</button>
+    </div>
+    <p class="seghint" id="segHint">For your own subscriptions and projects.</p>
     <div class="composer">
       <label for="desc" class="sr">What do you use AI for, and what do you pay?</label>
       <button id="clearIn" class="clearbtn" type="button" hidden aria-label="Clear the text and attachment">Clear</button>
@@ -320,6 +334,7 @@ details.tune .fields{margin-top:12px}
       <p id="micHint" class="hintline">Tap, then start talking</p>
       <input id="file" type="file" accept=".csv,.tsv,.txt,.md,.pdf,.docx,.doc,.html,.htm,.js,.mjs,.jsx,.ts,.tsx,.py,text/csv,application/pdf" hidden>
     </div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
     <div class="trybar" id="tryBar">
       <span class="trylbl">Sample:</span>
       <div class="trypills">
@@ -332,7 +347,7 @@ details.tune .fields{margin-top:12px}
     <p class="small" style="margin:10px 4px 0">Attach a bill, usage export or your app’s code. Files are read on this device and never uploaded.</p>
     <section class="gets" aria-label="What you will get">
       <h2 class="h2">What you’ll get</h2>
-      <ul>
+      <ul id="getsList">
         <li><strong>Cheaper ways to do the same job.</strong> Which model or mode to use for what, so you use fewer tokens for similar results.</li>
         <li><strong>When and how to trim API costs.</strong> Caching, batching, shorter prompts and answer limits, with rough dollar ranges.</li>
         <li><strong>Bigger changes for builders.</strong> Model routing, retrieval instead of pasting, saved answers and leaner agent loops.</li>
@@ -345,7 +360,6 @@ details.tune .fields{margin-top:12px}
       <p class="small">Open a category and tick what you use. Tick a platform to also choose its model. This sharpens the advice.</p>
       <div id="pickHostLand"></div>
     </details>
-    <p id="status" class="status" role="status" aria-live="polite"></p>
 
     <div id="ask" class="ask" hidden>
       <p id="askTitle">About how much do you spend on AI each month?</p>
@@ -387,6 +401,7 @@ details.tune .fields{margin-top:12px}
         <div class="fields" id="fields">
           <label><span id="l-api">API bill ($/month)</span><input id="f-api" type="number" min="0" step="any" inputmode="decimal"></label>
           <label><span id="l-sub">Subscriptions ($/month)</span><input id="f-sub" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label class="biz-only"><span>People using AI</span><input id="f-heads" type="number" min="0" step="1" inputmode="numeric"></label>
           <label id="lbl-calls" hidden><span>AI calls per month</span><input id="f-calls" type="number" min="0" step="any" inputmode="numeric"></label>
         </div>
         <details class="tune" id="tuneBox">
@@ -445,24 +460,35 @@ details.tune .fields{margin-top:12px}
       <ul><li>Unlimited analyses that stay on your device</li><li>Sample bills, cheaper-model and architecture advice</li><li>Save reports and track your progress on this device</li><li>Print or share any report</li></ul>
       <p class="small"><strong>You already have this.</strong></p>
     </div>
-    <div class="plan featured">
+    <div class="plan featured" data-planbox="Pro">
       <div class="plan-head"><h3 class="h3">Pro</h3><p class="price">$29<span>/month</span></p></div>
       <p class="small">For solo builders and freelancers with a real API bill. Early-access price, not charged yet.</p>
       <ul><li>Reports and progress synced across your devices (planned)</li><li>Monthly proof of savings: predicted against your real bill (planned)</li><li>Alerts when prices change or a cheaper model appears (planned)</li><li>Shareable report links and PDF export (planned)</li></ul>
       <button class="btn primary" type="button" data-plan="Pro">Join the Pro waitlist</button>
     </div>
-    <div class="plan">
+    <div class="plan" data-planbox="Team">
       <div class="plan-head"><h3 class="h3">Team</h3><p class="price">$79<span>/month</span></p></div>
-      <p class="small">For teams with a real API bill. Up to 5 seats. Early-access price, not charged yet.</p>
+      <p class="small">For small teams with AI seats or an API bill. Up to 5 people can use the workspace. Early-access price, not charged yet.</p>
       <ul><li>Everything in Pro</li><li>Shared workspace and reports (planned)</li><li>Budgets and spend alerts (planned)</li><li>Read-only billing imports (planned)</li></ul>
       <button class="btn" type="button" data-plan="Team">Join the Team waitlist</button>
+    </div>
+    <div class="plan" data-planbox="Business">
+      <div class="plan-head"><h3 class="h3">Business</h3><p class="price">Talk to us</p></div>
+      <p class="small">For companies with many people using AI or a large API bill. Early access, not charged yet.</p>
+      <ul><li>Everything in Team</li><li>Spend broken down by team and vendor (planned)</li><li>A finance-ready annual summary you can export (planned)</li><li>Help rolling changes out across teams (planned)</li></ul>
+      <button class="btn" type="button" data-plan="Business">Talk to us about Business</button>
     </div>
     <div id="waitForm" class="waitform" hidden>
       <h3 class="h3">Join the <span id="wPlan">Pro</span> waitlist</h3>
       <label class="f">Email<input id="wEmail" type="email" autocomplete="email" inputmode="email" placeholder="you@company.com"></label>
-      <fieldset class="fair"><legend>What would feel fair per month? (optional)</legend>
+      <fieldset class="fair" id="fairBox"><legend>What would feel fair per month? (optional)</legend>
         <div class="fair-opts">
           <label><input type="radio" name="fair" value="$9"> $9</label><label><input type="radio" name="fair" value="$19"> $19</label><label><input type="radio" name="fair" value="$29"> $29</label><label><input type="radio" name="fair" value="$49"> $49</label><label><input type="radio" name="fair" value="$79+"> $79+</label><label><input type="radio" name="fair" value="Not sure"> Not sure</label>
+        </div>
+      </fieldset>
+      <fieldset class="fair" id="sizeBox" hidden><legend>How many people work at your company? (optional)</legend>
+        <div class="fair-opts">
+          <label><input type="radio" name="size" value="1 to 10"> 1 to 10</label><label><input type="radio" name="size" value="11 to 50"> 11 to 50</label><label><input type="radio" name="size" value="51 to 250"> 51 to 250</label><label><input type="radio" name="size" value="251 to 1,000"> 251 to 1,000</label><label><input type="radio" name="size" value="Over 1,000"> Over 1,000</label>
         </div>
       </fieldset>
       <label class="f">What would make it worth paying for? (optional)<textarea id="wNote" rows="2" maxlength="500"></textarea></label>
@@ -482,15 +508,74 @@ details.tune .fields{margin-top:12px}
 (function(){
   "use strict";
   var $ = function(id){ return document.getElementById(id); };
-  var EXAMPLES = [
-    "I pay $20 a month for ChatGPT and $20 for Claude. I paste long PDFs into chats and keep hitting limits.",
-    "I pay $20 a month for ChatGPT Plus. Our OpenAI API bill is about $600 a month for a support bot with a long system prompt and wordy answers.",
-    "Our nightly job classifies product reviews on the most expensive model and costs us about $1,500 a month. Results are needed by morning."
-  ];
+  /* Audience: who the pitch, examples and report are written for. Edit the words here. */
+  var SEG = "me", K_SEG = "tsc_seg", SEGS = ["me", "small", "mid"];
+  var AUD = {
+    me:{
+      label:"Just me", poss:"your",
+      h1:"Find where your AI money goes.",
+      lede:"Type it, say it, or attach a bill or your app\u2019s code. Get directional advice on cheaper models, smarter API use and architecture changes, for any AI tool.",
+      hint:"For your own subscriptions and projects.",
+      ph:"Example: I pay $20 a month for ChatGPT, and our OpenAI API bill is about $300 a month.",
+      examples:[
+        "I pay $20 a month for ChatGPT and $20 for Claude. I paste long PDFs into chats and keep hitting limits.",
+        "I pay $20 a month for ChatGPT Plus. My OpenAI API bill is about $600 a month for a support bot with a long system prompt and wordy answers.",
+        "I code with Cursor at $20 a month and Claude Max at $100 a month. I work in long sessions on big projects."
+      ],
+      gets:[
+        ["Cheaper ways to do the same job.", "Which model or mode to use for what, so you use fewer tokens for similar results."],
+        ["When and how to trim API costs.", "Caching, batching, shorter prompts and answer limits, with rough dollar ranges."],
+        ["Bigger changes for builders.", "Model routing, retrieval instead of pasting, saved answers and leaner agent loops."],
+        ["Better habits for everyday use.", "Get more from your plan and hit limits less."]
+      ],
+      askTitle:"About how much do you spend on AI each month?",
+      ask:[["Under $30",20],["$30 to $100",60],["$100 to $500",250],["$500 to $2,000",1000],["Over $2,000",4000]]
+    },
+    small:{
+      label:"Small business", poss:"your team\u2019s",
+      h1:"See where your team\u2019s AI money goes.",
+      lede:"Add up seats, plans and API bills across your team. Get directional advice on what to trim. Describe it, say it, or attach a bill.",
+      hint:"For teams of up to about 50 people.",
+      ph:"Example: 8 of us use ChatGPT Team at $25 per seat, and our support bot runs on the OpenAI API for about $300 a month.",
+      examples:[
+        "8 of us use ChatGPT Team at $25 per seat. Our support bot calls the OpenAI API with a long system prompt and wordy answers, and that bill is about $300 a month.",
+        "12 people each have a ChatGPT Plus plan at $20 per seat. We paste long documents into chats and often hit limits.",
+        "Our 6 developers each pay for Cursor at $40 per seat. Our app calls the OpenAI API with a long system prompt and wordy answers, and the bill is about $1,200 a month."
+      ],
+      gets:[
+        ["Cost per person and per year.", "Your spend split across your headcount and shown annually, so it\u2019s easy to weigh against what the tools are worth."],
+        ["Tools you may be paying for twice.", "A flag when your team pays more than one AI provider."],
+        ["Cheaper ways to do the same job.", "Which model or plan fits which task, with rough dollar ranges."],
+        ["When and how to trim API costs.", "Caching, batching, shorter prompts and answer limits."]
+      ],
+      askTitle:"About how much does your team spend on AI each month?",
+      ask:[["Under $100",60],["$100 to $500",250],["$500 to $2,000",1000],["$2,000 to $10,000",5000],["Over $10,000",15000]]
+    },
+    mid:{
+      label:"Mid-size", poss:"your company\u2019s",
+      h1:"Get a clear view of your company\u2019s AI spend.",
+      lede:"Estimate what your company spends on AI seats, tools and API bills, and where it likely overlaps. Files stay on this device.",
+      hint:"For companies of roughly 50 to 1,000 people.",
+      ph:"Example: About 120 employees have ChatGPT Enterprise at $30 per seat. Three product teams call the OpenAI and Anthropic APIs, and the API bill is about $18,000 a month.",
+      examples:[
+        "About 120 employees have ChatGPT Enterprise at $30 per seat. Three product teams call the OpenAI and Anthropic APIs with long prompts and wordy answers. The API bill is about $18,000 a month.",
+        "300 people have Claude Team at $30 per seat, and about 40 engineers also use Cursor. Many paste long documents into chats and hit limits.",
+        "Our 200 employees in support and sales use an internal assistant built on Claude. The API bill was $9,500 last month, and the system prompt is long and mostly the same for every request."
+      ],
+      gets:[
+        ["Cost per employee and per year.", "Total spend shown annually and split by headcount, ready to compare against budget."],
+        ["Overlap across vendors.", "A flag when more than one AI provider is being paid for."],
+        ["Where API spend can drop.", "Model routing, caching, batch pricing and shorter prompts, with rough dollar ranges."],
+        ["Stays on this device.", "Files are read in your browser and never uploaded, so an invoice or usage export doesn\u2019t leave your machine."]
+      ],
+      askTitle:"About how much does your company spend on AI each month?",
+      ask:[["Under $2,000",1000],["$2,000 to $10,000",5000],["$10,000 to $50,000",25000],["$50,000 to $200,000",100000],["Over $200,000",300000]]
+    }
+  };
+  function segOf(p){ return (p && AUD[p.seg]) ? p.seg : "me"; }
   /* Waitlist: paste your endpoint here (see the README). Leave blank to keep entries on this device only. */
-  var WAITLIST_ENDPOINT = "";
-  var WAITLIST_KEY = "";
-  var ASK = [["Under $30",20],["$30 to $100",60],["$100 to $500",250],["$500 to $2,000",1000],["Over $2,000",4000]];
+  var WAITLIST_ENDPOINT = "https://nkwsyanosyzkzovaxgou.supabase.co/rest/v1/waitlist";
+  var WAITLIST_KEY = "sb_publishable_KEN94g0nm9Ifp7WxbNO7Vw_0pf5s7uC";
 
 /* ===== Engine v3: dollars in, dollars out. API bills + subscriptions. Runs fully on the device. ===== */
 var PRICES = { top:{i:15,o:75,label:"top-tier"}, mid:{i:3,o:15,label:"mid-tier"}, small:{i:0.8,o:4,label:"small"} };
@@ -585,7 +670,7 @@ function parseMoney(t){
   }
   while ((m = re1.exec(t))) { if (count === 0) sym = m[1]; add(m[2], m[3], m[4] || m[5], m.index, m[0].length); }
   while ((m = re2.exec(t))) add(m[1], m[2], m[3] || m[4], m.index, m[0].length);
-  return { api:sums.api, sub:sums.sub, unk:sums.unk, count:count, noPeriod:noPeriod, sym:sym, seatNote:seatNote };
+  return { api:sums.api, sub:sums.sub, unk:sums.unk, count:count, noPeriod:noPeriod, sym:sym, seatNote:seatNote, headcount:headcount };
 }
 
 /* Reads a plain description and returns the same JSON shape the AI prompt asks for. */
@@ -662,6 +747,7 @@ function localExtract(text){
     repeats: /\b(support|faq|customer|help ?desk|chatbot|same questions?|classif\w*|templates?)\b/i.test(t),
     billing_default: billing,
     currency: money.sym,
+    headcount: (money.headcount > 0 && money.headcount < 100000) ? money.headcount : 0,
     tools: tools.names,
     tool_vendors: tools.groups,
     current_tier: tier,
@@ -694,6 +780,8 @@ function normalize(p){
     agentic: !!p.agentic, repeats: !!p.repeats, docs: !!p.sends_whole_documents, browserDirect: false, picks: [],
     sym: ["$","\u00A3","\u20AC"].indexOf(p.currency) >= 0 ? p.currency : "$",
     tools: tools, vendors: vendors,
+    seg: SEG,
+    headcount: (function(v){ v = Math.round(Number(v)); return (isFinite(v) && v > 0 && v < 100000) ? v : 0; })(p.headcount),
     tier: tiers.indexOf(p.current_tier) >= 0 ? p.current_tier : "unknown",
     diff: ["simple","moderate","hard"].indexOf(p.task_difficulty) >= 0 ? p.task_difficulty : "moderate",
     realtime: p.realtime_needed !== false,
@@ -703,7 +791,7 @@ function normalize(p){
     assumptions: Array.isArray(p.assumptions) ? p.assumptions.map(String).slice(0, 6) : [],
     billingDefault: ((p.billing_default || p.billing) === "usage" || (!(p.billing_default || p.billing) && (p.audience === "developer"))) ? "usage" : "subscription",
     inShare: null, tierShare: null, alreadyCached: 0, found: [], fromFile: false,
-    appMode: false, billTyped: false, pickTools: [], appCost: null, promptTokens: 0, promptShare: 0, extraTips: [], keyExposed: false, needCalls: false, editedSinceImport: false
+    appMode: false, billTyped: false, pickTools: [], appCost: null, promptTokens: 0, promptShare: 0, extraTips: [], keyExposed: false, needCalls: false
   };
   if (o.tier === "unknown") { o.tier = "mid"; o.assumptions.push("Model not stated, so I assumed a mid-tier model."); }
   return o;
@@ -713,14 +801,17 @@ function hasSpend(p){ return !!(p.apiSpend || p.subSpend); }
 function totalSpend(p){ return (p.apiSpend || 0) + (p.subSpend || 0); }
 
 function makeSummary(p){
+  var seg = segOf(p), me = seg === "me";
+  var subj = seg === "small" ? "Your team" : (seg === "mid" ? "Your company" : "You");
   var on = p.tools.length ? " (" + listJoin(p.tools) + ")" : "";
   var parts = [];
   if (p.apiSpend) parts.push(fmtMoney(p.apiSpend, p.sym) + " a month on API usage");
   if (p.subSpend) parts.push(fmtMoney(p.subSpend, p.sym) + " a month on subscriptions");
   var s;
-  if (parts.length) s = "You spend about " + parts.join(" and ") + on;
-  else s = "You use " + (p.tools.length ? listJoin(p.tools) : "AI tools");
-  if (p.hours) s += (parts.length ? ", and use AI about " : " about ") + p.hours + " hours a month";
+  if (parts.length) s = subj + (me ? " spend" : " spends") + " about " + parts.join(" and ") + on;
+  else s = subj + (me ? " use " : " uses ") + (p.tools.length ? listJoin(p.tools) : "AI tools");
+  if (!me && p.headcount) s += ", across " + p.headcount + " " + (p.headcount === 1 ? "person" : "people");
+  if (p.hours) s += (parts.length ? ", and " + (me ? "use" : "uses") + " AI about " : " about ") + p.hours + " hours a month";
   return s + ".";
 }
 
@@ -808,7 +899,6 @@ function pctSpan(lo, hi){
   return lo + "\u2013" + hi + "%";
 }
 function confidence(p){
-  if (p.editedSinceImport) return { level:"Medium", text:"You have changed numbers that came from your file, so this reflects your edits, not the original import." };
   if (p.appMode) return p.billTyped
     ? { level:"Medium", text:"Your bill is from what you told me, but request sizes are estimated from your code. Edit them below to sharpen this." }
     : { level:"Lower", text:"I estimated request sizes from your code and used a rough call volume. Edit the numbers below to sharpen this." };
@@ -872,8 +962,6 @@ function analyzeUsageCsv(text){
   var iCacheR = find(/cach\w*.*(read|hit)|cached.*token/);
   var iCacheW = find(/cach\w*.*(creat|writ)/);
   var iReq = find(/^(n[_ .\-]?)?requests?$|num.*request|request.*count|^calls?$/);
-  var iType = find(/^(cost[_ .\-]?type|billing[_ .\-]?type|charge[_ .\-]?type|category|type|kind)$/);
-  var iNote = find(/^(notes?|description|desc|workload|usage[_ .\-]?notes?|comment)$/);
   var costIdx = [];
   head.forEach(function(h, i){
     if (/(cost|amount|spend|charge|usd|total[_ .\-]?price)/.test(h) && !/(token|per[_ .\-]|rate|unit|cach|currency|percent|%|cumulative|running)/.test(h)) costIdx.push(i);
@@ -887,17 +975,9 @@ function analyzeUsageCsv(text){
   var haveCost = costIdx.length > 0, haveTokens = iIn >= 0 || iOut >= 0;
   if (!haveCost && !haveTokens) return { ok:false, reason:"I couldn't find cost or usage columns. Look for columns like model, input tokens, output tokens or cost." };
 
-  var SUB_TYPE = /^(sub(scription)?s?|plan|licen[sc]e|seat)/i, API_TYPE = /^(api|usage|pay.?as.?you.?go|metered|on[- ]demand)/i;
-  var SUB_NAME = /\b(chat ?gpt|claude|copilot|gemini|perplexity)\b[^,;|]*\b(plus|pro|team|max|advanced|business|enterprise|premium)\b|\bgithub copilot\b|\bseat\b|\blicen[sc]e\b/i;
-  var NOTE_HIST = /\b(long|repeated?|resend\w*|large|growing) (context|prompt|history|conversation)|conversation history|same (?:prompt|context)/i;
-  var NOTE_VERB = /\b(verbose|long|lengthy|wordy) (answers?|responses?|output)/i;
-  var NOTE_BATCH = /\bnightly\b|\bbatch(?:[- ]eligible|able)?\b|\bovernight\b|\bscheduled\b|\boffline\b/i;
-
   var sym = "$", est = !haveCost;
-  function mkTot(){ return { cost:0, inT:0, outT:0, cR:0, cW:0, req:0, inEst:0, outEst:0 }; }
-  var byModel = {}, totApi = mkTot(), totSub = mkTot(), tot = mkTot();
-  var monthSet = {}, monthList = [], minT = Infinity, maxT = -Infinity, used = 0, r;
-  var notesHist = false, notesVerb = false, notesBatch = false, sawNotes = false;
+  var byModel = {}, tot = { cost:0, inT:0, outT:0, cR:0, cW:0, req:0, inEst:0, outEst:0 };
+  var minT = Infinity, maxT = -Infinity, used = 0, r;
   for (r = 1; r < rows.length; r++) {
     var row = rows[r]; if (!row || row.length < 2) continue;
     var m = iModel >= 0 ? String(row[iModel] || "").trim() : "";
@@ -917,86 +997,45 @@ function analyzeUsageCsv(text){
     } else c = inCostEst + outCostEst;
     if (c <= 0 && inT === 0 && outT === 0) continue;
     used++;
-    /* Which bucket does this row belong in: API usage, or a flat subscription/seat charge? */
-    var typeCell = iType >= 0 ? String(row[iType] || "").trim() : "";
-    var isSub;
-    if (typeCell) isSub = SUB_TYPE.test(typeCell) && !API_TYPE.test(typeCell);
-    else isSub = (inT === 0 && outT === 0 && rq === 0) && SUB_NAME.test(m);
-    var bucket = isSub ? totSub : totApi;
-    bucket.cost += c; bucket.inT += inT; bucket.outT += outT; bucket.cR += cR; bucket.cW += cW; bucket.req += rq;
-    bucket.inEst += inCostEst; bucket.outEst += outCostEst;
-    tot.cost += c;
-    if (!isSub) {
-      var key = m || "(all usage)";
-      var bm = byModel[key] || (byModel[key] = { name:key, tier:tier, cost:0 });
-      bm.cost += c;
-    }
-    if (iNote >= 0) {
-      var note = String(row[iNote] || "");
-      if (note) { sawNotes = true; if (NOTE_HIST.test(note)) notesHist = true; if (NOTE_VERB.test(note)) notesVerb = true; if (NOTE_BATCH.test(note)) notesBatch = true; }
-    }
-    if (iDate >= 0) {
-      var ts = Date.parse(String(row[iDate] || "").trim());
-      if (isFinite(ts)) {
-        if (ts < minT) minT = ts; if (ts > maxT) maxT = ts;
-        var dd = new Date(ts), mk = dd.getUTCFullYear() + "-" + (dd.getUTCMonth() + 1);
-        if (!monthSet[mk]) { monthSet[mk] = 1; monthList.push(dd); }
-      }
-    }
+    tot.cost += c; tot.inT += inT; tot.outT += outT; tot.cR += cR; tot.cW += cW; tot.req += rq;
+    tot.inEst += inCostEst; tot.outEst += outCostEst;
+    var key = m || "(all usage)";
+    var bm = byModel[key] || (byModel[key] = { name:key, tier:tier, cost:0 });
+    bm.cost += c;
+    if (iDate >= 0) { var ts = Date.parse(String(row[iDate] || "").trim()); if (isFinite(ts)) { if (ts < minT) minT = ts; if (ts > maxT) maxT = ts; } }
   }
   if (used === 0 || tot.cost <= 0) return { ok:false, reason:"I found the columns but no spending in them." };
 
-  var notes = [], span = null, factor = 1, monthCount = monthList.length;
-  if (monthCount >= 2) {
-    /* Rows land in several different calendar months: this is a multi-month history, not one continuous usage window. Average per month present, rather than projecting the date span. */
-    factor = 1 / monthCount;
-    monthList.sort(function(a, b){ return a - b; });
-    var mName = function(d){ return d.toLocaleString("en-US", { month:"short", year:"numeric", timeZone:"UTC" }); };
-    notes.push("Your file covers " + monthCount + " months (" + mName(monthList[0]) + "\u2013" + mName(monthList[monthList.length - 1]) + "), so I averaged the monthly total across them, not the most recent month.");
-  } else if (isFinite(minT) && isFinite(maxT)) {
+  var notes = [], span = null, factor = 1;
+  if (isFinite(minT) && isFinite(maxT)) {
     span = Math.round((maxT - minT) / 86400000) + 1;
     if (span >= 27 && span <= 32) factor = 1; else factor = 30.4 / Math.max(1, span);
     if (span < 7) notes.push("Your file covers only " + span + " day" + (span === 1 ? "" : "s") + ", so the monthly figure is a rough projection.");
   } else notes.push("No dates found in the file, so I treated it as one month.");
-  var apiMonthly = cents(totApi.cost * factor), subMonthly = cents(totSub.cost * factor), monthly = cents(tot.cost * factor);
-  var bucket = totSub.cost > 0 && totApi.cost <= 0 ? "sub" : "api";
+  var monthly = cents(tot.cost * factor);
 
   var costByTier = {}, modelsArr = [];
-  Object.keys(byModel).forEach(function(k){ var bm = byModel[k]; costByTier[bm.tier] = (costByTier[bm.tier] || 0) + bm.cost; modelsArr.push({ name:bm.name, tier:bm.tier, share:bm.cost / (totApi.cost || 1) }); });
+  Object.keys(byModel).forEach(function(k){ var bm = byModel[k]; costByTier[bm.tier] = (costByTier[bm.tier] || 0) + bm.cost; modelsArr.push({ name:bm.name, tier:bm.tier, share:bm.cost / tot.cost }); });
   modelsArr.sort(function(a, b){ return b.share - a.share; });
   var tierShare = tierShareFrom(costByTier);
 
-  var inShare = (haveTokens && (totApi.inEst + totApi.outEst) > 0) ? Math.min(0.9, Math.max(0.1, totApi.inEst / (totApi.inEst + totApi.outEst))) : null;
-  var inAll = totApi.inT + totApi.cR + totApi.cW;
-  var avgIn = (totApi.req > 0 && iIn >= 0) ? inAll / totApi.req : null;
-  var avgOut = (totApi.req > 0 && iOut >= 0) ? totApi.outT / totApi.req : null;
-  var cacheShare = (iCacheR >= 0 && inAll > 0) ? Math.min(1, totApi.cR / inAll) : null;
+  var inShare = (haveTokens && (tot.inEst + tot.outEst) > 0) ? Math.min(0.9, Math.max(0.1, tot.inEst / (tot.inEst + tot.outEst))) : null;
+  var inAll = tot.inT + tot.cR + tot.cW;
+  var avgIn = (tot.req > 0 && iIn >= 0) ? inAll / tot.req : null;
+  var avgOut = (tot.req > 0 && iOut >= 0) ? tot.outT / tot.req : null;
+  var cacheShare = (iCacheR >= 0 && inAll > 0) ? Math.min(1, tot.cR / inAll) : null;
 
   var found = [];
-  var periodTxt = monthCount >= 2 ? " over " + monthCount + " months" : (span ? " over " + span + " day" + (span === 1 ? "" : "s") : "");
-  var amountTxt = (apiMonthly > 0 && subMonthly > 0) ? "About " + fmtMoney(apiMonthly, sym) + " a month on API usage and " + fmtMoney(subMonthly, sym) + " a month on subscriptions"
-    : "About " + fmtMoney(monthly, sym) + " a month" + (bucket === "sub" ? " on subscriptions" : "");
-  found.push("Usage file: " + modelsArr.length + " model" + (modelsArr.length === 1 ? "" : "s") + periodTxt + ". " + amountTxt + (est ? " (estimated from usage at typical prices, so check it against your real bill)" : "") + ".");
-  if (iType >= 0) found.push("Split API usage from subscriptions using the \"" + head[iType] + "\" column.");
-  if (tierShare && tierShare.top >= 0.5) found.push("Most of the API spend (" + pctWord(tierShare.top) + ") is on top-tier models.");
-  else if (modelsArr.length) found.push("Biggest API spend: " + modelsArr[0].name + " (" + pctWord(modelsArr[0].share) + ").");
+  found.push("Usage file: " + modelsArr.length + " model" + (modelsArr.length === 1 ? "" : "s") + (span ? " over " + span + " days" : "") + ". About " + fmtMoney(monthly, sym) + " a month" + (est ? " (estimated from usage at typical prices, so check it against your real bill)" : "") + ".");
+  if (tierShare && tierShare.top >= 0.5) found.push("Most of the spend (" + pctWord(tierShare.top) + ") is on top-tier models.");
+  else if (modelsArr.length) found.push("Biggest spend: " + modelsArr[0].name + " (" + pctWord(modelsArr[0].share) + ").");
   if (avgIn != null && avgIn >= 4000) found.push("Your requests average about " + Math.round(avgIn).toLocaleString("en-US") + " input tokens, which suggests context is being resent.");
   if (avgOut != null && avgOut >= 700) found.push("Answers average about " + Math.round(avgOut).toLocaleString("en-US") + " output tokens, which is long.");
   if (cacheShare != null) found.push(cacheShare >= 0.4 ? "You already reuse cached prompts for about " + pctWord(cacheShare) + " of input." : "Little of your input is reused from cache (about " + pctWord(cacheShare) + ").");
-  if (sawNotes) {
-    var noteHits = [];
-    if (notesHist) noteHits.push("repeated or growing context");
-    if (notesVerb) noteHits.push("verbose answers");
-    if (notesBatch) noteHits.push("nightly or batch-eligible work");
-    found.push(noteHits.length ? "Your \"" + head[iNote] + "\" notes mention " + noteHits.join(", ") + ", which I factored in." : "I read the \"" + head[iNote] + "\" column but did not find anything that changes the advice.");
-  } else if (iNote < 0 && iModel >= 0) {
-    found.push("This file has no notes or description column, so workload details like long prompts or batching are not detected from it.");
-  }
   notes.forEach(function(n){ found.push(n); });
 
-  return { ok:true, kind:"usage", bucket:bucket, monthly:monthly, apiMonthly:apiMonthly, subMonthly:subMonthly, sym:sym, costEstimated:est, span:span, monthCount:monthCount,
+  return { ok:true, kind:"usage", bucket:"api", monthly:monthly, sym:sym, costEstimated:est, span:span,
     models:modelsArr.slice(0, 5), tierShare:tierShare, inShare:inShare, avgIn:avgIn, avgOut:avgOut, cacheShare:cacheShare,
-    notesHist:notesHist, notesVerb:notesVerb, notesBatch:notesBatch,
     tools:detectTools(modelsArr.map(function(m){ return m.name; }).join(" ; ")).names, found:found };
 }
 
@@ -1112,19 +1151,9 @@ function applyFacts(n, f){
     else n.needCalls = true;
     return n;
   }
-  n.fromFile = true; n.relevant = true; n.found = (f.found || []).slice(); n.editedSinceImport = false;
+  n.fromFile = true; n.relevant = true; n.found = (f.found || []).slice();
   if (f.sym) n.sym = f.sym;
-  if (f.apiMonthly != null || f.subMonthly != null) {
-    /* The file distinguished API usage from subscription charges: keep both, don't merge them into one bucket. */
-    if (f.apiMonthly > 0) {
-      if (n.apiSpend && Math.abs(n.apiSpend - f.apiMonthly) / f.apiMonthly > 0.1) n.found.push("You typed " + fmtMoney(n.apiSpend, n.sym) + " for API usage but your file shows about " + fmtMoney(f.apiMonthly, n.sym) + ". I used the file.");
-      n.apiSpend = f.apiMonthly; n.audience = "developer";
-    }
-    if (f.subMonthly > 0) {
-      if (n.subSpend && Math.abs(n.subSpend - f.subMonthly) / f.subMonthly > 0.1) n.found.push("You typed " + fmtMoney(n.subSpend, n.sym) + " for subscriptions but your file shows about " + fmtMoney(f.subMonthly, n.sym) + ". I used the file.");
-      n.subSpend = f.subMonthly;
-    }
-  } else if (f.monthly > 0) {
+  if (f.monthly > 0) {
     var prev = f.bucket === "sub" ? n.subSpend : n.apiSpend;
     if (prev && Math.abs(prev - f.monthly) / f.monthly > 0.1) n.found.push("You typed " + fmtMoney(prev, n.sym) + " but your file shows about " + fmtMoney(f.monthly, n.sym) + ". I used the file.");
     if (f.bucket === "sub") n.subSpend = f.monthly; else { n.apiSpend = f.monthly; n.audience = "developer"; }
@@ -1138,9 +1167,6 @@ function applyFacts(n, f){
   if (f.inShare) n.inShare = f.inShare;
   if (f.avgIn != null && f.avgIn >= 4000) n.hist = true;
   if (f.avgOut != null && f.avgOut >= 700) n.verb = true;
-  if (f.notesHist) n.hist = true;
-  if (f.notesVerb) n.verb = true;
-  if (f.notesBatch) n.realtime = false;
   if (f.cacheShare != null) {
     n.alreadyCached = f.cacheShare;
     if (f.cacheShare < 0.2 && f.avgIn != null && f.avgIn >= 1500 && n.rep < 0.4) { n.rep = 0.4; n.assumptions.push("Assumed about 40% of each request repeats, since your requests are large."); }
@@ -1544,7 +1570,16 @@ function ladders(p){
 
   function esc(s){ var d = document.createElement("div"); d.textContent = String(s); return d.innerHTML; }
   function money(x){ return fmtMoney(x, profile ? profile.sym : "$"); }
-  function setStatus(msg, isErr){ statusEl.textContent = msg || ""; statusEl.className = "status" + (isErr ? " err" : ""); }
+  function setStatus(msg, isErr){
+    statusEl.textContent = msg || ""; statusEl.className = "status" + (isErr ? " err" : "");
+    /* An error must be seen: bring it into view if the header or the floating button would hide it. */
+    if (msg && isErr) {
+      try {
+        var r = statusEl.getBoundingClientRect(), hb = $("top").getBoundingClientRect().bottom, vh = window.innerHeight || 800;
+        if (r.top < hb + 8 || r.bottom > vh - 80) statusEl.scrollIntoView({ block:"center" });
+      } catch(e){}
+    }
+  }
 
   /* ---------- platforms and models: category cards that open into checkbox lists ---------- */
   var picks = [], appliedPicks = [], openCat = { land:"", rep:"" }, lastFocus = null;
@@ -1583,8 +1618,8 @@ function ladders(p){
         var i = pickIndex(pl.id), on = i >= 0;
         h += '<div class="optrow"><label class="optlabel"><input type="checkbox" data-pid="' + pl.id + '"' + (on ? " checked" : "") + '><span>' + esc(pl.short || pl.name) + '</span></label>';
         if (on && pl.menu && pl.menu.length) {
-          h += '<label class="optmodel"><span>Model</span><select data-mfor="' + pl.id + '" aria-label="' + escA((pl.short || pl.name) + " model") + '"><option value="">Not sure which model</option>' +
-            pl.menu.map(function(m){ return '<option value="' + escA(m.n) + '"' + (picks[i].model === m.n ? " selected" : "") + '>' + esc(m.n) + ' (' + TIER_HINT[m.tier] + ')</option>'; }).join("") + '</select></label>';
+          h += '<div class="optmodel"><span>Model</span><select data-mfor="' + pl.id + '" aria-label="' + escA((pl.short || pl.name) + " model") + '"><option value="">Not sure which model</option>' +
+            pl.menu.map(function(m){ return '<option value="' + escA(m.n) + '"' + (picks[i].model === m.n ? " selected" : "") + '>' + esc(m.n) + ' (' + TIER_HINT[m.tier] + ')</option>'; }).join("") + '</select></div>';
         }
         h += '</div>';
       });
@@ -1600,11 +1635,16 @@ function ladders(p){
     }
     return h + '</div>';
   }
-  function renderPicks(){
+  function renderPicks(keepPanels){
     var names = picks.map(pickName).filter(Boolean);
     PICKERS.forEach(function(P){
       var host = $(P.host); if (!host) return;
+      var oldPanel = keepPanels ? host.querySelector(".optpanel") : null;
       host.innerHTML = pickerHtml(P);
+      /* A model change must not rebuild the list: replacing a <select> right after iOS closes its
+         picker swallows the next tap. Keep the live panel and refresh only the count and summary. */
+      var newPanel = oldPanel ? host.querySelector(".optpanel") : null;
+      if (oldPanel && newPanel) newPanel.parentNode.replaceChild(oldPanel, newPanel);
       $(P.box).querySelector("summary").textContent = names.length
         ? (P.mode === "find" ? "Your platforms: " : "Your platforms and models: ") + names.slice(0, 2).join(", ") + (names.length > 2 ? " +" + (names.length - 2) : "")
         : P.label;
@@ -1645,7 +1685,13 @@ function ladders(p){
         lastFocus = { host:P.host, sel:'[data-pid="' + pid + '"]' }; renderPicks();
       } else if (mf) {
         var j = pickIndex(mf); if (j >= 0) picks[j].model = el.value;
-        lastFocus = { host:P.host, sel:'[data-mfor="' + mf + '"]' }; renderPicks();
+        /* mirror the choice into the other picker (it is rebuilt, this one keeps its live select) */
+        PICKERS.forEach(function(Q){
+          if (Q.key === P.key) return;
+          var h2 = $(Q.host), s2 = h2 && h2.querySelector('[data-mfor="' + mf + '"]');
+          if (s2) s2.value = el.value;
+        });
+        renderPicks(true);
       }
     });
   });
@@ -1653,12 +1699,54 @@ function ladders(p){
   if (typeof CATALOG_ASOF !== "undefined") $("catNote").textContent = "The platform and model list was last reviewed on " + CATALOG_ASOF + ". Model names and prices change often, so check your provider\u2019s current list.";
 
   /* ---------- examples ---------- */
-  EXAMPLES.forEach(function(t){
-    var b = document.createElement("button");
-    b.type = "button"; b.className = "chip"; b.textContent = t;
-    b.addEventListener("click", function(){ setText(t); ta.focus(); setStatus(""); });
-    $("chips").appendChild(b);
+  function renderChips(){
+    var box = $("chips"); box.innerHTML = "";
+    AUD[SEG].examples.forEach(function(t){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = t;
+      b.addEventListener("click", function(){ setText(t); ta.focus(); setStatus(""); });
+      box.appendChild(b);
+    });
+  }
+  function renderGets(){
+    $("getsList").innerHTML = AUD[SEG].gets.map(function(g){ return "<li><strong>" + esc(g[0]) + "</strong> " + esc(g[1]) + "</li>"; }).join("");
+  }
+  function updatePlansSeg(){
+    var want = SEG === "small" ? "Team" : (SEG === "mid" ? "Business" : "Pro");
+    var cards = document.querySelectorAll("#plans [data-planbox]"), i;
+    for (i = 0; i < cards.length; i++) cards[i].classList.toggle("featured", cards[i].getAttribute("data-planbox") === want);
+  }
+  /* Switch who the page speaks to. Buttons keep their nodes (only attributes change) so taps never get lost. */
+  function applySeg(seg){
+    if (!AUD[seg]) seg = "me";
+    SEG = seg; lsSet(K_SEG, seg);
+    var A = AUD[seg];
+    document.body.setAttribute("data-seg", seg);
+    $("heroH1").textContent = A.h1; $("heroLede").textContent = A.lede; $("segHint").textContent = A.hint;
+    ta.placeholder = A.ph;
+    var bs = $("segBar").querySelectorAll("[data-seg]"), i;
+    for (i = 0; i < bs.length; i++) { var on = bs[i].getAttribute("data-seg") === seg; bs[i].setAttribute("aria-checked", on ? "true" : "false"); bs[i].tabIndex = on ? 0 : -1; }
+    renderChips(); renderGets(); updatePlansSeg(); setHdr();
+  }
+  function initialSeg(){
+    var q = "";
+    try { q = (new URLSearchParams(location.search).get("for") || "").toLowerCase().replace(/[^a-z]/g, ""); } catch(e){}
+    var map = { me:"me", individual:"me", personal:"me", solo:"me", small:"small", smb:"small", business:"small", team:"small", mid:"mid", medium:"mid", midsize:"mid", company:"mid" };
+    if (map[q]) return map[q];
+    var saved = lsGet(K_SEG, "me"); return SEGS.indexOf(saved) >= 0 ? saved : "me";
+  }
+  $("segBar").addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("[data-seg]") : null;
+    if (b) applySeg(b.getAttribute("data-seg"));
   });
+  $("segBar").addEventListener("keydown", function(e){
+    var i = SEGS.indexOf(SEG), n = -1;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") n = (i + 1) % SEGS.length; else if (e.key === "ArrowLeft" || e.key === "ArrowUp") n = (i + SEGS.length - 1) % SEGS.length;
+    if (n < 0) return;
+    e.preventDefault(); applySeg(SEGS[n]);
+    var nb = $("segBar").querySelector('[data-seg="' + SEGS[n] + '"]'); if (nb) nb.focus();
+  });
+  applySeg(initialSeg());
 
   /* ---------- clear the input box (text and attachment) ---------- */
   function updateClear(){
@@ -1884,8 +1972,8 @@ function ladders(p){
       effort:"Low",
       title:{ dev:"You pay for more than one AI provider", everyday:"You pay for more than one AI tool" },
       why:{
-        dev:"If they overlap rather than serve different workloads, check which one your team really uses. Cancel the other for a month and see if anyone misses it.",
-        everyday:"If you use them for similar things, check which one you open most. Cancel the other for a month and see if you miss it."
+        dev:"Check which one your team really uses. Cancel one for a month and see if anyone misses it.",
+        everyday:"Check which one you open most. Cancel one for a month and see if you miss it."
       }
     },
     plan:{
@@ -1936,6 +2024,8 @@ function ladders(p){
   }
   function renderResults(){
     document.body.setAttribute("data-aud", profile.apiSpend ? "developer" : "everyday");
+    var seg = segOf(profile), biz = seg !== "me";
+    document.body.setAttribute("data-rseg", seg);
     var r = plan(profile), sets = adviceSets(profile), box = $("results"), sym = profile.sym, html = "";
     var off = whatIfOff, offIds = Object.keys(off).filter(function(k){ return off[k]; }), anyOff = offIds.length > 0;
     var rs = anyOff ? plan(profile, off) : r, track = !demo, doneMap = track ? loadDone() : {};
@@ -1959,7 +2049,8 @@ function ladders(p){
       var A = rs.api, B = rs.sub;
       var aHas = !!(A && A.high >= A.base * 0.01), bHas = !!(B && B.high >= B.base * 0.01);
       var conf = confidence(profile);
-      var title = (A && B) ? "Directional estimate for your monthly AI spend" : (A ? "Directional estimate for your monthly API bill" : "Directional estimate for your plan");
+      var poss = AUD[seg].poss;
+      var title = (A && B) ? "Directional estimate for " + poss + " monthly AI spend" : (A ? "Directional estimate for " + poss + " monthly API bill" : (biz ? "Directional estimate for " + poss + " plans" : "Directional estimate for your plan"));
       var big = aHas ? "Could save roughly " + moneySpan(A.low, A.high, sym) + " a month" + (B ? " on your API bill" : "")
                      : (bHas ? "Could use roughly " + pctSpan(B.low / B.base * 100, B.high / B.base * 100) + " less" : "Pick a change below to see an estimate");
       html += '<div class="receipt"><p class="rtitle">' + title + '</p><p class="big">' + big + '</p>';
@@ -1973,11 +2064,13 @@ function ladders(p){
         if (bHas && A) html += '<div class="line"><span>Plan usage after changes</span><span>roughly ' + pctSpan(B.low / B.base * 100, B.high / B.base * 100) + ' less</span></div>';
         html += '<div class="line total"><span>Subscription bill</span><span>Likely unchanged</span></div>';
       }
+      if (biz) html += bizLines(rs, aHas);
       if (A) html += '<p class="note">Not a promise. Your results may be lower or higher. Try one change at a time and check your next bill.</p>';
       if (B) html += '<p class="note">A flat plan doesn\u2019t get cheaper by using less. Lower usage means fewer limit warnings, and it may let you move to a cheaper plan.</p>';
       if (numericTips.length > 1) html += '<p class="note">' + (anyOff ? "Counting " + (numericTips.length - offIds.length) + " of " + numericTips.length + " changes. " : "") + 'Untick \u201CInclude in estimate\u201D on a change below to see the total without it, for example if you already do it or won\u2019t.</p>';
       html += '<p class="conf"><strong>How sure am I: ' + conf.level + '.</strong> ' + esc(conf.text) + '</p></div><div class="edge" aria-hidden="true"></div>';
     } else {
+      if (biz && totalSpend(profile) > 0) html += '<div class="receipt"><p class="rtitle">' + esc(AUD[seg].poss.charAt(0).toUpperCase() + AUD[seg].poss.slice(1)) + ' spend, in numbers</p>' + bizLines(rs, false) + '</div><div class="edge" aria-hidden="true"></div>';
       var ticks = [
         ["hist", "My chats run long, or I paste big files or documents", profile.hist],
         ["verb", "The answers are longer than I need", profile.verb],
@@ -1997,7 +2090,7 @@ function ladders(p){
     var ids = pageIds(r, sets);
     if (track && ids.length) {
       var nd = ids.filter(function(id){ return doneMap[id]; }).length;
-      html += '<div class="prog"><p id="progText">Your progress: ' + nd + ' of ' + ids.length + ' changes done</p><div class="progbar"><span id="progFill" style="width:' + Math.round(nd / ids.length * 100) + '%"></span></div><p class="small" style="margin:6px 0 0;font-weight:400">Tick \u201CI\u2019ve done this\u201D as you make each change. It tracks your progress and doesn\u2019t change the estimate.</p></div>';
+      html += '<div class="prog"><p id="progText">Your progress: ' + nd + ' of ' + ids.length + ' changes done</p><div class="progbar"><span id="progFill" style="width:' + Math.round(nd / ids.length * 100) + '%"></span></div></div><p class="small proghelp">Tick \u201CI\u2019ve done this\u201D as you make each change. It tracks your progress and doesn\u2019t change the estimate.</p>';
     }
     html += progressHtml(ids, doneMap);
     if (r.tips.length) {
@@ -2038,9 +2131,18 @@ function ladders(p){
       return h + "</ol>";
     }
     if (sets.dev.length) html += advBlock("Bigger changes: architecture and workflow", sets.dev);
-    if (sets.hab.length) html += advBlock("Smarter habits for your tools", sets.hab);
+    if (sets.hab.length) html += advBlock("Smarter habits for " + AUD[seg].poss + " tools", sets.hab);
     box.innerHTML = html;
     return r;
+  }
+  /* Yearly and per-person view for the business audiences. */
+  function bizLines(rs, aHas){
+    var h = "", totNow = totalSpend(profile), hcN = profile.headcount || 0, A = rs.api, sym = profile.sym;
+    if (totNow > 0) h += '<div class="line"><span>Spend per year now</span><span>' + money(totNow * 12) + '</span></div>';
+    if (totNow > 0 && hcN > 0) h += '<div class="line"><span>Per person now</span><span>' + money(totNow / hcN) + ' a month</span></div>';
+    if (aHas && A) h += '<div class="line"><span>Possible API saving per year</span><span>roughly ' + moneySpan(A.low * 12, A.high * 12, sym) + '</span></div>';
+    if (totNow > 0 && !hcN && !demo) h += '<p class="note">Add how many people use AI under \u201CWhat I assumed\u201D to see the cost per person.</p>';
+    return h;
   }
   function toggleLabels(){
     var api = !!profile.apiSpend;
@@ -2054,12 +2156,12 @@ function ladders(p){
     toggleLabels();
     $("lbl-calls").hidden = !profile.appMode;
     $("f-calls").value = (profile.appMode && profile.apiSpend && profile.appCost) ? Math.round(profile.apiSpend / profile.appCost.mid) : "";
+    $("f-heads").value = profile.headcount ? String(profile.headcount) : "";
     $("f-tier").value = profile.tier; $("f-diff").value = profile.diff;
     $("f-rep").value = Math.round(profile.rep * 100);
     $("f-rt").checked = profile.realtime; $("f-hist").checked = profile.hist; $("f-verb").checked = profile.verb;
   }
   function readFields(target){
-    if (profile.fromFile) profile.editedSinceImport = true;
     if (profile.appMode && profile.appCost && target && target.id === "f-calls") {
       var cc = parseFloat($("f-calls").value);
       if (isFinite(cc) && cc > 0) { profile.callsPerMonth = cc; $("f-api").value = Math.round(profile.appCost.mid * cc * 100) / 100; }
@@ -2067,13 +2169,12 @@ function ladders(p){
     var a = parseFloat($("f-api").value), s = parseFloat($("f-sub").value);
     profile.apiSpend = (isFinite(a) && a > 0) ? Math.min(a, 1e9) : null;
     profile.subSpend = (isFinite(s) && s > 0) ? Math.min(s, 1e9) : null;
+    var hh = parseInt($("f-heads").value, 10); profile.headcount = (isFinite(hh) && hh > 0) ? Math.min(hh, 99999) : 0;
     profile.tier = $("f-tier").value; profile.diff = $("f-diff").value;
     profile.rep = num($("f-rep").value, profile.rep * 100, 0, 100) / 100;
     profile.realtime = $("f-rt").checked; profile.hist = $("f-hist").checked; profile.verb = $("f-verb").checked;
     if (profile.appMode && profile.appCost && profile.apiSpend && !(target && target.id === "f-calls")) $("f-calls").value = Math.round(profile.apiSpend / profile.appCost.mid);
     toggleLabels();
-    profile.summary = makeSummary(profile);
-    $("summary").textContent = profile.summary;
   }
   function showReport(){
     whatIfOff = {}; savedNow = false; dirtyFields = false;
@@ -2284,6 +2385,10 @@ function ladders(p){
   function planText(){
     var sym = profile.sym, r = plan(profile);
     var lines = ["Token Savings Coach: directional estimate", profile.summary, ""];
+    if (segOf(profile) !== "me") {
+      var tt = totalSpend(profile);
+      if (tt > 0) lines.splice(2, 0, "Spend per year: about " + fmtMoney(tt * 12, sym) + (profile.headcount ? ". Per person: about " + fmtMoney(tt / profile.headcount, sym) + " a month." : "."));
+    }
     if (profile.keyExposed) lines.push("Warning: the file appears to contain a secret API key. Keep it on a server and create a new one.", "");
     if (profile.appMode) { profile.found.forEach(function(x){ lines.push("- " + x); }); lines.push(""); }
     if (r.hasNumeric) {
@@ -2377,6 +2482,7 @@ function ladders(p){
   $("plans").addEventListener("click", function(e){
     var b = e.target && e.target.closest ? e.target.closest("[data-plan]") : null; if (!b) return;
     waitPlan = b.getAttribute("data-plan"); $("wPlan").textContent = waitPlan;
+    $("fairBox").hidden = waitPlan === "Business"; $("sizeBox").hidden = waitPlan !== "Business";
     $("waitForm").hidden = false; $("wStatus").textContent = ""; $("wStatus").className = "status";
     try { $("waitForm").scrollIntoView({ block:"center" }); } catch(x){}
   });
@@ -2385,12 +2491,15 @@ function ladders(p){
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { st.className = "status err"; st.textContent = "Please enter a valid email address."; return; }
     var fair = "", radios = document.querySelectorAll('input[name="fair"]'), i;
     for (i = 0; i < radios.length; i++) if (radios[i].checked) fair = radios[i].value;
-    var payload = { email:email, plan:waitPlan, fair_price:fair || null, note:$("wNote").value.trim().slice(0, 500) || null, source:"app" };
+    var size = "", sradios = document.querySelectorAll('input[name="size"]');
+    for (i = 0; i < sradios.length; i++) if (sradios[i].checked) size = sradios[i].value;
+    var isBiz = waitPlan === "Business", note = ("[" + AUD[SEG].label + "] " + (isBiz && size ? "Company size: " + size + ". " : "") + $("wNote").value.trim()).trim();
+    var payload = { email:email, plan:waitPlan, fair_price:isBiz ? null : (fair || null), note:note.slice(0, 500), source:"app" };
     var kept = lsGet(K_WAIT, []); if (!Array.isArray(kept)) kept = []; kept.push(payload); lsSet(K_WAIT, kept);
     if (!WAITLIST_ENDPOINT) { st.className = "status"; st.textContent = "Thanks. This preview isn\u2019t connected to a waitlist yet, so your entry was saved on this device only."; return; }
     st.className = "status"; st.textContent = "Sending\u2026"; $("wSubmit").disabled = true;
     var headers = { "Content-Type":"application/json", "Prefer":"return=minimal" };
-    if (WAITLIST_KEY) { headers.apikey = WAITLIST_KEY; headers.Authorization = "Bearer " + WAITLIST_KEY; }
+    if (WAITLIST_KEY) { headers.apikey = WAITLIST_KEY; if (WAITLIST_KEY.indexOf("sb_") !== 0) headers.Authorization = "Bearer " + WAITLIST_KEY; }  /* new sb_publishable_ keys are not JWTs, so they go in apikey only */
     fetch(WAITLIST_ENDPOINT, { method:"POST", headers:headers, body:JSON.stringify(payload) }).then(function(res){
       $("wSubmit").disabled = false;
       if (res.ok || res.status === 409) { st.className = "status"; st.textContent = res.status === 409 ? "You\u2019re already on the list. Thank you!" : "You\u2019re on the list. Thank you! We\u2019ll email you about early access."; }
@@ -2446,8 +2555,9 @@ function ladders(p){
   /* ---------- events ---------- */
   var ASK_CALLS = [["Under 1,000",500],["1,000 to 10,000",5000],["10,000 to 100,000",50000],["Over 100,000",300000]];
   function showAsk(mode){
-    var list = mode === "calls" ? ASK_CALLS : ASK;
-    $("askTitle").textContent = mode === "calls" ? "About how many AI calls does your app make each month?" : "About how much do you spend on AI each month?";
+    var sg = (pending && AUD[pending.seg]) ? pending.seg : SEG;
+    var list = mode === "calls" ? ASK_CALLS : AUD[sg].ask;
+    $("askTitle").textContent = mode === "calls" ? "About how many AI calls does your app make each month?" : AUD[sg].askTitle;
     var box = $("askChips"); box.innerHTML = "";
     list.forEach(function(a){
       var b = document.createElement("button");
@@ -2486,8 +2596,8 @@ function ladders(p){
     else if (k === "batch") profile.realtime = !on;
     savedNow = false; dirtyFields = true; fillFields(); renderResults();
   });
-  $("fieldsWrap").addEventListener("input", function(e){ readFields(e.target); savedNow = false; dirtyFields = true; renderResults(); });
-  $("fieldsWrap").addEventListener("change", function(e){ readFields(e.target); savedNow = false; dirtyFields = true; renderResults(); });
+  $("fieldsWrap").addEventListener("input", function(e){ readFields(e.target); savedNow = false; if (!(e.target && e.target.id === "f-heads")) dirtyFields = true; renderResults(); });
+  $("fieldsWrap").addEventListener("change", function(e){ readFields(e.target); savedNow = false; if (!(e.target && e.target.id === "f-heads")) dirtyFields = true; renderResults(); });
   $("lvReset").addEventListener("click", function(){
     if (!baseProfile) return;
     profile = JSON.parse(JSON.stringify(baseProfile)); whatIfOff = {}; dirtyFields = false; savedNow = false;
