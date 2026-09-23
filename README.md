@@ -45,7 +45,7 @@ A static, installable web app (PWA). No build step, no server.
 
 ## The built-in demo
 
-Under the input box, a **See how it works** block explains that a made-up sample will show the report you would get, with nothing to type or upload. It holds four pills in two labelled groups. **Sample bills**: **Usage CSV** and **Invoice PDF** (a fictional company's August 2026 bill, about $5,946 of API spend across three models). **Sample app code**: **Web app** and **Nightly job** (two fictional apps that show the architecture and workflow advice).
+Right under the input box, one line reads **Sample:** followed by four equal pills, each with its name on two short lines: **Usage CSV** and **Invoice PDF** (a fictional company's August 2026 bill, about $5,946 of API spend across three models) and **Web app** and **Nightly job** (two fictional apps that show the architecture and workflow advice).
 
   - **Web app** is a browser page that calls the AI provider directly. It contains a fake key, resends the whole conversation, has web search on, uses a top-tier model and calls the AI on every keystroke. Expect: a key warning, "call the AI from a server", retrieval instead of sending everything, model routing, and a debounce.
   - **Nightly job** is a Python job run from cron. It has long instructions, four separate AI calls, retries and a tool loop. Expect: "move non-urgent work into a batch pipeline" (naming the provider's batch option), caching, cheaper models for easy work, capped retries and a check that each call is needed.
@@ -66,40 +66,29 @@ Everything here works on the device, with no account.
 - **Include in estimate (what-if):** each dollar change has an **Include in estimate** box. Untick one to see the total without it, for example if you already do it or won't. Untick everything to see there is nothing left to count. This is the box that recalculates the estimate.
 - **Test before you switch:** a short checklist and a downloadable CSV sheet for testing a cheaper model on ten real requests, pre-filled with the model names for that platform.
 - **Share and print:** **Share** uses the phone's share sheet where available. **Print or save as PDF** prints a clean copy of the report.
-- **Plans:** the **Plans** pill at the top right of the header (and a **Plans** link in the footer) opens the plans page. While you are on it, the pill is highlighted and tapping it again goes back to where you were. The page shows Free, Pro ($29 a month), Team ($79 a month) and Business (talk to us) with a waitlist form. The plan that matches the chosen audience is outlined. The Business form asks for company size instead of a fair price. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
+- **Plans:** the **Plans** pill at the top right of the header (and a **Plans** link in the footer) opens the plans page. While you are on it, the pill is highlighted and tapping it again goes back to where you were. The page shows Free, Pro ($29 a month) and Team ($79 a month) with a waitlist form. The prices are early guesses, marked as not charged yet. Features that are not built are labelled "planned".
 
 ### Connecting the waitlist (Supabase)
 
 Until you connect it, waitlist entries stay on the visitor's own device and you will not see them.
 
-1. In the Supabase SQL editor, paste and run `waitlist.sql`. It is a separate file that came with this project (next to the project folder, not inside the files you deploy). It is safe to run twice. It creates the `waitlist` table and a rule that lets the public key add a row but never read, change or delete one. It also fills in `audience` and `company_size` columns from each note, so you can filter and count in the Table editor.
-2. In Supabase, open **Project Settings, API Keys** and copy the Project URL and the **publishable key** (it starts with `sb_publishable_`). Older projects can use the legacy **anon** key instead. Never use a secret key or the service role key.
+1. In the Supabase SQL editor, run `waitlist.sql`. It is a separate file that came with this project (in the outputs folder, next to this project's folder, not inside the files you deploy). It creates the table and a rule that lets the public key add a row but never read the list.
+2. In Supabase, open **Project Settings, API** and copy the Project URL and the **anon public** key.
 3. In `index.html`, near the top of the script, set
    `var WAITLIST_ENDPOINT = "https://YOUR-PROJECT.supabase.co/rest/v1/waitlist";`
-   and `var WAITLIST_KEY = "YOUR-PUBLISHABLE-KEY";`
-4. Re-upload `index.html`, join the waitlist yourself with a test email, and check the row in the Table editor. Joining the same plan with the same email twice shows "You're already on the list".
+   and `var WAITLIST_KEY = "YOUR-ANON-KEY";`
+4. Re-upload `index.html`, join the waitlist yourself with a test email, and check the row in the Table editor.
 
-The publishable key is meant to be public and is safe here only because of the row-level rule in the SQL. Any other form endpoint that accepts a JSON POST also works: set `WAITLIST_ENDPOINT` and leave `WAITLIST_KEY` empty.
+The anon key is meant to be public and is safe here only because of the row-level rule in the SQL. Never put the service role key in `index.html`. Any other form endpoint that accepts a JSON POST also works: set `WAITLIST_ENDPOINT` and leave `WAITLIST_KEY` empty.
 
 `VALIDATION-PLAN.md` (also a separate file) explains how to read the results and what to decide before looking at them.
 
 ## The screens
 
-- **Landing:** the input box (type, speak or attach; a **Clear** button empties the text and attachment), the **See how it works** samples, a **What you'll get** button that opens a short explanation (closed by default, with a one-line preview), and an optional platform picker. The input box opens with a sample sentence already in it, in muted text with an **Example** note above it, so **Find savings** works with one tap. **Clear** empties it and puts the cursor in the box, and the same sentence stays visible as a grey "Example: …" placeholder to show how to phrase it. If the box is empty and nothing is attached or picked, tapping **Find savings** runs that grey example (and fills it into the box). Typing dismisses any red message. Attaching a file or tapping the mic removes the sample first so it never mixes into real input. Switching audience swaps the sample unless the person has typed something.
+- **Landing:** a short "What you'll get" explanation, the input box (type, speak or attach; a **Clear** button empties the text and attachment), an optional platform picker, and examples.
 - **Results:** dollar ranges for changes you can make, **Cheaper alternatives to try** (each platform's models from lightest to most capable), then advice matched to your situation. People with an API bill see **Bigger changes: architecture and workflow**. People on plans see **Smarter habits for your tools**. Someone with both sees both, without repeats.
 - **Live estimate box:** at the top of **What I assumed**, a box shows the estimate as short text and stays pinned just under the header while the person scrolls through and edits the numbers. It updates as they type, flashes when the range changes, shows the original estimate next to the edited one, and has a **Reset** button (back to the original guesses) and a **Full results** button that scrolls to the top. It is pinned to the top, not the bottom, because phone keyboards cover bottom bars.
 - **What I assumed:** the two money fields (API bill and subscriptions) are always shown. Model size, task difficulty and the yes/no questions are tucked into **Fine-tune these guesses**, and are worded to match your situation.
-
-## Audiences: Just me, Small business, Mid-size
-
-A three-way toggle sits above the input box. It changes the words and the numbers, not the engine.
-
-- **What changes:** the headline and intro, the sample sentence in the input box (`example`, which also becomes the grey "Example: …" placeholder once the box is cleared), the "What you'll get" list and its one-line preview, the spend question's answer ranges, the wording of the report ("Your team\u2019s", "Your company\u2019s"), and which plan is outlined on the Plans page.
-- **Business numbers:** for Small business and Mid-size, the estimate card adds **Spend per year now**, **Per person now** and **Possible API saving per year**. The headcount is read from the text ("8 of us", "120 employees") and can be edited under **What I assumed** (People using AI). If it is missing, the card says how to add it.
-- **Where the words live:** the `AUD` object near the top of the script in index.html. Edit the copy, sample sentence, answer ranges and the "roughly 50 to 1,000 people" hints there.
-- **Links per audience:** add `?for=small` or `?for=mid` (also `?for=me`) to the address, for example `https://your-domain/?for=mid`. The choice is remembered on the device after that.
-- **Waitlist:** every entry's note starts with the audience in brackets, for example `[Mid-size]`. Business entries also include the company size in the note. If you store waitlist rows in a table that restricts the `plan` values, allow `Business`.
-- **Not built yet:** advice that is specific to each audience (seat utilization, vendor consolidation, cost by team) and a finance-ready summary. Business and Team plan features marked planned are copy only.
 
 ## Platforms, models and recommendations
 
@@ -111,6 +100,19 @@ A three-way toggle sits above the input box. It changes the words and the number
 ## Updating
 
 After you change any file, open `sw.js` and change `CACHE_VERSION` (for example `v1` to `v2`) so phones fetch the new version.
+
+## Fixes from the September 23, 2026 product test report
+
+A tester uploaded a fictional six-month usage CSV and found three high-priority accuracy bugs, plus three medium ones. All are fixed:
+
+- **Billing period.** Six monthly rows (one per month) were treated as one 154-day window, inflating the monthly estimate by about 18%. The app now counts distinct calendar months in the date column; with two or more, it averages the total across those months instead of projecting from the date span. A short window (a two-week export, say) still uses the old day-span projection.
+- **Subscriptions counted as API spend.** The app now looks for a `cost_type` / `category` / `type` column and splits amounts by it. Without one, a flat charge with no token or request data and a subscription-sounding name (ChatGPT Plus, Copilot, a "Team" or "Pro" plan) is treated as a subscription rather than API usage.
+- **Stale summary after a manual edit.** Editing the API bill or subscriptions field now recomputes the "You spend about $X a month..." line immediately. Previously it kept showing the number from the original file after the fields were corrected.
+- **Workload notes ignored.** If the CSV has a notes/description column, the app now scans it for long-context, verbose-answer and nightly/batch-eligible language and factors that into the advice, the same way it already does for typed descriptions and app code.
+- **Confidence label after edits.** Once someone changes a number that came from a file, the confidence label switches to "Medium" and says the results now reflect their edits, not the original import, instead of continuing to claim "Higher" confidence in an import that has since been corrected.
+- **Multi-provider advice.** "You pay for more than one AI tool" now says "if you use them for similar things" before suggesting a cancellation trial, rather than assuming any overlap is unnecessary.
+
+Not fixed, and out of scope for this pass (larger features, listed here so they aren't lost): a monthly trend view across the months in a file, a baseline picker (average vs. latest month vs. forecast), an explicit import-preview step showing recognized columns and excluded rows, and a step-by-step trace from the estimate back to the specific rows or token categories behind it.
 
 ## Known limits
 
